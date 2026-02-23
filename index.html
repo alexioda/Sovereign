@@ -2,241 +2,235 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LiveAdaptiv | The Refined Sovereign System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Sovereign">
+    <title>Sovereign | LiveAdaptiv</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --gold: #b2945e;
-            --silver: #94a3b8;
-            --charcoal: #1c1917;
-            --stone: #fafaf9;
+        :root { 
+            --gold: #b2945e; 
+            --stone: #fafaf9; 
+            --charcoal: #1c1917; 
+            --silver: #94a3b8; 
+            --stone-border: #e7e5e4;
         }
-
-        /* Essential reset for print accuracy */
-        * {
-            box-sizing: border-box;
-            -webkit-print-color-adjust: exact;
+        body { 
+            background-color: var(--stone); 
+            color: var(--charcoal); 
+            font-family: 'Inter', sans-serif; 
+            overscroll-behavior: none; 
+            -webkit-font-smoothing: antialiased;
         }
-
-        @media print { 
-            .no-print { display: none; } 
-            body { background: white; padding: 0; margin: 0; } 
-            .page { 
-                page-break-after: always;
-                page-break-inside: avoid;
-                margin: 0 !important;
-                border: none !important;
-                box-shadow: none !important;
-                width: 8.5in;
-                height: 11in;
-            }
-            @page {
-                size: 8.5in 11in;
-                margin: 0;
-            }
-        }
-
-        body { background-color: #f5f5f4; color: var(--charcoal); margin: 0; padding: 0; }
-        
-        .page {
-            background-color: var(--stone);
-            width: 8.5in;
-            height: 11in;
-            margin: 2rem auto;
-            padding: 0.5in; /* Slightly reduced padding to ensure fit */
-            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
-            border: 1px solid #e7e5e4;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden; /* Prevents internal content from pushing to new page */
-        }
-
-        .a-logo { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-style: italic; color: var(--gold); }
-        
-        .calendar-grid { 
-            display: grid; 
-            grid-template-columns: repeat(7, 1fr); 
-            border-top: 1px solid var(--silver); 
-            border-left: 1px solid var(--silver); 
-        }
-
-        .calendar-day { 
-            aspect-ratio: 1 / 1; 
-            border-right: 1px solid var(--silver); 
-            border-bottom: 1px solid var(--silver); 
-            padding: 6px; 
-            font-size: 9px; 
-            color: #78716c; 
-        }
-
-        .gold-text { color: var(--gold); }
-        .silver-text { color: var(--silver); }
-        
-        .input-line { 
-            border-bottom: 1px solid var(--silver); 
-            height: 2rem; 
-            width: 100%; 
-            margin-bottom: 0.4rem; 
-        }
-
+        .a-logo { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold); }
+        .glass-light { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(15px); border: 1px solid rgba(178, 148, 94, 0.1); }
+        .active-tab { color: var(--gold); border-top: 2px solid var(--gold); }
         .blueprint-dot {
-            background-image: radial-gradient(circle at 1px 1px, #e7e5e4 1px, transparent 0);
-            background-size: 25px 25px;
+            background-image: radial-gradient(circle at 1px 1px, var(--stone-border) 1px, transparent 0);
+            background-size: 30px 30px;
         }
+        .timer-glow { box-shadow: 0 10px 40px rgba(178, 148, 94, 0.08); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        /* Mobile-specific polish */
+        textarea { -webkit-appearance: none; }
+        button { -webkit-tap-highlight-color: transparent; }
     </style>
 </head>
-<body class="font-sans antialiased blueprint-dot">
+<body class="min-h-screen pb-24 blueprint-dot">
 
-    <div class="no-print p-12 text-center max-w-2xl mx-auto">
-        <h1 class="text-4xl font-serif italic mb-4 text-stone-900">The Refined Sovereign System</h1>
-        <p class="text-[10px] text-stone-500 font-bold uppercase tracking-[0.4em] mb-8">Alchemy of Logic: Silver & Gold Edition</p>
-        <div class="bg-white p-6 rounded-2xl border border-stone-200 mb-8 text-left">
-            <h2 class="text-xs font-bold uppercase mb-2">PDF Export Note:</h2>
-            <p class="text-[10px] text-stone-500">Ensure <strong>Paper Size</strong> is set to <strong>Letter (8.5 x 11)</strong> and <strong>Margins</strong> are set to <strong>None</strong> in your print dialog.</p>
+    <!-- TOP NAVIGATION -->
+    <nav class="p-5 flex justify-between items-center sticky top-0 z-50 glass-light border-b border-stone-200">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 border border-[#b2945e]/40 rounded-full flex items-center justify-center">
+                <span class="a-logo text-lg pb-0.5">A</span>
+            </div>
+            <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-stone-400">LiveAdaptiv</span>
         </div>
-        <button onclick="window.print()" class="px-12 py-5 bg-stone-900 text-white text-[10px] font-bold uppercase tracking-[0.4em] rounded-full shadow-2xl hover:bg-stone-700 transition-all">Generate Master PDF</button>
-    </div>
+        <button class="text-stone-300" onclick="requestNotifications()"><i data-lucide="bell" class="w-5 h-5"></i></button>
+    </nav>
 
-    <div id="master-container">
-        <!-- Monthly Pages will be injected here -->
-        <!-- Daily Template will be injected last -->
-    </div>
+    <main class="p-6 space-y-8 max-w-lg mx-auto">
+        <!-- TEMPORAL ANCHOR SECTION (AMERICAN FORMAT) -->
+        <section class="text-center py-6">
+            <p id="dayOfWeek" class="text-stone-400 text-[10px] font-bold uppercase tracking-[0.4em] mb-1">...</p>
+            <div class="flex items-baseline justify-center gap-2 mb-2">
+                <h1 id="clock" class="text-6xl font-serif italic text-stone-900">00:00</h1>
+                <span id="ampm" class="text-xs font-bold uppercase tracking-widest text-gold-600">--</span>
+            </div>
+            <p id="fullDate" class="text-stone-500 text-[10px] font-medium tracking-widest uppercase mb-6">...</p>
+            
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-stone-200 bg-white/60">
+                <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                <p id="monthlyTheme" class="text-[#b2945e] text-[8px] font-bold uppercase tracking-[0.3em]">System Active</p>
+            </div>
+        </section>
+
+        <!-- DASHBOARD TAB -->
+        <div id="tab-dashboard" class="tab-content active space-y-6">
+            <!-- ALCHEMY TIMER -->
+            <div class="bg-white p-10 rounded-[2.5rem] border border-stone-100 shadow-sm flex flex-col items-center timer-glow">
+                <span class="text-[8px] font-bold text-stone-400 uppercase tracking-widest mb-6">Biological Flush</span>
+                <div id="timerDisplay" class="text-7xl font-serif text-stone-900 mb-8 font-bold">90</div>
+                <button onclick="toggleTimer()" id="timerBtn" class="w-full py-4 bg-stone-900 text-white font-bold rounded-full text-[10px] uppercase tracking-widest shadow-xl active:scale-95 transition-transform">
+                    Initiate Reset
+                </button>
+            </div>
+
+            <!-- DAILY PROTOCOL CARD -->
+            <div class="bg-white p-7 rounded-[2rem] border-l-4 border-[#b2945e] shadow-sm active:bg-stone-50 transition-colors" onclick="drawCard()">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-[8px] font-bold text-stone-400 uppercase tracking-widest">Sovereign Deck</span>
+                    <i data-lucide="zap" class="w-3 h-3 text-[#b2945e]"></i>
+                </div>
+                <h3 id="cardTitle" class="text-xl font-serif italic text-stone-900 mb-2 leading-tight">The 90-Second Rule</h3>
+                <p id="cardDesc" class="text-[11px] text-stone-500 font-light italic leading-relaxed">"Chemistry is temporary. Logic is permanent. Observe the flush."</p>
+            </div>
+        </div>
+
+        <!-- PLANNER TAB -->
+        <div id="tab-plan" class="tab-content space-y-6">
+            <div class="bg-white p-7 rounded-[2.5rem] border border-stone-100 shadow-sm space-y-8">
+                <div>
+                    <label class="text-[9px] font-bold text-[#b2945e] uppercase tracking-widest block mb-4">Daily Decree</label>
+                    <textarea id="toBeInput" class="w-full bg-stone-50 border border-stone-100 p-5 rounded-2xl text-xs h-32 outline-none focus:border-[#b2945e] transition-all resize-none font-serif italic" placeholder="I am the kind of person who..."></textarea>
+                </div>
+                <div>
+                    <label class="text-[9px] font-bold text-stone-400 uppercase tracking-widest block mb-4">Fortress Audit</label>
+                    <textarea id="fortressInput" class="w-full bg-stone-50 border border-stone-100 p-5 rounded-2xl text-xs h-32 outline-none focus:border-stone-300 transition-all resize-none font-serif italic" placeholder="I will not allow [X] to breach my walls today."></textarea>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- NAVIGATION BAR -->
+    <footer class="fixed bottom-0 w-full glass-light border-t border-stone-200 flex justify-around p-4 z-50">
+        <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex flex-col items-center gap-1 active-tab pt-2 transition-all">
+            <i data-lucide="layout-grid" class="w-5 h-5"></i>
+            <span class="text-[8px] uppercase font-bold tracking-widest">Dash</span>
+        </button>
+        <button onclick="switchTab('plan')" id="btn-plan" class="flex flex-col items-center gap-1 text-stone-400 pt-2 transition-all">
+            <i data-lucide="edit-3" class="w-5 h-5"></i>
+            <span class="text-[8px] uppercase font-bold tracking-widest">Plan</span>
+        </button>
+        <a href="https://www.liveadaptiv.com" target="_blank" class="flex flex-col items-center gap-1 text-stone-400 pt-2 transition-all">
+            <i data-lucide="external-link" class="w-5 h-5"></i>
+            <span class="text-[8px] uppercase font-bold tracking-widest">Hub</span>
+        </a>
+    </footer>
 
     <script>
-        const months = [
-            { name: "January", theme: "The Quantum Observer", decree: "Reality collapses into the form you choose to observe.", focus: "Perception Architecture" },
-            { name: "February", theme: "The 90-Second Rule", decree: "Chemistry is temporary. Logic is permanent.", focus: "Biological Flush Mastery" },
-            { name: "March", theme: "The Seesaw", decree: "Curiosity is the death of judgment.", focus: "Pivoting to Data" },
-            { name: "April", theme: "The Shadow Government", decree: "I will not be governed by versions of me that no longer exist.", focus: "Subconscious Auditing" },
-            { name: "May", theme: "The Mirror", decree: "My triggers are my treasure map.", focus: "Ownership of Projections" },
-            { name: "June", theme: "Chronos vs. Kairos", decree: "I do not manage time; I architect state.", focus: "Qualitative Presence" },
-            { name: "July", theme: "The Stockdale Paradox", decree: "Face the facts. Maintain the faith.", focus: "Resilience in High-Heat" },
-            { name: "August", theme: "The Fortress Wall", decree: "My focus is my territory. I guard the gate.", focus: "Deep Work & Noise Deletion" },
-            { name: "September", theme: "Sovereign Language", decree: "Precision is power. Apology is a leak.", focus: "Strategic Communication" },
-            { name: "October", theme: "The 7 Levels", decree: "Every friction is fuel for a higher level.", focus: "Energy Ladder Scaling" },
-            { name: "November", theme: "The Architect’s Oath", decree: "I am the declaration of my own meaning.", focus: "Identity Synthesis" },
-            { name: "December", theme: "Absolute Creation", decree: "The world is happening for me.", focus: "Vision & Boundless Reality" }
+        // ARCHITECTURE DATA
+        const months = ["The Quantum Observer", "The 90-Second Rule", "The Seesaw", "The Shadow Government", "The Mirror", "Chronos vs Kairos", "The Stockdale Paradox", "The Fortress Wall", "Sovereign Language", "The 7 Levels", "The Architect's Oath", "Absolute Creation"];
+        
+        const deck = [
+            { t: "The 90-Second Rule", d: "Observe the chemistry. Do not fight it. Anything longer than 90s is a story." },
+            { t: "The Seesaw", d: "Curiosity kills judgment. Pivot to a 'How' question immediately." },
+            { t: "Linear Override", d: "Panic is a circle. Logic is a line. Name 3 facts to switch tracks." },
+            { t: "Tactical Exhale", d: "Inhale is gas, exhale is brake. Long, slow exhales reset the system." },
+            { t: "No as Architecture", d: "Every 'Yes' to a distraction is a silent 'No' to your mission." },
+            { t: "Faux-pology", d: "Stop apologizing for your presence. Speak with assumed authority." },
+            { t: "The Observer Effect", d: "Reality collapses into the form you choose to see. Observe the logic." }
         ];
 
-        const container = document.getElementById('master-container');
+        // TIME & DATE ENGINE (AMERICAN FORMAT)
+        function updateTemporalData() {
+            const now = new Date();
+            
+            // 12-hour Clock
+            let h = now.getHours();
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12 || 12;
+            const m = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('clock').innerText = `${h}:${m}`;
+            document.getElementById('ampm').innerText = ampm;
+            
+            // Day and Full Date
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            document.getElementById('dayOfWeek').innerText = days[now.getDay()];
+            
+            const dateOptions = { month: 'long', day: 'numeric', year: 'numeric' };
+            document.getElementById('fullDate').innerText = now.toLocaleDateString('en-US', dateOptions);
+            
+            // Monthly Theme
+            document.getElementById('monthlyTheme').innerText = months[now.getMonth()];
+        }
 
-        // Render 12 Monthly Pages
-        months.forEach(month => {
-            const page = document.createElement('div');
-            page.className = "page";
-            page.innerHTML = `
-                <div class="flex justify-between items-end mb-8 border-b-2 border-stone-200 pb-6">
-                    <div>
-                        <span class="silver-text font-bold text-[9px] uppercase tracking-[0.4em] mb-1 block">Monthly Architecture // 2026</span>
-                        <h2 class="text-5xl font-serif italic text-stone-900">${month.name}</h2>
-                    </div>
-                    <div class="text-right">
-                        <div class="w-10 h-10 border border-stone-200 rounded-full flex items-center justify-center mb-2 ml-auto">
-                            <span class="a-logo text-xl">A</span>
-                        </div>
-                        <span class="text-[8px] uppercase font-bold text-stone-400 tracking-widest">Focus: ${month.focus}</span>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-12 gap-8 flex-grow">
-                    <div class="col-span-4 flex flex-col">
-                        <div class="bg-stone-100/50 p-5 rounded-2xl border-l-4 border-[#b2945e] mb-6">
-                            <span class="text-[8px] font-bold gold-text uppercase tracking-widest block mb-2">The Monthly Decree</span>
-                            <p class="text-lg font-serif italic text-stone-800 leading-tight">"${month.decree}"</p>
-                        </div>
-                        
-                        <div class="space-y-4">
-                            <h4 class="text-[9px] font-bold silver-text uppercase tracking-widest">Monthly Target Log</h4>
-                            <div class="input-line"></div>
-                            <div class="input-line"></div>
-                            <div class="input-line"></div>
-                        </div>
+        // TIMER LOGIC
+        let timerSeconds = 90;
+        let timerRunning = false;
+        let interval;
 
-                        <div class="mt-auto pt-6 border-t border-stone-100">
-                            <p class="text-[7px] font-bold uppercase tracking-[0.5em] text-stone-400">LiveAdaptiv.com</p>
-                        </div>
-                    </div>
-                    
-                    <div class="col-span-8">
-                        <div class="grid grid-cols-7 text-center mb-2">
-                            ${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d => `<span class="text-[8px] font-bold silver-text uppercase tracking-widest">${d}</span>`).join('')}
-                        </div>
-                        <div class="calendar-grid">
-                            ${Array(35).fill(null).map((_, i) => `<div class="calendar-day">${i + 1 <= 31 ? i + 1 : ''}</div>`).join('')}
-                        </div>
-                    </div>
-                </div>
-            `;
-            container.appendChild(page);
-        });
+        function toggleTimer() {
+            if (timerRunning) {
+                clearInterval(interval);
+                timerSeconds = 90;
+                document.getElementById('timerDisplay').innerText = "90";
+                document.getElementById('timerBtn').innerText = "Initiate Reset";
+                timerRunning = false;
+            } else {
+                timerRunning = true;
+                document.getElementById('timerBtn').innerText = "Observing...";
+                interval = setInterval(() => {
+                    timerSeconds--;
+                    document.getElementById('timerDisplay').innerText = timerSeconds;
+                    if (timerSeconds <= 0) {
+                        clearInterval(interval);
+                        timerRunning = false;
+                        timerSeconds = 90;
+                        document.getElementById('timerDisplay').innerText = "FLUSHED";
+                        document.getElementById('timerBtn').innerText = "System Reset";
+                    }
+                }, 1000);
+            }
+        }
 
-        // Render THE DAILY BLUEPRINT (The Template)
-        const dailyPage = document.createElement('div');
-        dailyPage.className = "page border-2 border-[#b2945e]";
-        dailyPage.innerHTML = `
-            <div class="flex justify-between items-center mb-10 border-b border-stone-100 pb-6">
-                <div>
-                    <h2 class="text-4xl font-serif italic text-stone-900 mb-1">Daily Architecture</h2>
-                    <p class="text-[9px] gold-text font-bold uppercase tracking-[0.5em]">System: Sovereign A</p>
-                </div>
-                <div class="text-right">
-                    <p class="text-xs text-stone-400 font-mono italic">DATE: ___ / ___ / 2026</p>
-                </div>
-            </div>
+        // NAVIGATION
+        function switchTab(tab) {
+            const tabs = ['dashboard', 'plan'];
+            tabs.forEach(t => {
+                document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+                document.getElementById('btn-' + t).classList.toggle('active-tab', t === tab);
+                document.getElementById('btn-' + t).classList.toggle('text-stone-400', t !== tab);
+            });
+            lucide.createIcons();
+        }
 
-            <div class="grid grid-cols-2 gap-12 flex-grow">
-                <div class="space-y-10">
-                    <section>
-                        <h3 class="text-[10px] font-bold gold-text uppercase tracking-widest mb-4">01. The Morning Decree</h3>
-                        <p class="text-[8px] silver-text italic mb-3">"I declare my identity before the world sets it for me."</p>
-                        <div class="input-line"></div>
-                        <div class="input-line"></div>
-                    </section>
-                    <section>
-                        <h3 class="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-4">02. The Fortress Guard</h3>
-                        <p class="text-[8px] silver-text italic mb-3">"What will I block today to protect my energy?"</p>
-                        <div class="input-line"></div>
-                    </section>
-                    <section>
-                        <h3 class="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-4">03. The Alchemy Audit</h3>
-                        <p class="text-[8px] silver-text italic mb-4">"Frequency of 90-Second Resets:"</p>
-                        <div class="flex gap-3">
-                            ${Array(7).fill(null).map(() => `<div class="w-5 h-5 border border-stone-200 rounded"></div>`).join('')}
-                        </div>
-                    </section>
-                </div>
+        function drawCard() {
+            const card = deck[Math.floor(Math.random() * deck.length)];
+            document.getElementById('cardTitle').innerText = card.t;
+            document.getElementById('cardDesc').innerText = `"${card.d}"`;
+        }
 
-                <div class="space-y-8">
-                    <section>
-                        <h3 class="text-[10px] font-bold gold-text uppercase tracking-widest mb-4">04. High-Value Logic (Priorities)</h3>
-                        <div class="flex items-center gap-3 mb-3"><div class="w-4 h-4 border border-stone-200"></div><div class="input-line flex-grow"></div></div>
-                        <div class="flex items-center gap-3 mb-3"><div class="w-4 h-4 border border-stone-200"></div><div class="input-line flex-grow"></div></div>
-                        <div class="flex items-center gap-3 mb-3"><div class="w-4 h-4 border border-stone-200"></div><div class="input-line flex-grow"></div></div>
-                    </section>
-                    
-                    <div class="p-6 bg-stone-50 rounded-2xl border border-stone-100 mt-6">
-                        <span class="text-[8px] font-bold gold-text uppercase tracking-widest block mb-3">End of Day Synthesis</span>
-                        <p class="text-[10px] text-stone-500 italic leading-relaxed">
-                            "Did I act as the Architect or the Victim? Where was the alchemy today?"
-                        </p>
-                        <div class="input-line mt-4"></div>
-                        <div class="input-line"></div>
-                    </div>
-                </div>
-            </div>
+        function requestNotifications() {
+            if (!("Notification" in window)) {
+                console.log("Notifications not supported.");
+                return;
+            }
+            Notification.requestPermission();
+        }
 
-            <div class="mt-auto pt-6 flex justify-between items-center text-[7px] font-bold uppercase tracking-[0.5em] text-stone-300">
-                <span>Architect: Alex Ioda</span>
-                <span>LiveAdaptiv.com</span>
-            </div>
-        `;
-        container.appendChild(dailyPage);
-
-        lucide.createIcons();
+        // PERSISTENCE & INITIALIZATION
+        window.onload = () => {
+            const toBe = document.getElementById('toBeInput');
+            const fortress = document.getElementById('fortressInput');
+            
+            // Load saved data
+            toBe.value = localStorage.getItem('la_mobile_tobe') || "";
+            fortress.value = localStorage.getItem('la_mobile_fortress') || "";
+            
+            // Auto-save on input
+            toBe.oninput = () => localStorage.setItem('la_mobile_tobe', toBe.value);
+            fortress.oninput = () => localStorage.setItem('la_mobile_fortress', fortress.value);
+            
+            setInterval(updateTemporalData, 1000);
+            updateTemporalData();
+            lucide.createIcons();
+        };
     </script>
 </body>
 </html>
