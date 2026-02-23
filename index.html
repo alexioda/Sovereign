@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Sovereign">
+    <title>Sovereign | LiveAdaptiv</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --gold: #b2945e; 
+            --stone: #fafaf9; 
+            --charcoal: #1c1917; 
+            --silver: #94a3b8; 
+            --stone-border: #e7e5e4;
+        }
+        body { 
+            background-color: var(--stone); 
+            color: var(--charcoal); 
+            font-family: 'Inter', sans-serif; 
+            overscroll-behavior: none; 
+            -webkit-font-smoothing: antialiased;
+        }
+        .a-logo { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold); }
+        .glass-light { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(15px); border: 1px solid rgba(178, 148, 94, 0.1); }
+        .active-tab { color: var(--gold); border-top: 2px solid var(--gold); }
+        .blueprint-dot {
+            background-image: radial-gradient(circle at 1px 1px, var(--stone-border) 1px, transparent 0);
+            background-size: 30px 30px;
+        }
+        .timer-glow { box-shadow: 0 10px 40px rgba(178, 148, 94, 0.08); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body class="min-h-screen pb-24 blueprint-dot">
+
+    <!-- TOP NAVIGATION -->
+    <nav class="p-5 flex justify-between items-center sticky top-0 z-50 glass-light border-b border-stone-200">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 border border-[#b2945e]/40 rounded-full flex items-center justify-center">
+                <span class="a-logo text-lg pb-0.5">A</span>
+            </div>
+            <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-stone-400">LiveAdaptiv</span>
+        </div>
+        <button class="text-stone-300" onclick="alert('System Alerts Enabled')"><i data-lucide="bell" class="w-5 h-5"></i></button>
+    </nav>
+
+    <main class="p-6 space-y-8 max-w-lg mx-auto">
+        <!-- TEMPORAL ANCHOR SECTION -->
+        <section class="text-center py-6">
+            <p id="dayOfWeek" class="text-stone-400 text-[10px] font-bold uppercase tracking-[0.4em] mb-1">Sunday</p>
+            <div class="flex items-baseline justify-center gap-2 mb-2">
+                <h1 id="clock" class="text-6xl font-serif italic text-stone-900">12:00</h1>
+                <span id="ampm" class="text-xs font-bold uppercase tracking-widest text-gold-600">PM</span>
+            </div>
+            <p id="fullDate" class="text-stone-500 text-[10px] font-medium tracking-widest uppercase mb-6">February 22, 2026</p>
+            
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-stone-200 bg-white/60">
+                <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                <p id="monthlyTheme" class="text-[#b2945e] text-[8px] font-bold uppercase tracking-[0.3em]">The Quantum Observer</p>
+            </div>
+        </section>
+
+        <!-- DASHBOARD TAB -->
+        <div id="tab-dashboard" class="tab-content active space-y-6">
+            <!-- ALCHEMY TIMER -->
+            <div class="bg-white p-10 rounded-[2.5rem] border border-stone-100 shadow-sm flex flex-col items-center timer-glow">
+                <span class="text-[8px] font-bold text-stone-400 uppercase tracking-widest mb-6">Biological Flush</span>
+                <div id="timerDisplay" class="text-7xl font-serif text-stone-900 mb-8 font-bold">90</div>
+                <button onclick="toggleTimer()" id="timerBtn" class="w-full py-4 bg-stone-900 text-white font-bold rounded-full text-[10px] uppercase tracking-widest shadow-xl active:scale-95 transition-transform">
+                    Initiate Reset
+                </button>
+            </div>
+
+            <!-- DAILY PROTOCOL CARD -->
+            <div class="bg-white p-7 rounded-[2rem] border-l-4 border-[#b2945e] shadow-sm active:bg-stone-50 transition-colors" onclick="drawCard()">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-[8px] font-bold text-stone-400 uppercase tracking-widest">Sovereign Deck</span>
+                    <i data-lucide="zap" class="w-3 h-3 text-[#b2945e]"></i>
+                </div>
+                <h3 id="cardTitle" class="text-xl font-serif italic text-stone-900 mb-2 leading-tight">The 90-Second Rule</h3>
+                <p id="cardDesc" class="text-[11px] text-stone-500 font-light italic leading-relaxed">"Chemistry is temporary. Logic is permanent. Observe the flush."</p>
+            </div>
+        </div>
+
+        <!-- PLANNER TAB -->
+        <div id="tab-plan" class="tab-content space-y-6">
+            <div class="bg-white p-7 rounded-[2.5rem] border border-stone-100 shadow-sm space-y-8">
+                <div>
+                    <label class="text-[9px] font-bold text-[#b2945e] uppercase tracking-widest block mb-4">Daily Decree</label>
+                    <textarea id="toBeInput" class="w-full bg-stone-50 border border-stone-100 p-5 rounded-2xl text-xs h-32 outline-none focus:border-[#b2945e] transition-all resize-none" placeholder="Enter your identity for today..."></textarea>
+                </div>
+                <div>
+                    <label class="text-[9px] font-bold text-stone-400 uppercase tracking-widest block mb-4">Fortress Audit</label>
+                    <textarea id="fortressInput" class="w-full bg-stone-50 border border-stone-100 p-5 rounded-2xl text-xs h-32 outline-none focus:border-stone-300 transition-all resize-none" placeholder="What will you block today?"></textarea>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- NAVIGATION BAR -->
+    <footer class="fixed bottom-0 w-full glass-light border-t border-stone-200 flex justify-around p-4 z-50">
+        <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex flex-col items-center gap-1 active-tab pt-2 transition-all">
+            <i data-lucide="layout-grid" class="w-5 h-5"></i>
+            <span class="text-[8px] uppercase font-bold tracking-widest">Dash</span>
+        </button>
+        <button onclick="switchTab('plan')" id="btn-plan" class="flex flex-col items-center gap-1 text-stone-400 pt-2 transition-all">
+            <i data-lucide="edit-3" class="w-5 h-5"></i>
+            <span class="text-[8px] uppercase font-bold tracking-widest">Plan</span>
+        </button>
+        <a href="https://www.liveadaptiv.com" target="_blank" class="flex flex-col items-center gap-1 text-stone-400 pt-2 transition-all">
+            <i data-lucide="external-link" class="w-5 h-5"></i>
+            <span class="text-[8px] uppercase font-bold tracking-widest">Hub</span>
+        </a>
+    </footer>
+
+    <script>
+        const months = ["The Quantum Observer", "The 90-Second Rule", "The Seesaw", "Shadow Government", "The Mirror", "Chronos vs Kairos", "Stockdale Paradox", "Fortress Wall", "Sovereign Language", "The 7 Levels", "Architect's Oath", "Absolute Creation"];
+        const deck = [
+            { t: "No as Architecture", d: "Sovereignty is built on the word 'No.' Protect the blueprint." },
+            { t: "The 90-Second Rule", d: "A biological stress response lasts 90 seconds. Anything else is a story." },
+            { t: "Faux-pology", d: "Apologizing for your presence cedes ground you can never buy back." },
+            { t: "Strategic Deletion", d: "Architecture is about what you remove. Prune the waste." },
+            { t: "The Mirror", d: "What you cannot accept in yourself, you will attack in others." }
+        ];
+
+        // TIME & DATE ENGINE
+        function updateTemporalData() {
+            const now = new Date();
+            
+            // Time (12-hour format)
+            let h = now.getHours();
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12;
+            h = h ? h : 12; // the hour '0' should be '12'
+            const m = now.getMinutes().toString().padStart(2, '0');
+            
+            document.getElementById('clock').innerText = `${h}:${m}`;
+            document.getElementById('ampm').innerText = ampm;
+            
+            // Day
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            document.getElementById('dayOfWeek').innerText = days[now.getDay()];
+            
+            // Date
+            const dateOptions = { month: 'long', day: 'numeric', year: 'numeric' };
+            document.getElementById('fullDate').innerText = now.toLocaleDateString('en-US', dateOptions);
+            
+            // Theme
+            document.getElementById('monthlyTheme').innerText = months[now.getMonth()];
+        }
+
+        // TIMER LOGIC
+        let timerSeconds = 90;
+        let timerRunning = false;
+        let interval;
+
+        function toggleTimer() {
+            if (timerRunning) {
+                clearInterval(interval);
+                timerSeconds = 90;
+                document.getElementById('timerDisplay').innerText = "90";
+                document.getElementById('timerBtn').innerText = "Initiate Reset";
+                timerRunning = false;
+            } else {
+                timerRunning = true;
+                document.getElementById('timerBtn').innerText = "Observing...";
+                interval = setInterval(() => {
+                    timerSeconds--;
+                    document.getElementById('timerDisplay').innerText = timerSeconds;
+                    if (timerSeconds <= 0) {
+                        clearInterval(interval);
+                        timerRunning = false;
+                        timerSeconds = 90;
+                        document.getElementById('timerDisplay').innerText = "FLUSHED";
+                        document.getElementById('timerBtn').innerText = "System Reset";
+                    }
+                }, 1000);
+            }
+        }
+
+        // NAVIGATION
+        function switchTab(tab) {
+            const tabs = ['dashboard', 'plan'];
+            tabs.forEach(t => {
+                document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+                document.getElementById('btn-' + t).classList.toggle('active-tab', t === tab);
+                document.getElementById('btn-' + t).classList.toggle('text-stone-400', t !== tab);
+            });
+        }
+
+        function drawCard() {
+            const card = deck[Math.floor(Math.random() * deck.length)];
+            document.getElementById('cardTitle').innerText = card.t;
+            document.getElementById('cardDesc').innerText = `"${card.d}"`;
+        }
+
+        // PERSISTENCE
+        const toBe = document.getElementById('toBeInput');
+        const fortress = document.getElementById('fortressInput');
+        
+        toBe.addEventListener('input', () => localStorage.setItem('mob_toBe_stone_v2', toBe.value));
+        fortress.addEventListener('input', () => localStorage.setItem('mob_fort_stone_v2', fortress.value));
+
+        window.onload = () => {
+            toBe.value = localStorage.getItem('mob_toBe_stone_v2') || "";
+            fortress.value = localStorage.getItem('mob_fort_stone_v2') || "";
+            setInterval(updateTemporalData, 1000);
+            updateTemporalData();
+            lucide.createIcons();
+        };
+    </script>
+</body>
+</html>
