@@ -5,171 +5,177 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sovereign Command Center | LiveAdaptiv</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['"Inter"', 'sans-serif'] },
-                    colors: { 
-                        // The "Stone" Palette
-                        zinc: { 50: '#fafafa', 300: '#d4d4d8', 400: '#a1a1aa', 500: '#71717a', 600: '#52525b', 800: '#27272a', 900: '#18181b', 950: '#09090b' },
-                        stone: { 800: '#292524', 900: '#1c1917' }
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Inter"', 'sans-serif']
+                    },
+                    colors: {
+                        stone: { 100: '#f5f5f4', 400: '#a8a29e', 500: '#78716c', 700: '#44403c', 800: '#292524', 900: '#1c1917' },
+                        gold: { 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706' }
                     }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #09090b; } /* Pure Onyx */
-        .fade-in { animation: fadeIn 0.6s ease-in-out forwards; opacity: 0; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.8s ease-in-out forwards; opacity: 0; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Stone texture panel effect */
-        .panel-stone {
-            background: linear-gradient(145deg, #18181b, #0f0f11);
-            border: 1px solid #27272a;
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.02);
-        }
-        
-        /* Inset button effect */
-        .btn-stone {
-            background: #18181b;
-            border: 1px solid #27272a;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 1px 0 rgba(255,255,255,0.05);
-            transition: all 0.2s ease;
-        }
-        .btn-stone:hover {
-            background: #27272a;
-            border-color: #3f3f46;
-        }
+        .progress-circle { transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset 1s linear; }
+        .pulse-soft { animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+        /* Custom scrollbar for a sleek look */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1c1917; }
+        ::-webkit-scrollbar-thumb { background: #44403c; border-radius: 10px; }
     </style>
 </head>
-<body class="text-zinc-50 font-sans antialiased min-h-screen flex flex-col selection:bg-zinc-800">
-    
-    <!-- Top Navigation (Minimalist) -->
-    <nav class="w-full border-b border-zinc-800/50 sticky top-0 z-50 bg-[#09090b]/80 backdrop-blur-md">
-        <div class="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
+<body class="bg-stone-900 text-stone-100 font-sans antialiased min-h-screen flex flex-col selection:bg-gold-500/30">
+
+    <!-- Top Navigation -->
+    <nav class="w-full border-b border-stone-800 bg-stone-900/90 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-2xl mx-auto px-6 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <i data-lucide="hexagon" class="w-4 h-4 text-zinc-400"></i>
-                <span class="font-semibold text-zinc-300 tracking-widest uppercase text-[11px]">LiveAdaptiv</span>
+                <i data-lucide="compass" class="w-4 h-4 text-gold-500"></i>
+                <span class="font-bold text-stone-200 tracking-[0.2em] uppercase text-[10px]">LiveAdaptiv</span>
             </div>
-            <div class="text-[9px] uppercase tracking-widest font-bold text-zinc-500 flex items-center gap-2">
-                <div class="w-1.5 h-1.5 rounded-full bg-zinc-400"></div> System Active
+            <div class="text-[9px] uppercase tracking-widest font-bold text-stone-500">
+                Command Center // 01
             </div>
         </div>
     </nav>
 
-    <main class="max-w-2xl mx-auto px-6 py-12 flex-grow w-full relative fade-in">
+    <main class="max-w-xl mx-auto px-6 py-12 flex-grow w-full relative fade-in">
         
-        <header class="mb-12 text-center md:text-left">
-            <h1 class="text-3xl md:text-4xl font-light text-zinc-100 mb-3 tracking-tight">Command <span class="font-semibold">Center</span></h1>
-            <p class="text-zinc-500 text-sm tracking-wide max-w-md">Immediate autonomic triage. Ground your physiology before executing critical decisions.</p>
+        <!-- Header Section -->
+        <header class="mb-12 text-center">
+            <span class="text-gold-500 font-bold text-[9px] uppercase tracking-[0.3em] mb-4 block">Daily Autonomic Triage</span>
+            <h1 class="text-4xl md:text-5xl font-serif italic text-stone-100 mb-4 leading-tight">Sovereign Command</h1>
+            <p class="text-sm text-stone-400 max-w-sm mx-auto leading-relaxed">
+                Flush the biological fog. Find a seat, straighten your spine, and take back the keys to your cognitive agency.
+            </p>
         </header>
 
-        <!-- 90-Second Flush Tool (Monolith UI) -->
-        <div class="panel-stone rounded-2xl p-8 mb-8 relative overflow-hidden group">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-zinc-800/20 rounded-full blur-3xl -mr-10 -mt-10 transition-all group-hover:bg-zinc-700/20"></div>
+        <!-- Circular 90-Second Flush Tool -->
+        <div class="bg-stone-800/40 rounded-3xl border border-stone-800 p-8 mb-8 text-center shadow-2xl relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-b from-stone-800/20 to-transparent pointer-events-none"></div>
             
-            <div class="flex items-center justify-between mb-8 relative z-10">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded border border-zinc-700 bg-zinc-900 flex items-center justify-center">
-                        <i data-lucide="wind" class="w-4 h-4 text-zinc-400"></i>
-                    </div>
-                    <h2 class="text-sm font-bold text-zinc-200 uppercase tracking-widest">Autonomic Flush</h2>
+            <div class="relative w-56 h-56 mx-auto mb-8 z-10">
+                <svg class="w-full h-full drop-shadow-lg" viewBox="0 0 100 100">
+                    <!-- Background Circle -->
+                    <circle cx="50" cy="50" r="45" stroke="#292524" stroke-width="2" fill="none" />
+                    <!-- Progress Circle -->
+                    <circle id="timerCircle" cx="50" cy="50" r="45" stroke="#f59e0b" stroke-width="2" fill="none" stroke-dasharray="282.7" stroke-dashoffset="0" class="progress-circle" stroke-linecap="round"/>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span id="timeNumber" class="text-6xl font-serif italic text-gold-500 pulse-soft tracking-tighter">90</span>
+                    <span class="text-[8px] uppercase tracking-widest text-stone-500 mt-2 font-bold">Seconds</span>
                 </div>
-                <div class="text-[10px] uppercase tracking-widest text-zinc-600 font-bold border border-zinc-800 px-2 py-1 rounded">90 Seconds</div>
-            </div>
-            
-            <div class="text-center mb-8 relative z-10">
-                <div id="timer-display" class="text-6xl md:text-7xl font-light text-zinc-100 font-mono tracking-tight mb-2 transition-colors duration-500">01:30</div>
-                <div class="text-[10px] uppercase tracking-widest text-zinc-500 font-semibold">Physiological Sigh Protocol</div>
             </div>
 
-            <div class="flex gap-4 relative z-10">
-                <button onclick="startTimer()" id="start-btn" class="flex-1 py-4 bg-zinc-100 text-zinc-950 hover:bg-white rounded-xl text-xs font-bold uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(255,255,255,0.05)]">Initiate</button>
-                <button onclick="resetTimer()" class="px-6 py-4 btn-stone text-zinc-400 rounded-xl text-xs font-bold uppercase tracking-widest">Reset</button>
+            <p id="alchemyPrompt" class="text-sm italic text-stone-400 font-serif h-6 mb-8 transition-all duration-500">
+                Inhale deeply. Exhale slowly.
+            </p>
+
+            <div class="flex gap-4 relative z-10 max-w-xs mx-auto">
+                <button onclick="startTimer()" id="start-btn" class="flex-1 py-3 border border-gold-500 text-gold-500 hover:bg-gold-500 hover:text-stone-900 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(245,158,11,0.15)]">Initiate</button>
+                <button onclick="resetTimer()" class="px-6 py-3 bg-stone-800 hover:bg-stone-700 text-stone-400 border border-stone-700 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all">Reset</button>
             </div>
         </div>
 
-        <!-- The Audio Protocol Engine (Stone UI) -->
-        <div class="panel-stone rounded-2xl p-8 mb-12 relative overflow-hidden">
-            <div class="flex items-center gap-3 mb-6 relative z-10">
-                <div class="w-8 h-8 rounded border border-zinc-700 bg-zinc-900 flex items-center justify-center">
-                    <i data-lucide="radio" class="w-4 h-4 text-zinc-400"></i>
-                </div>
-                <h2 class="text-sm font-bold text-zinc-200 uppercase tracking-widest">Cognitive Defusion</h2>
+        <!-- The Audio Protocol Engine -->
+        <div class="bg-stone-800/40 rounded-3xl border border-stone-800 p-8 mb-12 shadow-xl">
+            <div class="flex items-center gap-3 mb-2">
+                <i data-lucide="headphones" class="w-4 h-4 text-gold-500"></i>
+                <h2 class="text-sm font-bold text-stone-200 uppercase tracking-widest">Cognitive Defusion</h2>
             </div>
-            <p class="text-sm text-zinc-500 mb-6 leading-relaxed relative z-10">A 2-minute clinical audio integration. Use this to separate your identity from the immediate environmental friction.</p>
+            <p class="text-xs text-stone-500 mb-6 leading-relaxed">A clinical audio integration. Separate your identity from the environmental friction.</p>
             
-            <button onclick="toggleAudio()" class="w-full btn-stone text-zinc-300 p-5 rounded-xl flex items-center justify-between group relative z-10">
+            <button onclick="toggleAudio()" class="w-full bg-stone-900 text-stone-300 p-5 rounded-2xl flex items-center justify-between border border-stone-700 hover:border-gold-500/50 transition-all group shadow-inner">
                 <div class="flex items-center gap-4">
-                    <span id="audio-icon" class="text-zinc-400 group-hover:text-zinc-200 transition-colors"><i data-lucide="play" class="w-5 h-5"></i></span>
-                    <span id="audio-text" class="text-xs font-bold uppercase tracking-widest">Play Audio Stream</span>
+                    <div id="audio-icon" class="w-8 h-8 rounded-full bg-stone-800 flex items-center justify-center text-gold-500 group-hover:scale-110 transition-transform">
+                        <i data-lucide="play" class="w-4 h-4 translate-x-0.5"></i>
+                    </div>
+                    <span id="audio-text" class="text-[11px] font-bold uppercase tracking-widest text-stone-300">Play Audio Stream</span>
                 </div>
-                <!-- Visual EQ bars (static until played) -->
-                <div class="flex gap-1 items-end h-4 opacity-30" id="audio-eq">
-                    <div class="w-1 h-2 bg-zinc-500 rounded-full"></div>
-                    <div class="w-1 h-3 bg-zinc-500 rounded-full"></div>
-                    <div class="w-1 h-1 bg-zinc-500 rounded-full"></div>
-                    <div class="w-1 h-4 bg-zinc-500 rounded-full"></div>
+                <!-- Minimalist Audio Indicator -->
+                <div class="flex gap-1 items-center h-4 opacity-30 transition-opacity" id="audio-eq">
+                    <div class="w-1 h-1.5 bg-gold-500 rounded-full"></div>
+                    <div class="w-1 h-3 bg-gold-500 rounded-full"></div>
+                    <div class="w-1 h-2 bg-gold-500 rounded-full"></div>
                 </div>
             </button>
         </div>
 
-        <!-- Executive Upgrade Block -->
-        <div class="border-t border-zinc-800/80 pt-10 text-center fade-in" style="animation-delay: 0.2s;">
-            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full border border-zinc-800 bg-zinc-900 mb-4">
-                <i data-lucide="lock" class="w-5 h-5 text-zinc-500"></i>
+        <!-- Lemon Squeezy Upgrade CTA -->
+        <div class="relative p-1 rounded-3xl bg-gradient-to-b from-gold-500/20 to-transparent mt-12 mb-8">
+            <div class="bg-stone-900 rounded-[23px] p-8 text-center border border-stone-800/50 relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-32 bg-gold-500/5 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <h3 class="text-2xl font-serif italic text-stone-100 mb-3 relative z-10">The Alchemist Field Guide</h3>
+                <p class="text-xs text-stone-400 mb-8 max-w-sm mx-auto leading-relaxed relative z-10">Unlock the complete clinical playbook, advanced boundary architecture, and the extended MP3 master protocols.</p>
+                
+                <!-- PASTE YOUR LEMON SQUEEZY LINK IN THE HREF BELOW -->
+                <a href="https://your-store.lemonsqueezy.com/checkout/buy/..." target="_blank" class="inline-block w-full py-4 bg-gold-500 hover:bg-gold-400 text-stone-900 font-bold rounded-full text-[10px] uppercase tracking-[0.2em] transition-all shadow-[0_0_20px_rgba(245,158,11,0.2)] relative z-10">
+                    Unlock Master Protocol ($47)
+                </a>
             </div>
-            <h3 class="text-lg font-semibold text-zinc-200 mb-2 tracking-tight">The Alchemist Field Guide</h3>
-            <p class="text-sm text-zinc-500 mb-8 max-w-sm mx-auto">Access the complete, encrypted clinical playbook and extended audio architecture.</p>
-            
-            <!-- PASTE YOUR LEMON SQUEEZY LINK IN THE HREF BELOW -->
-            <a href="https://your-store.lemonsqueezy.com/checkout/buy/..." target="_blank" class="inline-flex items-center justify-center gap-3 px-8 py-4 border border-zinc-700 hover:border-zinc-500 bg-[#18181b] hover:bg-[#27272a] text-zinc-300 font-bold rounded-xl text-[10px] uppercase tracking-widest transition-all">
-                Unlock Master Protocol ($47) <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
-            </a>
         </div>
 
         <!-- Return to Hub -->
-        <div class="mt-12 text-center">
-            <a href="index.html" class="text-[10px] font-bold uppercase tracking-widest text-zinc-600 hover:text-zinc-400 transition-colors">Return to Hub</a>
+        <div class="text-center">
+            <a href="index.html" class="text-[9px] font-bold uppercase tracking-widest text-stone-600 hover:text-gold-500 transition-colors">Return to LiveAdaptiv Hub</a>
         </div>
 
     </main>
 
+    <footer class="text-center pb-8 pt-4">
+        <p class="text-[9px] text-stone-700 uppercase tracking-widest font-bold">© 2026 LiveAdaptiv Systems</p>
+    </footer>
+
     <script>
         lucide.createIcons();
 
-        // --- TIMER LOGIC ---
+        // --- CIRCULAR TIMER LOGIC ---
         let timeLeft = 90;
         let timerId = null;
-        const display = document.getElementById('timer-display');
+        const timeDisplay = document.getElementById('timeNumber');
         const startBtn = document.getElementById('start-btn');
-
-        function updateDisplay() {
-            const m = Math.floor(timeLeft / 60);
-            const s = timeLeft % 60;
-            display.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-        }
+        const circle = document.getElementById('timerCircle');
+        const prompt = document.getElementById('alchemyPrompt');
+        const circumference = 2 * Math.PI * 45; // 282.7
 
         function startTimer() {
             if (timerId) return;
             startBtn.innerText = "Flushing...";
-            display.classList.add('text-zinc-400'); // Dim slightly when running
-            display.classList.remove('text-zinc-100');
             
             timerId = setInterval(() => {
                 timeLeft--;
-                updateDisplay();
+                timeDisplay.innerText = timeLeft;
+                
+                // Animate SVG Circle
+                const offset = circumference - (timeLeft / 90) * circumference;
+                circle.style.strokeDashoffset = offset;
+
+                // Dynamic Text Prompts
+                if (timeLeft === 75) prompt.innerText = "Observe the chemistry. Don't fight it.";
+                if (timeLeft === 50) prompt.innerText = "The biological wave is peaking. Stay steady.";
+                if (timeLeft === 20) prompt.innerText = "The fog is clearing. Logic is returning.";
+
                 if (timeLeft <= 0) {
                     clearInterval(timerId);
                     timerId = null;
-                    startBtn.innerText = "Complete";
-                    // Minimalist alert state
-                    display.classList.add('text-white'); 
-                    display.classList.remove('text-zinc-400');
+                    startBtn.innerText = "Protocol Complete";
+                    timeDisplay.classList.add('text-stone-500');
+                    timeDisplay.classList.remove('text-gold-500');
+                    prompt.innerText = "System Reclaimed.";
                 }
             }, 1000);
         }
@@ -178,13 +184,16 @@
             clearInterval(timerId);
             timerId = null;
             timeLeft = 90;
-            updateDisplay();
+            timeDisplay.innerText = timeLeft;
+            circle.style.strokeDashoffset = 0;
             startBtn.innerText = "Initiate";
-            display.classList.remove('text-zinc-400', 'text-white');
-            display.classList.add('text-zinc-100');
+            prompt.innerText = "Inhale deeply. Exhale slowly.";
+            timeDisplay.classList.remove('text-stone-500');
+            timeDisplay.classList.add('text-gold-500');
         }
 
         // --- AUDIO LOGIC (TOGGLE PLAY/PAUSE) ---
+        // Ensure you have your audio file named 'alchemist.m4a' or update below
         const myAudio = new Audio('alchemist.m4a'); 
         let isPlaying = false;
 
@@ -194,30 +203,30 @@
             const eq = document.getElementById('audio-eq');
 
             if (isPlaying) {
-                // PAUSE
+                // PAUSE ACTION
                 myAudio.pause();
                 isPlaying = false;
                 btnText.innerText = "Play Audio Stream";
-                btnIcon.innerHTML = `<i data-lucide="play" class="w-5 h-5"></i>`;
+                btnIcon.innerHTML = `<i data-lucide="play" class="w-4 h-4 translate-x-0.5"></i>`;
                 eq.classList.add('opacity-30');
                 eq.classList.remove('animate-pulse');
             } else {
-                // PLAY
-                myAudio.play().catch(e => alert("Audio file not found. Ensure it is uploaded to GitHub."));
+                // PLAY ACTION
+                myAudio.play().catch(e => alert("Audio file not found. Ensure 'alchemist.m4a' is uploaded to GitHub."));
                 isPlaying = true;
                 btnText.innerText = "Pause Stream";
-                btnIcon.innerHTML = `<i data-lucide="pause" class="w-5 h-5"></i>`;
+                btnIcon.innerHTML = `<i data-lucide="pause" class="w-4 h-4"></i>`;
                 eq.classList.remove('opacity-30');
                 eq.classList.add('animate-pulse');
             }
             lucide.createIcons(); 
         }
 
-        // Auto-reset UI
+        // Auto-reset UI when audio finishes naturally
         myAudio.onended = function() {
             isPlaying = false;
             document.getElementById('audio-text').innerText = "Play Audio Stream";
-            document.getElementById('audio-icon').innerHTML = `<i data-lucide="play" class="w-5 h-5"></i>`;
+            document.getElementById('audio-icon').innerHTML = `<i data-lucide="play" class="w-4 h-4 translate-x-0.5"></i>`;
             const eq = document.getElementById('audio-eq');
             eq.classList.add('opacity-30');
             eq.classList.remove('animate-pulse');
