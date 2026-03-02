@@ -2,235 +2,216 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Sovereign">
-    <title>Sovereign | LiveAdaptiv</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sovereign Command Center | LiveAdaptiv</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Inter"', 'sans-serif'] },
+                    colors: { 
+                        slate: { 50: '#f8fafc', 800: '#1e293b', 900: '#0f172a' },
+                        teal: { 400: '#2dd4bf', 500: '#14b8a6' },
+                        amber: { 400: '#fbbf24', 500: '#f59e0b' },
+                        rose: { 500: '#f43f5e', 600: '#e11d48' }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root { 
-            --gold: #b2945e; 
-            --stone: #fafaf9; 
-            --charcoal: #1c1917; 
-            --silver: #94a3b8; 
-            --stone-border: #e7e5e4;
-        }
-        body { 
-            background-color: var(--stone); 
-            color: var(--charcoal); 
-            font-family: 'Inter', sans-serif; 
-            overscroll-behavior: none; 
-            -webkit-font-smoothing: antialiased;
-        }
-        .a-logo { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold); }
-        .glass-light { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(15px); border: 1px solid rgba(178, 148, 94, 0.1); }
-        .active-tab { color: var(--gold); border-top: 2px solid var(--gold); }
-        .blueprint-dot {
-            background-image: radial-gradient(circle at 1px 1px, var(--stone-border) 1px, transparent 0);
-            background-size: 30px 30px;
-        }
-        .timer-glow { box-shadow: 0 10px 40px rgba(178, 148, 94, 0.08); }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        
-        /* Mobile-specific polish */
-        textarea { -webkit-appearance: none; }
-        button { -webkit-tap-highlight-color: transparent; }
+        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        html { scroll-behavior: smooth; }
     </style>
 </head>
-<body class="min-h-screen pb-24 blueprint-dot">
-
-    <!-- TOP NAVIGATION -->
-    <nav class="p-5 flex justify-between items-center sticky top-0 z-50 glass-light border-b border-stone-200">
-        <div class="flex items-center gap-3">
-            <div class="w-8 h-8 border border-[#b2945e]/40 rounded-full flex items-center justify-center">
-                <span class="a-logo text-lg pb-0.5">A</span>
+<body class="bg-slate-900 text-slate-50 font-sans antialiased min-h-screen flex flex-col relative">
+    
+    <!-- Top Navigation -->
+    <nav class="w-full bg-slate-900 border-b border-slate-800 sticky top-0 z-40">
+        <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i data-lucide="compass" class="w-5 h-5 text-amber-500"></i>
+                <span class="font-semibold text-white tracking-wide">Sovereign Command Center</span>
             </div>
-            <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-stone-400">LiveAdaptiv</span>
+            <div class="text-[10px] uppercase tracking-widest font-bold text-slate-500">
+                LiveAdaptiv App
+            </div>
         </div>
-        <button class="text-stone-300" onclick="requestNotifications()"><i data-lucide="bell" class="w-5 h-5"></i></button>
     </nav>
 
-    <main class="p-6 space-y-8 max-w-lg mx-auto">
-        <!-- TEMPORAL ANCHOR SECTION (AMERICAN FORMAT) -->
-        <section class="text-center py-6">
-            <p id="dayOfWeek" class="text-stone-400 text-[10px] font-bold uppercase tracking-[0.4em] mb-1">...</p>
-            <div class="flex items-baseline justify-center gap-2 mb-2">
-                <h1 id="clock" class="text-6xl font-serif italic text-stone-900">00:00</h1>
-                <span id="ampm" class="text-xs font-bold uppercase tracking-widest text-gold-600">--</span>
+    <main class="max-w-xl mx-auto px-6 py-10 flex-grow w-full relative fade-in">
+        
+        <header class="mb-10 text-center">
+            <h1 class="text-3xl font-semibold text-white mb-2 tracking-tight">Daily Triage</h1>
+            <p class="text-slate-400 text-sm">Metabolize friction. Reclaim your cognitive agency.</p>
+        </header>
+
+        <!-- 90-Second Flush Tool -->
+        <div id="flush-section" class="bg-slate-800 rounded-2xl border border-slate-700 p-6 mb-8 shadow-lg scroll-mt-24 transition-all duration-500">
+            <div class="flex items-center gap-3 mb-4">
+                <i data-lucide="timer" class="w-5 h-5 text-teal-400"></i>
+                <h2 class="text-lg font-bold text-white">90-Second Autonomic Flush</h2>
             </div>
-            <p id="fullDate" class="text-stone-500 text-[10px] font-medium tracking-widest uppercase mb-6">...</p>
+            <p class="text-sm text-slate-400 mb-6">Manually override the cortisol dump. Inhale deeply, take one sharp extra inhale, and exhale slowly with an audible sigh. Repeat for 90 seconds.</p>
             
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-stone-200 bg-white/60">
-                <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-                <p id="monthlyTheme" class="text-[#b2945e] text-[8px] font-bold uppercase tracking-[0.3em]">System Active</p>
-            </div>
-        </section>
-
-        <!-- DASHBOARD TAB -->
-        <div id="tab-dashboard" class="tab-content active space-y-6">
-            <!-- ALCHEMY TIMER -->
-            <div class="bg-white p-10 rounded-[2.5rem] border border-stone-100 shadow-sm flex flex-col items-center timer-glow">
-                <span class="text-[8px] font-bold text-stone-400 uppercase tracking-widest mb-6">Biological Flush</span>
-                <div id="timerDisplay" class="text-7xl font-serif text-stone-900 mb-8 font-bold">90</div>
-                <button onclick="toggleTimer()" id="timerBtn" class="w-full py-4 bg-stone-900 text-white font-bold rounded-full text-[10px] uppercase tracking-widest shadow-xl active:scale-95 transition-transform">
-                    Initiate Reset
-                </button>
+            <div class="text-center mb-6">
+                <div id="timer-display" class="text-5xl font-bold text-teal-400 font-mono tracking-widest mb-2">01:30</div>
+                <div class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Time Remaining</div>
             </div>
 
-            <!-- DAILY PROTOCOL CARD -->
-            <div class="bg-white p-7 rounded-[2rem] border-l-4 border-[#b2945e] shadow-sm active:bg-stone-50 transition-colors" onclick="drawCard()">
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-[8px] font-bold text-stone-400 uppercase tracking-widest">Sovereign Deck</span>
-                    <i data-lucide="zap" class="w-3 h-3 text-[#b2945e]"></i>
-                </div>
-                <h3 id="cardTitle" class="text-xl font-serif italic text-stone-900 mb-2 leading-tight">The 90-Second Rule</h3>
-                <p id="cardDesc" class="text-[11px] text-stone-500 font-light italic leading-relaxed">"Chemistry is temporary. Logic is permanent. Observe the flush."</p>
+            <div class="flex gap-4">
+                <button onclick="startTimer()" id="start-btn" class="flex-1 py-3 bg-teal-500/10 text-teal-400 border border-teal-500/20 hover:bg-teal-500 hover:text-slate-900 rounded-xl text-xs font-bold uppercase tracking-widest transition-all">Start Flush</button>
+                <button onclick="resetTimer()" class="flex-1 py-3 bg-slate-700 text-slate-300 hover:bg-slate-600 rounded-xl text-xs font-bold uppercase tracking-widest transition-all">Reset</button>
             </div>
         </div>
 
-        <!-- PLANNER TAB -->
-        <div id="tab-plan" class="tab-content space-y-6">
-            <div class="bg-white p-7 rounded-[2.5rem] border border-stone-100 shadow-sm space-y-8">
-                <div>
-                    <label class="text-[9px] font-bold text-[#b2945e] uppercase tracking-widest block mb-4">Daily Decree</label>
-                    <textarea id="toBeInput" class="w-full bg-stone-50 border border-stone-100 p-5 rounded-2xl text-xs h-32 outline-none focus:border-[#b2945e] transition-all resize-none font-serif italic" placeholder="I am the kind of person who..."></textarea>
-                </div>
-                <div>
-                    <label class="text-[9px] font-bold text-stone-400 uppercase tracking-widest block mb-4">Fortress Audit</label>
-                    <textarea id="fortressInput" class="w-full bg-stone-50 border border-stone-100 p-5 rounded-2xl text-xs h-32 outline-none focus:border-stone-300 transition-all resize-none font-serif italic" placeholder="I will not allow [X] to breach my walls today."></textarea>
-                </div>
+        <!-- The Audio Protocol Engine -->
+        <div class="bg-slate-800 rounded-2xl border border-slate-700 p-6 mb-8 shadow-lg">
+            <div class="flex items-center gap-3 mb-4">
+                <i data-lucide="headphones" class="w-5 h-5 text-amber-500"></i>
+                <h2 class="text-lg font-bold text-white">Guided Defusion Protocol</h2>
             </div>
+            <p class="text-sm text-slate-400 mb-6">Listen to the clinical integration audio to separate from outcome dependency.</p>
+            
+            <button onclick="toggleAudio()" class="w-full bg-slate-900 text-white p-4 rounded-xl flex items-center justify-between hover:bg-slate-950 transition-colors border border-slate-700 shadow-inner">
+                <div class="flex items-center gap-3">
+                    <span id="audio-icon"><i data-lucide="play-circle" class="w-6 h-6 text-amber-500"></i></span>
+                    <span id="audio-text" class="text-sm font-semibold tracking-wide">Play Defusion Audio</span>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center">
+                    <div id="audio-indicator" class="w-2 h-2 rounded-full bg-slate-600"></div>
+                </div>
+            </button>
         </div>
+
+        <!-- Lemon Squeezy Upgrade CTA -->
+        <div class="mt-12 p-8 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-amber-500/20 shadow-xl text-center relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-32 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
+            <h3 class="text-xl font-bold text-white mb-3 relative z-10">The Alchemist Field Guide</h3>
+            <p class="text-sm text-slate-400 mb-6 relative z-10">Unlock the complete clinical-grade digital playbook, advanced boundary scripts, and extended MP3 protocols.</p>
+            
+            <a href="https://your-store.lemonsqueezy.com/checkout/buy/..." target="_blank" class="block w-full py-4 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold rounded-xl text-[11px] uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(245,158,11,0.2)] relative z-10">
+                Unlock Premium Protocol ($47)
+            </a>
+        </div>
+
+        <!-- Return to Hub -->
+        <div class="mt-8 text-center">
+            <a href="index.html" class="text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-teal-400 transition-colors">Return to LiveAdaptiv Hub</a>
+        </div>
+
     </main>
 
-    <!-- NAVIGATION BAR -->
-    <footer class="fixed bottom-0 w-full glass-light border-t border-stone-200 flex justify-around p-4 z-50">
-        <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex flex-col items-center gap-1 active-tab pt-2 transition-all">
-            <i data-lucide="layout-grid" class="w-5 h-5"></i>
-            <span class="text-[8px] uppercase font-bold tracking-widest">Dash</span>
-        </button>
-        <button onclick="switchTab('plan')" id="btn-plan" class="flex flex-col items-center gap-1 text-stone-400 pt-2 transition-all">
-            <i data-lucide="edit-3" class="w-5 h-5"></i>
-            <span class="text-[8px] uppercase font-bold tracking-widest">Plan</span>
-        </button>
-        <a href="https://www.liveadaptiv.com" target="_blank" class="flex flex-col items-center gap-1 text-stone-400 pt-2 transition-all">
-            <i data-lucide="external-link" class="w-5 h-5"></i>
-            <span class="text-[8px] uppercase font-bold tracking-widest">Hub</span>
-        </a>
-    </footer>
+    <!-- FLOATING RED PANIC BUTTON -->
+    <button onclick="triggerPanic()" class="fixed bottom-6 right-6 w-16 h-16 bg-rose-600 hover:bg-rose-500 rounded-full shadow-[0_0_25px_rgba(225,29,72,0.6)] flex items-center justify-center text-white transition-transform hover:scale-110 z-50 group">
+        <i data-lucide="siren" class="w-8 h-8 group-hover:animate-pulse"></i>
+    </button>
 
     <script>
-        // ARCHITECTURE DATA
-        const months = ["The Quantum Observer", "The 90-Second Rule", "The Seesaw", "The Shadow Government", "The Mirror", "Chronos vs Kairos", "The Stockdale Paradox", "The Fortress Wall", "Sovereign Language", "The 7 Levels", "The Architect's Oath", "Absolute Creation"];
-        
-        const deck = [
-            { t: "The 90-Second Rule", d: "Observe the chemistry. Do not fight it. Anything longer than 90s is a story." },
-            { t: "The Seesaw", d: "Curiosity kills judgment. Pivot to a 'How' question immediately." },
-            { t: "Linear Override", d: "Panic is a circle. Logic is a line. Name 3 facts to switch tracks." },
-            { t: "Tactical Exhale", d: "Inhale is gas, exhale is brake. Long, slow exhales reset the system." },
-            { t: "No as Architecture", d: "Every 'Yes' to a distraction is a silent 'No' to your mission." },
-            { t: "Faux-pology", d: "Stop apologizing for your presence. Speak with assumed authority." },
-            { t: "The Observer Effect", d: "Reality collapses into the form you choose to see. Observe the logic." }
-        ];
+        lucide.createIcons();
 
-        // TIME & DATE ENGINE (AMERICAN FORMAT)
-        function updateTemporalData() {
-            const now = new Date();
-            
-            // 12-hour Clock
-            let h = now.getHours();
-            const ampm = h >= 12 ? 'PM' : 'AM';
-            h = h % 12 || 12;
-            const m = now.getMinutes().toString().padStart(2, '0');
-            document.getElementById('clock').innerText = `${h}:${m}`;
-            document.getElementById('ampm').innerText = ampm;
-            
-            // Day and Full Date
-            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-            document.getElementById('dayOfWeek').innerText = days[now.getDay()];
-            
-            const dateOptions = { month: 'long', day: 'numeric', year: 'numeric' };
-            document.getElementById('fullDate').innerText = now.toLocaleDateString('en-US', dateOptions);
-            
-            // Monthly Theme
-            document.getElementById('monthlyTheme').innerText = months[now.getMonth()];
+        // --- TIMER LOGIC ---
+        let timeLeft = 90;
+        let timerId = null;
+        const display = document.getElementById('timer-display');
+        const startBtn = document.getElementById('start-btn');
+        const flushSection = document.getElementById('flush-section');
+
+        function updateDisplay() {
+            const m = Math.floor(timeLeft / 60);
+            const s = timeLeft % 60;
+            display.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
         }
 
-        // TIMER LOGIC
-        let timerSeconds = 90;
-        let timerRunning = false;
-        let interval;
+        function startTimer() {
+            if (timerId) return;
+            startBtn.innerText = "Flushing...";
+            timerId = setInterval(() => {
+                timeLeft--;
+                updateDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timerId);
+                    timerId = null;
+                    startBtn.innerText = "Protocol Complete";
+                    display.classList.add('text-rose-500');
+                    display.classList.remove('text-teal-400');
+                }
+            }, 1000);
+        }
 
-        function toggleTimer() {
-            if (timerRunning) {
-                clearInterval(interval);
-                timerSeconds = 90;
-                document.getElementById('timerDisplay').innerText = "90";
-                document.getElementById('timerBtn').innerText = "Initiate Reset";
-                timerRunning = false;
+        function resetTimer() {
+            clearInterval(timerId);
+            timerId = null;
+            timeLeft = 90;
+            updateDisplay();
+            startBtn.innerText = "Start Flush";
+            display.classList.remove('text-rose-500');
+            display.classList.add('text-teal-400');
+        }
+
+        // --- PANIC BUTTON LOGIC ---
+        function triggerPanic() {
+            // Scroll to the flush section
+            document.getElementById('flush-section').scrollIntoView({ behavior: 'smooth' });
+            
+            // Highlight the box briefly to draw attention
+            flushSection.classList.add('border-rose-500', 'shadow-[0_0_30px_rgba(244,63,94,0.2)]');
+            setTimeout(() => {
+                flushSection.classList.remove('border-rose-500', 'shadow-[0_0_30px_rgba(244,63,94,0.2)]');
+            }, 1500);
+
+            // Automatically start the timer if not already running
+            if (!timerId) {
+                // reset first just in case
+                resetTimer();
+                startTimer();
+            }
+        }
+
+        // --- AUDIO LOGIC ---
+        const myAudio = new Audio('alchemist.m4a'); 
+        let isPlaying = false;
+
+        function toggleAudio() {
+            const btnText = document.getElementById('audio-text');
+            const btnIcon = document.getElementById('audio-icon');
+            const indicator = document.getElementById('audio-indicator');
+
+            if (isPlaying) {
+                myAudio.pause();
+                isPlaying = false;
+                btnText.innerText = "Play Defusion Audio";
+                btnIcon.innerHTML = `<i data-lucide="play-circle" class="w-6 h-6 text-amber-500"></i>`;
+                indicator.classList.remove('bg-amber-500', 'animate-pulse');
+                indicator.classList.add('bg-slate-600');
             } else {
-                timerRunning = true;
-                document.getElementById('timerBtn').innerText = "Observing...";
-                interval = setInterval(() => {
-                    timerSeconds--;
-                    document.getElementById('timerDisplay').innerText = timerSeconds;
-                    if (timerSeconds <= 0) {
-                        clearInterval(interval);
-                        timerRunning = false;
-                        timerSeconds = 90;
-                        document.getElementById('timerDisplay').innerText = "FLUSHED";
-                        document.getElementById('timerBtn').innerText = "System Reset";
-                    }
-                }, 1000);
+                myAudio.play().catch(e => alert("Audio file not found. Ensure it is uploaded to GitHub."));
+                isPlaying = true;
+                btnText.innerText = "Pause Audio";
+                btnIcon.innerHTML = `<i data-lucide="pause-circle" class="w-6 h-6 text-amber-500"></i>`;
+                indicator.classList.remove('bg-slate-600');
+                indicator.classList.add('bg-amber-500', 'animate-pulse');
             }
+            lucide.createIcons(); 
         }
 
-        // NAVIGATION
-        function switchTab(tab) {
-            const tabs = ['dashboard', 'plan'];
-            tabs.forEach(t => {
-                document.getElementById('tab-' + t).classList.toggle('active', t === tab);
-                document.getElementById('btn-' + t).classList.toggle('active-tab', t === tab);
-                document.getElementById('btn-' + t).classList.toggle('text-stone-400', t !== tab);
-            });
-            lucide.createIcons();
-        }
-
-        function drawCard() {
-            const card = deck[Math.floor(Math.random() * deck.length)];
-            document.getElementById('cardTitle').innerText = card.t;
-            document.getElementById('cardDesc').innerText = `"${card.d}"`;
-        }
-
-        function requestNotifications() {
-            if (!("Notification" in window)) {
-                console.log("Notifications not supported.");
-                return;
-            }
-            Notification.requestPermission();
-        }
-
-        // PERSISTENCE & INITIALIZATION
-        window.onload = () => {
-            const toBe = document.getElementById('toBeInput');
-            const fortress = document.getElementById('fortressInput');
-            
-            // Load saved data
-            toBe.value = localStorage.getItem('la_mobile_tobe') || "";
-            fortress.value = localStorage.getItem('la_mobile_fortress') || "";
-            
-            // Auto-save on input
-            toBe.oninput = () => localStorage.setItem('la_mobile_tobe', toBe.value);
-            fortress.oninput = () => localStorage.setItem('la_mobile_fortress', fortress.value);
-            
-            setInterval(updateTemporalData, 1000);
-            updateTemporalData();
+        myAudio.onended = function() {
+            isPlaying = false;
+            document.getElementById('audio-text').innerText = "Play Defusion Audio";
+            document.getElementById('audio-icon').innerHTML = `<i data-lucide="play-circle" class="w-6 h-6 text-amber-500"></i>`;
+            const indicator = document.getElementById('audio-indicator');
+            indicator.classList.remove('bg-amber-500', 'animate-pulse');
+            indicator.classList.add('bg-slate-600');
             lucide.createIcons();
         };
+
     </script>
 </body>
 </html>
+
+
+
