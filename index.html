@@ -73,10 +73,16 @@
         <!-- DASHBOARD TAB -->
         <div id="tab-dashboard" class="tab-content active space-y-6">
             
-            <!-- ALCHEMY TIMER -->
-            <div class="bg-white p-10 rounded-[2.5rem] border border-stone-100 shadow-sm flex flex-col items-center timer-glow">
+            <!-- ALCHEMY TIMER WITH DYNAMIC INSTRUCTIONS -->
+            <div class="bg-white p-10 rounded-[2.5rem] border border-stone-100 shadow-sm flex flex-col items-center timer-glow text-center">
                 <span class="text-[8px] font-bold text-stone-400 uppercase tracking-widest mb-6">Biological Flush</span>
-                <div id="timerDisplay" class="text-7xl font-serif text-stone-900 mb-8 font-bold">90</div>
+                <div id="timerDisplay" class="text-7xl font-serif text-stone-900 mb-2 font-bold transition-colors duration-300">90</div>
+                
+                <!-- DYNAMIC TEXT AREA -->
+                <p id="timerInstruction" class="text-xs text-[#b2945e] font-serif italic h-8 flex items-center justify-center mb-6 transition-opacity duration-300">
+                    Prepare to metabolize autonomic friction.
+                </p>
+
                 <button onclick="toggleTimer()" id="timerBtn" class="w-full py-4 bg-stone-900 text-white font-bold rounded-full text-[10px] uppercase tracking-widest shadow-xl active:scale-95 transition-transform">
                     Initiate Reset
                 </button>
@@ -92,7 +98,7 @@
                 <p id="cardDesc" class="text-[11px] text-stone-500 font-light italic leading-relaxed">"Chemistry is temporary. Logic is permanent. Observe the flush."</p>
             </div>
 
-            <!-- AUDIO INTEGRATION CARD (NEW) -->
+            <!-- AUDIO INTEGRATION CARD -->
             <div class="bg-white p-7 rounded-[2rem] shadow-sm border border-stone-100">
                 <div class="flex justify-between items-center mb-4">
                     <span class="text-[8px] font-bold text-stone-400 uppercase tracking-widest">Cognitive Defusion</span>
@@ -105,15 +111,13 @@
                 </button>
             </div>
 
-            <!-- LEMON SQUEEZY UPGRADE (NEW) -->
+            <!-- LEMON SQUEEZY UPGRADE -->
             <div class="bg-[#1c1917] p-8 rounded-[2rem] shadow-xl text-center mt-8 relative overflow-hidden">
                 <div class="absolute top-0 right-0 p-16 bg-[#b2945e]/10 rounded-full blur-2xl pointer-events-none"></div>
                 <h3 class="text-xl font-serif italic text-white mb-2 relative z-10">The Alchemist Field Guide</h3>
                 <p class="text-[10px] text-stone-400 mb-6 relative z-10">Unlock the complete clinical playbook and extended protocols.</p>
-                
-                <!-- PASTE YOUR LEMON SQUEEZY LINK BELOW -->
-                <a href="YOUR_47_DOLLAR_LINK_HERE" target="_blank" class="block w-full py-4 bg-[#b2945e] text-white font-bold rounded-full text-[10px] uppercase tracking-widest shadow-lg active:scale-95 transition-transform relative z-10">
-                    Unlock Protocol ($47)
+                <a href="https://billing.liveadaptiv.com/checkout/buy/670a3228-4463-41a4-8520-54bddffcf5d1" target="_blank" class="block w-full py-4 bg-[#b2945e] text-white font-bold rounded-full text-[10px] uppercase tracking-widest shadow-lg active:scale-95 transition-transform relative z-10">
+                    Unlock Protocol ($97)
                 </a>
             </div>
 
@@ -144,7 +148,7 @@
             <i data-lucide="edit-3" class="w-5 h-5"></i>
             <span class="text-[8px] uppercase font-bold tracking-widest">Plan</span>
         </button>
-        <a href="index.html" class="flex flex-col items-center gap-1 text-stone-400 pt-2 transition-all w-1/3">
+        <a href="https://liveadaptiv.com" class="flex flex-col items-center gap-1 text-stone-400 pt-2 transition-all w-1/3">
             <i data-lucide="external-link" class="w-5 h-5"></i>
             <span class="text-[8px] uppercase font-bold tracking-widest">Hub</span>
         </a>
@@ -185,41 +189,74 @@
             document.getElementById('monthlyTheme').innerText = months[now.getMonth()];
         }
 
-        // TIMER LOGIC
+        // TIMER LOGIC WITH DYNAMIC BREATHING INSTRUCTIONS
         let timerSeconds = 90;
         let timerRunning = false;
         let interval;
 
         function toggleTimer() {
+            const display = document.getElementById('timerDisplay');
+            const instruction = document.getElementById('timerInstruction');
+            const btn = document.getElementById('timerBtn');
+
             if (timerRunning) {
+                // User aborted the timer
                 clearInterval(interval);
                 timerSeconds = 90;
-                document.getElementById('timerDisplay').innerText = "90";
-                document.getElementById('timerDisplay').classList.remove('text-[#b2945e]');
-                document.getElementById('timerBtn').innerText = "Initiate Reset";
+                display.innerText = "90";
+                display.classList.remove('text-[#b2945e]');
+                instruction.innerText = "Protocol aborted. Prepare to metabolize friction.";
+                instruction.classList.remove('text-stone-900');
+                btn.innerText = "Initiate Reset";
                 timerRunning = false;
             } else {
+                // User started the timer
                 timerRunning = true;
-                document.getElementById('timerBtn').innerText = "Observing...";
-                document.getElementById('timerDisplay').classList.add('text-[#b2945e]');
+                btn.innerText = "Abort Protocol";
+                display.classList.add('text-[#b2945e]');
+                instruction.classList.add('text-stone-900'); // Make text darker during exercise
+                
+                // Immediately set first instruction
+                instruction.innerText = "Inhale slowly through the nose...";
                 
                 interval = setInterval(() => {
                     timerSeconds--;
-                    document.getElementById('timerDisplay').innerText = timerSeconds;
+                    display.innerText = timerSeconds;
                     
+                    // The 15-Second Clinical Breathing Cycle
+                    // Math: timerSeconds modulo 15 breaks the 90 seconds into six 15-second blocks
+                    const cyclePhase = timerSeconds % 15; 
+                    
+                    if (cyclePhase > 10) { 
+                        // Seconds 14, 13, 11 (4 seconds)
+                        instruction.innerText = "Deep inhale through the nose...";
+                    } else if (cyclePhase > 8) { 
+                        // Seconds 10, 9 (2 seconds)
+                        instruction.innerText = "Hold and anchor...";
+                    } else if (cyclePhase > 3) { 
+                        // Seconds 8, 7, 6, 5, 4 (5 seconds)
+                        instruction.innerText = "Slow exhale through the mouth...";
+                    } else { 
+                        // Seconds 3, 2, 1, 0 (4 seconds)
+                        instruction.innerText = "Hold empty. Let the friction fade.";
+                    }
+
                     if (timerSeconds <= 0) {
                         clearInterval(interval);
                         timerRunning = false;
                         timerSeconds = 90;
-                        document.getElementById('timerDisplay').innerText = "FLUSHED";
-                        document.getElementById('timerBtn').innerText = "System Reset";
+                        display.innerText = "FLUSHED";
+                        instruction.innerText = "System reset complete. Bandwidth restored.";
+                        instruction.classList.remove('text-stone-900');
+                        btn.innerText = "Return to Protocol";
                     }
                 }, 1000);
             }
         }
 
-        // AUDIO LOGIC (Play/Pause Toggle)
-        const myAudio = new Audio('alchemist.m4a'); 
+        // AUDIO LOGIC
+        // Update the file name in the quotes below to whatever you uploaded to GitHub!
+        const myAudio = new Audio('YOUR_AUDIO_FILE_NAME.mp3'); 
         let isAudioPlaying = false;
 
         function toggleAudio() {
@@ -232,7 +269,7 @@
                 btnText.innerText = "Play Stream";
                 btnIcon.innerHTML = `<i data-lucide="play" class="w-3 h-3"></i>`;
             } else {
-                myAudio.play().catch(e => alert("Audio file not found. Ensure 'alchemist.m4a' is uploaded to GitHub."));
+                myAudio.play().catch(e => alert("Audio file not found. Ensure your audio file is uploaded to GitHub and named correctly in the code."));
                 isAudioPlaying = true;
                 btnText.innerText = "Pause Stream";
                 btnIcon.innerHTML = `<i data-lucide="pause" class="w-3 h-3"></i>`;
