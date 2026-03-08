@@ -13,8 +13,9 @@
         .font-serif { font-family: 'Cormorant Garamond', serif; }
         .blueprint-dot { background-image: radial-gradient(circle at 1px 1px, #e7e5e4 1px, transparent 0); background-size: 30px 30px; }
         
-        .tab-active { background-color: var(--charcoal); color: white; border-color: var(--charcoal); }
-        .tab-inactive { background-color: transparent; color: var(--charcoal); border-color: #d6d3d1; }
+        .tab-active { background-color: var(--charcoal); color: white; border-color: var(--charcoal); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .tab-inactive { background-color: transparent; color: var(--charcoal); border-color: transparent; }
+        .tab-inactive:hover { background-color: rgba(28, 25, 23, 0.05); }
 
         .fade-in { animation: fadeIn 0.4s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
@@ -29,13 +30,13 @@
         .card-container { width: 100%; height: 100%; position: relative; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; cursor: pointer; }
         .card-container.is-flipped { transform: rotateY(180deg); }
         .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; text-align: center; }
-        
-        /* Card Back (Dark Side) */
         .card-face-front { background: linear-gradient(135deg, #1c1917 0%, #0f172a 100%); color: var(--gold); border: 1px solid #334155; }
         .card-face-front::after { content: ''; position: absolute; inset: 12px; border: 1px solid rgba(178, 148, 94, 0.3); border-radius: 16px; }
-        
-        /* Card Front (The Protocol Content) */
         .card-face-back { background: #ffffff; color: #1c1917; transform: rotateY(180deg); border: 1px solid #e2e8f0; justify-content: space-between; padding: 40px 30px; }
+        
+        /* Grid Tracker */
+        .grid-day { transition: all 0.3s ease; cursor: pointer; }
+        .grid-day.active { background-color: var(--gold); border-color: var(--gold); box-shadow: 0 0 10px rgba(178, 148, 94, 0.4); }
     </style>
 </head>
 <body class="blueprint-dot min-h-screen flex flex-col">
@@ -55,13 +56,16 @@
 
     <main class="flex-1 max-w-lg mx-auto w-full p-6 pb-20">
         
-        <!-- Dual State Toggle -->
+        <!-- Triple State Toggle -->
         <div class="flex bg-stone-200/50 p-1 rounded-xl mb-8">
-            <button onclick="switchTab('triage')" id="tab-triage" class="flex-1 py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all tab-active shadow-sm">
-                Acute Triage
+            <button onclick="switchTab('triage')" id="tab-triage" class="flex-1 py-3 rounded-lg text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all tab-active">
+                Triage
             </button>
-            <button onclick="switchTab('philosophy')" id="tab-philosophy" class="flex-1 py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all tab-inactive">
-                The Philosophy
+            <button onclick="switchTab('philosophy')" id="tab-philosophy" class="flex-1 py-3 rounded-lg text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all tab-inactive">
+                Philosophy
+            </button>
+            <button onclick="switchTab('calendar')" id="tab-calendar" class="flex-1 py-3 rounded-lg text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all tab-inactive">
+                Calendar
             </button>
         </div>
 
@@ -76,7 +80,8 @@
             <div class="bg-white border border-stone-200 rounded-[24px] p-6 text-center shadow-sm flex items-center justify-between gap-4">
                 <div class="flex-1 text-left pl-2">
                     <h3 class="font-sans text-xs font-bold uppercase tracking-widest text-stone-900 mb-1">Biological Flush</h3>
-                    <p class="text-[10px] text-stone-500 uppercase tracking-widest">Double-inhale. Long sigh.</p>
+                    <!-- DYNAMIC TEXT TARGET -->
+                    <p id="flush-instruction" class="text-[10px] font-bold text-stone-500 uppercase tracking-widest transition-colors duration-500">Visual 90-sec protocol.</p>
                 </div>
                 <div class="flex items-center gap-4">
                     <div class="w-14 h-14 border-2 border-[#b2945e]/30 rounded-full flex items-center justify-center relative">
@@ -95,7 +100,7 @@
                 
                 <div class="scene">
                     <div class="card-container" id="protocol-card" onclick="flipCard()">
-                        <!-- FRONT (The Back of the Card visually) -->
+                        <!-- FRONT -->
                         <div class="card-face card-face-front group">
                             <div class="w-16 h-16 border border-[#b2945e]/50 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
                                 <span class="font-serif italic text-4xl pb-1">A</span>
@@ -104,7 +109,7 @@
                             <p class="text-[10px] uppercase tracking-widest text-[#b2945e]">Tactical Override</p>
                         </div>
                         
-                        <!-- BACK (The Content) -->
+                        <!-- BACK -->
                         <div class="card-face card-face-back">
                             <div class="text-center w-full">
                                 <span class="text-[#b2945e] font-bold text-[10px] uppercase tracking-widest mb-2 block">Active Protocol</span>
@@ -135,7 +140,7 @@
                 <p class="text-stone-500 text-sm">The operating system beneath the tactics.</p>
             </div>
 
-            <!-- The Audio Player (For the 2:45 track) -->
+            <!-- The Audio Player -->
             <div class="bg-white border border-[#b2945e]/30 rounded-[24px] p-6 shadow-sm relative overflow-hidden">
                 <div class="absolute right-0 top-0 p-4 opacity-5"><i data-lucide="headphones" class="w-24 h-24"></i></div>
                 <div class="relative z-10">
@@ -143,9 +148,8 @@
                     <h3 class="font-serif text-2xl text-stone-900 italic mb-2">The Alchemist Decompression</h3>
                     <p class="text-xs text-stone-500 mb-4 max-w-[85%]">A 2-minute and 45-second guided biological reset. Use this when you are in a safe space and need to fully metabolize the day's friction.</p>
                     
-                    <!-- HTML5 Audio Element -->
                     <audio controls controlsList="nodownload">
-                        <!-- REPLACE THIS LINK WITH THE DIRECT LINK TO YOUR 2:45 AUDIO FILE -->
+                        <!-- LINK FOR YOUR 2:45 DECOMPRESSION AUDIO -->
                         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
                         Your browser does not support the audio element.
                     </audio>
@@ -174,6 +178,48 @@
             </div>
         </div>
 
+        <!-- STATE 3: THE CALENDAR (The Execution) -->
+        <div id="view-calendar" class="hidden fade-in space-y-6">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-serif italic text-stone-900 mb-2">The Sovereign Grid</h1>
+                <p class="text-stone-500 text-sm">Neuroplasticity requires repetitive execution.</p>
+            </div>
+
+            <!-- The 28-Day Interactive Tracker -->
+            <div class="bg-stone-900 p-8 rounded-[24px] shadow-xl border border-stone-800">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h3 class="font-sans text-xs font-bold uppercase tracking-widest text-[#b2945e]">Daily Execution</h3>
+                        <p class="text-[10px] text-stone-400 uppercase tracking-widest mt-1">28-Day Adherence Block</p>
+                    </div>
+                    <div class="text-right">
+                        <span id="streak-counter" class="text-3xl font-serif italic text-white">0</span>
+                        <span class="text-[10px] text-stone-400 uppercase tracking-widest block">Days Logged</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-7 gap-2" id="habit-grid">
+                    <!-- Javascript will populate 28 days here -->
+                </div>
+                
+                <p class="text-xs text-stone-400 mt-6 text-center italic font-serif">Tap a square upon completion of your daily Decompression Audio or Protocol Draw.</p>
+            </div>
+
+            <!-- Master System PDF Download -->
+            <div class="bg-white border border-stone-200 p-6 rounded-[24px] shadow-sm flex items-center gap-4">
+                <div class="p-4 bg-stone-100 rounded-full text-stone-400">
+                    <i data-lucide="calendar-days" class="w-6 h-6"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-serif text-xl text-stone-900 italic mb-1">Master Sovereign System</h3>
+                    <p class="text-xs text-stone-500">Access your full 12-month physical printable calendar.</p>
+                </div>
+                <a href="#" class="px-4 py-2 rounded-full bg-stone-900 text-white text-[10px] uppercase tracking-widest font-bold hover:bg-[#b2945e] transition-colors whitespace-nowrap">
+                    Download PDF
+                </a>
+            </div>
+        </div>
+
     </main>
 
     <script>
@@ -181,25 +227,23 @@
 
         // --- TAB SWITCHING LOGIC ---
         function switchTab(tab) {
-            const btnTriage = document.getElementById('tab-triage');
-            const btnPhil = document.getElementById('tab-philosophy');
-            const viewTriage = document.getElementById('view-triage');
-            const viewPhil = document.getElementById('view-philosophy');
-
-            if (tab === 'triage') {
-                btnTriage.className = "flex-1 py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all tab-active shadow-sm";
-                btnPhil.className = "flex-1 py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all tab-inactive";
-                viewTriage.style.display = "block";
-                viewPhil.style.display = "none";
-            } else {
-                btnPhil.className = "flex-1 py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all tab-active shadow-sm";
-                btnTriage.className = "flex-1 py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all tab-inactive";
-                viewPhil.style.display = "block";
-                viewTriage.style.display = "none";
-            }
+            const tabs = ['triage', 'philosophy', 'calendar'];
+            
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                const view = document.getElementById(`view-${t}`);
+                
+                if (t === tab) {
+                    btn.className = "flex-1 py-3 rounded-lg text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all tab-active";
+                    view.style.display = "block";
+                } else {
+                    btn.className = "flex-1 py-3 rounded-lg text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all tab-inactive";
+                    view.style.display = "none";
+                }
+            });
         }
 
-        // --- 90 SECOND TIMER LOGIC ---
+        // --- 90 SECOND TIMER & SILENT DYNAMIC TEXT LOGIC ---
         let timerInterval;
         let timeLeft = 90;
         let isRunning = false;
@@ -209,7 +253,8 @@
             isRunning = true;
             const display = document.getElementById('timer-display');
             const btn = document.getElementById('timer-btn');
-            
+            const instruction = document.getElementById('flush-instruction');
+
             clearInterval(timerInterval);
             timeLeft = 90;
             display.innerText = timeLeft;
@@ -220,9 +265,26 @@
                 timeLeft--;
                 display.innerText = timeLeft;
                 
+                // SILENT VISUAL PACER (12 Second Cycle)
+                const cycle = timeLeft % 12;
+                if (timeLeft > 0) {
+                    if (cycle >= 8) {
+                        instruction.innerText = "Deep Inhale...";
+                        instruction.style.color = "#b2945e"; // Gold
+                    } else if (cycle >= 2) {
+                        instruction.innerText = "Long, slow exhale...";
+                        instruction.style.color = "#1c1917"; // Charcoal
+                    } else {
+                        instruction.innerText = "Hold the emptiness...";
+                        instruction.style.color = "#a8a29e"; // Gray
+                    }
+                }
+                
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
                     display.innerText = "0";
+                    instruction.innerText = "System Reset Complete.";
+                    instruction.style.color = "#059669"; // Emerald
                     btn.innerHTML = `<i data-lucide="check" class="w-5 h-5"></i>`;
                     btn.classList.add('bg-emerald-600');
                     lucide.createIcons();
@@ -231,6 +293,8 @@
                         btn.innerHTML = `<i data-lucide="play" class="w-5 h-5 ml-1"></i>`;
                         btn.classList.remove('bg-emerald-600');
                         display.innerText = "90";
+                        instruction.innerText = "Visual 90-sec protocol.";
+                        instruction.style.color = "#78716c"; // Gray
                         isRunning = false;
                         lucide.createIcons();
                     }, 4000);
@@ -254,7 +318,6 @@
             const resetBtn = document.getElementById('reset-card-btn');
             
             if (!isFlipped) {
-                // Pick a random protocol before flipping
                 const p = protocols[Math.floor(Math.random() * protocols.length)];
                 document.getElementById('card-title').innerText = p.t;
                 document.getElementById('card-desc').innerText = p.d;
@@ -275,6 +338,31 @@
             resetBtn.classList.add('hidden');
             resetBtn.classList.remove('block', 'fade-in');
             isFlipped = false;
+        }
+
+        // --- CALENDAR GRID LOGIC ---
+        const gridContainer = document.getElementById('habit-grid');
+        let completedDays = 0;
+
+        for(let i = 0; i < 28; i++) {
+            const dayBox = document.createElement('div');
+            dayBox.className = "grid-day aspect-square rounded-md border border-stone-700 bg-stone-800/50 flex items-center justify-center text-[10px] text-stone-600 font-bold";
+            dayBox.innerText = i + 1;
+            
+            dayBox.addEventListener('click', function() {
+                if(this.classList.contains('active')) {
+                    this.classList.remove('active');
+                    this.style.color = "#57534e"; 
+                    completedDays--;
+                } else {
+                    this.classList.add('active');
+                    this.style.color = "#1c1917"; 
+                    completedDays++;
+                }
+                document.getElementById('streak-counter').innerText = completedDays;
+            });
+
+            gridContainer.appendChild(dayBox);
         }
     </script>
 </body>
