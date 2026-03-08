@@ -3,330 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Sovereign">
-    <title>Sovereign | LiveAdaptiv</title>
+    <title>Sovereign Command | LiveAdaptiv</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --gold: #b2945e;
-            --stone: #fafaf9;
-            --charcoal: #1c1917;
-            --silver: #94a3b8;
-            --stone-border: #e7e5e4;
-        }
-        body {
-            background-color: var(--stone);
-            color: var(--charcoal);
-            font-family: 'Inter', sans-serif;
-            overscroll-behavior: none;
-            -webkit-font-smoothing: antialiased;
-        }
-        .a-logo { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--gold); }
-        .glass-light { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(15px); border: 1px solid rgba(178, 148, 94, 0.1); }
-        .active-tab { color: var(--gold); border-top: 2px solid var(--gold); }
-        .blueprint-dot {
-            background-image: radial-gradient(circle at 1px 1px, var(--stone-border) 1px, transparent 0);
-            background-size: 30px 30px;
-        }
-        .timer-glow { box-shadow: 0 10px 40px rgba(178, 148, 94, 0.08); }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+        :root { --gold: #b2945e; --stone: #fafaf9; --charcoal: #1c1917; }
+        body { background-color: var(--stone); color: var(--charcoal); font-family: 'Inter', sans-serif; overscroll-behavior: none; }
+        .font-serif { font-family: 'Cormorant Garamond', serif; }
+        .blueprint-dot { background-image: radial-gradient(circle at 1px 1px, #e7e5e4 1px, transparent 0); background-size: 30px 30px; }
+        
+        .tab-active { background-color: var(--charcoal); color: white; border-color: var(--charcoal); }
+        .tab-inactive { background-color: transparent; color: var(--charcoal); border-color: #d6d3d1; }
+
+        .fade-in { animation: fadeIn 0.4s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Mobile-specific polish */
-        textarea { -webkit-appearance: none; }
-        button { -webkit-tap-highlight-color: transparent; }
+        /* Custom Audio Player Styling */
+        audio { width: 100%; height: 40px; border-radius: 8px; margin-top: 10px; }
+        audio::-webkit-media-controls-panel { background-color: #f5f5f4; }
+        audio::-webkit-media-controls-play-button, audio::-webkit-media-controls-mute-button { background-color: #b2945e; border-radius: 50%; color: white;}
+
+        /* --- MASSIVE 3D CARD ANIMATION --- */
+        .scene { width: 100%; height: 420px; perspective: 1000px; margin-top: 1.5rem; margin-bottom: 2rem; }
+        .card-container { width: 100%; height: 100%; position: relative; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; cursor: pointer; }
+        .card-container.is-flipped { transform: rotateY(180deg); }
+        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; text-align: center; }
+        
+        /* Card Back (Dark Side) */
+        .card-face-front { background: linear-gradient(135deg, #1c1917 0%, #0f172a 100%); color: var(--gold); border: 1px solid #334155; }
+        .card-face-front::after { content: ''; position: absolute; inset: 12px; border: 1px solid rgba(178, 148, 94, 0.3); border-radius: 16px; }
+        
+        /* Card Front (The Protocol Content) */
+        .card-face-back { background: #ffffff; color: #1c1917; transform: rotateY(180deg); border: 1px solid #e2e8f0; justify-content: space-between; padding: 40px 30px; }
     </style>
 </head>
-<body class="min-h-screen pb-24 blueprint-dot">
+<body class="blueprint-dot min-h-screen flex flex-col">
 
-    <!-- TOP NAVIGATION -->
-    <nav class="p-5 flex justify-between items-center sticky top-0 z-50 glass-light border-b border-stone-200">
+    <!-- Navigation -->
+    <nav class="p-5 flex justify-between items-center sticky top-0 z-50 bg-stone-50/90 backdrop-blur-md border-b border-stone-200">
         <div class="flex items-center gap-3">
             <div class="w-8 h-8 border border-[#b2945e]/40 rounded-full flex items-center justify-center">
-                <span class="a-logo text-lg pb-0.5">A</span>
+                <span class="font-serif italic text-lg text-[#b2945e] pb-0.5">A</span>
             </div>
             <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-stone-400">LiveAdaptiv</span>
         </div>
-        <button class="text-stone-300" onclick="requestNotifications()"><i data-lucide="bell" class="w-5 h-5"></i></button>
+        <div class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Active
+        </div>
     </nav>
 
-    <main class="p-6 space-y-8 max-w-lg mx-auto">
-        <!-- TEMPORAL ANCHOR SECTION -->
-        <section class="text-center py-6">
-            <p id="dayOfWeek" class="text-stone-400 text-[10px] font-bold uppercase tracking-[0.4em] mb-1">...</p>
-            <div class="flex items-baseline justify-center gap-2 mb-2">
-                <h1 id="clock" class="text-6xl font-serif italic text-stone-900">00:00</h1>
-                <span id="ampm" class="text-xs font-bold uppercase tracking-widest text-gold-600">--</span>
-            </div>
-            <p id="fullDate" class="text-stone-500 text-[10px] font-medium tracking-widest uppercase mb-6">...</p>
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-stone-200 bg-white/60">
-                <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-                <p id="monthlyTheme" class="text-[#b2945e] text-[8px] font-bold uppercase tracking-[0.3em]">System Active</p>
-            </div>
-        </section>
+    <main class="flex-1 max-w-lg mx-auto w-full p-6 pb-20">
+        
+        <!-- Dual State Toggle -->
+        <div class="flex bg-stone-200/50 p-1 rounded-xl mb-8">
+            <button onclick="switchTab('triage')" id="tab-triage" class="flex-1 py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all tab-active shadow-sm">
+                Acute Triage
+            </button>
+            <button onclick="switchTab('philosophy')" id="tab-philosophy" class="flex-1 py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all tab-inactive">
+                The Philosophy
+            </button>
+        </div>
 
-        <!-- DASHBOARD TAB -->
-        <div id="tab-dashboard" class="tab-content active space-y-6">
-            
-            <!-- ALCHEMY TIMER WITH DYNAMIC INSTRUCTIONS -->
-            <div class="bg-white p-10 rounded-[2.5rem] border border-stone-100 shadow-sm flex flex-col items-center timer-glow text-center">
-                <span class="text-[8px] font-bold text-stone-400 uppercase tracking-widest mb-6">Biological Flush</span>
-                <div id="timerDisplay" class="text-7xl font-serif text-stone-900 mb-2 font-bold transition-colors duration-300">90</div>
+        <!-- STATE 1: ACUTE TRIAGE (The Tactics) -->
+        <div id="view-triage" class="fade-in space-y-6">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-serif italic text-stone-900 mb-2">The Override</h1>
+                <p class="text-stone-500 text-sm">Step 1: Flush the chemistry. Step 2: Draw the protocol.</p>
+            </div>
+
+            <!-- The 90 Second Timer Box -->
+            <div class="bg-white border border-stone-200 rounded-[24px] p-6 text-center shadow-sm flex items-center justify-between gap-4">
+                <div class="flex-1 text-left pl-2">
+                    <h3 class="font-sans text-xs font-bold uppercase tracking-widest text-stone-900 mb-1">Biological Flush</h3>
+                    <p class="text-[10px] text-stone-500 uppercase tracking-widest">Double-inhale. Long sigh.</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 border-2 border-[#b2945e]/30 rounded-full flex items-center justify-center relative">
+                        <span id="timer-display" class="font-serif text-xl text-stone-900 italic font-bold">90</span>
+                    </div>
+                    <button id="timer-btn" onclick="startTimer()" class="w-14 h-14 rounded-full bg-stone-900 text-white flex items-center justify-center hover:bg-stone-800 transition-colors shadow-lg">
+                        <i data-lucide="play" class="w-5 h-5 ml-1"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- MASSIVE INTERACTIVE CARD DRAW -->
+            <div class="mt-12 text-center">
+                <p class="text-stone-400 text-[10px] uppercase tracking-[0.3em] font-bold mb-2">After flushing the system</p>
+                <h3 class="font-sans text-sm font-bold uppercase tracking-widest text-stone-900 mb-2">Tap Card to Draw Protocol</h3>
                 
-                <!-- DYNAMIC TEXT AREA -->
-                <p id="timerInstruction" class="text-xs text-[#b2945e] font-serif italic h-8 flex items-center justify-center mb-6 transition-opacity duration-300">
-                    Prepare to metabolize autonomic friction.
-                </p>
-
-                <button onclick="toggleTimer()" id="timerBtn" class="w-full py-4 bg-stone-900 text-white font-bold rounded-full text-[10px] uppercase tracking-widest shadow-xl active:scale-95 transition-transform">
-                    Initiate Reset
+                <div class="scene">
+                    <div class="card-container" id="protocol-card" onclick="flipCard()">
+                        <!-- FRONT (The Back of the Card visually) -->
+                        <div class="card-face card-face-front group">
+                            <div class="w-16 h-16 border border-[#b2945e]/50 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                                <span class="font-serif italic text-4xl pb-1">A</span>
+                            </div>
+                            <h3 class="text-lg font-bold uppercase tracking-[0.4em] text-white mb-2">Draw</h3>
+                            <p class="text-[10px] uppercase tracking-widest text-[#b2945e]">Tactical Override</p>
+                        </div>
+                        
+                        <!-- BACK (The Content) -->
+                        <div class="card-face card-face-back">
+                            <div class="text-center w-full">
+                                <span class="text-[#b2945e] font-bold text-[10px] uppercase tracking-widest mb-2 block">Active Protocol</span>
+                                <h2 id="card-title" class="font-serif italic text-3xl text-stone-900 mb-6 leading-tight">Linear Override</h2>
+                                <div class="w-12 h-px bg-stone-200 mx-auto mb-6"></div>
+                                <p id="card-desc" class="text-sm text-stone-600 leading-relaxed font-medium">
+                                    Anxiety operates in loops. Logic operates in lines. Name 3 physical objects in the room. State the exact time aloud. Switch your brain from emotional computing to analytical computing.
+                                </p>
+                            </div>
+                            
+                            <div class="w-full text-center mt-6 p-4 bg-stone-50 rounded-xl border border-stone-100">
+                                <span class="block text-[9px] uppercase tracking-widest text-stone-400 font-bold mb-1">The Sovereign Reframe</span>
+                                <p id="card-reframe" class="text-xs font-serif italic text-stone-800 font-bold">"Panic is a circle. Logic is a line."</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button id="reset-card-btn" onclick="resetCard()" class="hidden mx-auto mt-6 px-6 py-2 rounded-full border border-stone-300 text-stone-500 font-sans text-[10px] uppercase tracking-widest hover:bg-stone-100 transition-colors">
+                    Draw Another Protocol
                 </button>
             </div>
-
-            <!-- DAILY PROTOCOL CARD -->
-            <div class="bg-white p-7 rounded-[2rem] border-l-4 border-[#b2945e] shadow-sm active:bg-stone-50 transition-colors cursor-pointer" onclick="drawCard()">
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-[8px] font-bold text-stone-400 uppercase tracking-widest">Sovereign Deck</span>
-                    <i data-lucide="zap" class="w-3 h-3 text-[#b2945e]"></i>
-                </div>
-                <h3 id="cardTitle" class="text-xl font-serif italic text-stone-900 mb-2 leading-tight">The 90-Second Rule</h3>
-                <p id="cardDesc" class="text-[11px] text-stone-500 font-light italic leading-relaxed">"Chemistry is temporary. Logic is permanent. Observe the flush."</p>
-            </div>
-
-            <!-- AUDIO INTEGRATION CARD -->
-            <div class="bg-white p-7 rounded-[2rem] shadow-sm border border-stone-100">
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-[8px] font-bold text-stone-400 uppercase tracking-widest">Cognitive Defusion</span>
-                    <i data-lucide="headphones" class="w-3 h-3 text-[#b2945e]"></i>
-                </div>
-                <h3 class="text-xl font-serif italic text-stone-900 mb-4 leading-tight">Audio Protocol</h3>
-                <button onclick="toggleAudio()" class="w-full py-3 border border-[#b2945e] text-[#b2945e] hover:bg-[#b2945e] hover:text-white transition-colors font-bold rounded-full text-[10px] uppercase tracking-widest flex items-center justify-center gap-2">
-                    <span id="audio-icon"><i data-lucide="play" class="w-3 h-3"></i></span>
-                    <span id="audio-text">Play Stream</span>
-                </button>
-            </div>
-
-            <!-- LEMON SQUEEZY UPGRADE -->
-            <div class="bg-[#1c1917] p-8 rounded-[2rem] shadow-xl text-center mt-8 relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-16 bg-[#b2945e]/10 rounded-full blur-2xl pointer-events-none"></div>
-                <h3 class="text-xl font-serif italic text-white mb-2 relative z-10">The Alchemist Field Guide</h3>
-                <p class="text-[10px] text-stone-400 mb-6 relative z-10">Unlock the complete clinical playbook and extended protocols.</p>
-                <a href="https://billing.liveadaptiv.com/checkout/buy/670a3228-4463-41a4-8520-54bddffcf5d1" target="_blank" class="block w-full py-4 bg-[#b2945e] text-white font-bold rounded-full text-[10px] uppercase tracking-widest shadow-lg active:scale-95 transition-transform relative z-10">
-                    Unlock Protocol ($97)
-                </a>
-            </div>
-
         </div>
 
-        <!-- PLANNER TAB -->
-        <div id="tab-plan" class="tab-content space-y-6">
-            <div class="bg-white p-7 rounded-[2.5rem] border border-stone-100 shadow-sm space-y-8">
-                <div>
-                    <label class="text-[9px] font-bold text-[#b2945e] uppercase tracking-widest block mb-4">Daily Decree</label>
-                    <textarea id="toBeInput" class="w-full bg-stone-50 border border-stone-100 p-5 rounded-2xl text-xs h-32 outline-none focus:border-[#b2945e] transition-all resize-none font-serif italic" placeholder="I am the kind of person who..."></textarea>
+        <!-- STATE 2: THE PHILOSOPHY (The Depth) -->
+        <div id="view-philosophy" class="hidden fade-in space-y-6">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-serif italic text-stone-900 mb-2">The Architecture</h1>
+                <p class="text-stone-500 text-sm">The operating system beneath the tactics.</p>
+            </div>
+
+            <!-- The Audio Player (For the 2:45 track) -->
+            <div class="bg-white border border-[#b2945e]/30 rounded-[24px] p-6 shadow-sm relative overflow-hidden">
+                <div class="absolute right-0 top-0 p-4 opacity-5"><i data-lucide="headphones" class="w-24 h-24"></i></div>
+                <div class="relative z-10">
+                    <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] block mb-1">Deep Integration</span>
+                    <h3 class="font-serif text-2xl text-stone-900 italic mb-2">The Alchemist Decompression</h3>
+                    <p class="text-xs text-stone-500 mb-4 max-w-[85%]">A 2-minute and 45-second guided biological reset. Use this when you are in a safe space and need to fully metabolize the day's friction.</p>
+                    
+                    <!-- HTML5 Audio Element -->
+                    <audio controls controlsList="nodownload">
+                        <!-- REPLACE THIS LINK WITH THE DIRECT LINK TO YOUR 2:45 AUDIO FILE -->
+                        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
                 </div>
-                <div>
-                    <label class="text-[9px] font-bold text-stone-400 uppercase tracking-widest block mb-4">Fortress Audit</label>
-                    <textarea id="fortressInput" class="w-full bg-stone-50 border border-stone-100 p-5 rounded-2xl text-xs h-32 outline-none focus:border-stone-300 transition-all resize-none font-serif italic" placeholder="I will not allow [X] to breach my walls today."></textarea>
+            </div>
+
+            <!-- The Core Tenets -->
+            <div class="space-y-4">
+                <div class="bg-stone-50 p-6 rounded-2xl border border-stone-200">
+                    <h4 class="font-sans text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-2">Tenet 01</h4>
+                    <p class="font-serif text-xl text-stone-900 italic mb-2">"Stress is not an error."</p>
+                    <p class="text-xs text-stone-600 leading-relaxed">It is simply energy trapped in a loop. You are not broken, you are not weak, and you do not need to be 'fixed.' You simply need to learn the mechanics of your own energy.</p>
+                </div>
+                
+                <div class="bg-stone-50 p-6 rounded-2xl border border-stone-200">
+                    <h4 class="font-sans text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-2">Tenet 02</h4>
+                    <p class="font-serif text-xl text-stone-900 italic mb-2">"Meaning is declared, not discovered."</p>
+                    <p class="text-xs text-stone-600 leading-relaxed">The world is not happening to you; it is raw material waiting for your architecture. If you look for threats, you will find a war. If you look for leverage, you will find a tool.</p>
+                </div>
+
+                <div class="bg-stone-50 p-6 rounded-2xl border border-stone-200">
+                    <h4 class="font-sans text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-2">Tenet 03</h4>
+                    <p class="font-serif text-xl text-stone-900 italic mb-2">"You are the Asset."</p>
+                    <p class="text-xs text-stone-600 leading-relaxed">You are not the worker. If the Asset breaks, the work stops. Protecting the Asset—through fierce boundaries and unapologetic rest—IS the work.</p>
                 </div>
             </div>
         </div>
+
     </main>
-
-    <!-- NAVIGATION BAR -->
-    <footer class="fixed bottom-0 w-full glass-light border-t border-stone-200 flex justify-around p-4 z-50">
-        <button onclick="switchTab('dashboard')" id="btn-dashboard" class="flex flex-col items-center gap-1 active-tab pt-2 transition-all w-1/3">
-            <i data-lucide="layout-grid" class="w-5 h-5"></i>
-            <span class="text-[8px] uppercase font-bold tracking-widest">Dash</span>
-        </button>
-        <button onclick="switchTab('plan')" id="btn-plan" class="flex flex-col items-center gap-1 text-stone-400 pt-2 transition-all w-1/3">
-            <i data-lucide="edit-3" class="w-5 h-5"></i>
-            <span class="text-[8px] uppercase font-bold tracking-widest">Plan</span>
-        </button>
-        <a href="https://liveadaptiv.com" class="flex flex-col items-center gap-1 text-stone-400 pt-2 transition-all w-1/3">
-            <i data-lucide="external-link" class="w-5 h-5"></i>
-            <span class="text-[8px] uppercase font-bold tracking-widest">Hub</span>
-        </a>
-    </footer>
 
     <script>
         lucide.createIcons();
 
-        // ARCHITECTURE DATA
-        const months = ["The Quantum Observer", "The 90-Second Rule", "The Seesaw", "The Shadow Government", "The Mirror", "Chronos vs Kairos", "The Stockdale Paradox", "The Fortress Wall", "Sovereign Language", "The 7 Levels", "The Architect's Oath", "Absolute Creation"];
+        // --- TAB SWITCHING LOGIC ---
+        function switchTab(tab) {
+            const btnTriage = document.getElementById('tab-triage');
+            const btnPhil = document.getElementById('tab-philosophy');
+            const viewTriage = document.getElementById('view-triage');
+            const viewPhil = document.getElementById('view-philosophy');
+
+            if (tab === 'triage') {
+                btnTriage.className = "flex-1 py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all tab-active shadow-sm";
+                btnPhil.className = "flex-1 py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all tab-inactive";
+                viewTriage.style.display = "block";
+                viewPhil.style.display = "none";
+            } else {
+                btnPhil.className = "flex-1 py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all tab-active shadow-sm";
+                btnTriage.className = "flex-1 py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all tab-inactive";
+                viewPhil.style.display = "block";
+                viewTriage.style.display = "none";
+            }
+        }
+
+        // --- 90 SECOND TIMER LOGIC ---
+        let timerInterval;
+        let timeLeft = 90;
+        let isRunning = false;
         
-        const deck = [
-            { t: "The 90-Second Rule", d: "Observe the chemistry. Do not fight it. Anything longer than 90s is a story." },
-            { t: "The Seesaw", d: "Curiosity kills judgment. Pivot to a 'How' question immediately." },
-            { t: "Linear Override", d: "Panic is a circle. Logic is a line. Name 3 facts to switch tracks." },
-            { t: "Tactical Exhale", d: "Inhale is gas, exhale is brake. Long, slow exhales reset the system." },
-            { t: "No as Architecture", d: "Every 'Yes' to a distraction is a silent 'No' to your mission." },
-            { t: "Faux-pology", d: "Stop apologizing for your presence. Speak with assumed authority." },
-            { t: "The Observer Effect", d: "Reality collapses into the form you choose to see. Observe the logic." }
+        function startTimer() {
+            if(isRunning) return;
+            isRunning = true;
+            const display = document.getElementById('timer-display');
+            const btn = document.getElementById('timer-btn');
+            
+            clearInterval(timerInterval);
+            timeLeft = 90;
+            display.innerText = timeLeft;
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>`;
+            lucide.createIcons();
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                display.innerText = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    display.innerText = "0";
+                    btn.innerHTML = `<i data-lucide="check" class="w-5 h-5"></i>`;
+                    btn.classList.add('bg-emerald-600');
+                    lucide.createIcons();
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = `<i data-lucide="play" class="w-5 h-5 ml-1"></i>`;
+                        btn.classList.remove('bg-emerald-600');
+                        display.innerText = "90";
+                        isRunning = false;
+                        lucide.createIcons();
+                    }, 4000);
+                }
+            }, 1000);
+        }
+
+        // --- PROTOCOL CARD ENGINE ---
+        const protocols = [
+            { t: "Linear Override", d: "Anxiety operates in loops. Logic operates in lines. Name 3 physical objects in the room. State the exact time aloud. Switch your brain from emotional computing to analytical computing.", r: "\"Panic is a circle. Logic is a line.\"" },
+            { t: "The Faux-pology", d: "Stop apologizing for your existence. Do not say 'Sorry to bother you.' Say 'Do you have a moment?' Speak with assumed authority.", r: "\"I occupy my space without apology.\"" },
+            { t: "Drop The Rope", d: "You are engaged in a power struggle. The easiest way to win a tug-of-war is to simply drop your end of the rope. Let them fall. Walk away.", r: "\"I do not need to be right to be effective.\"" },
+            { t: "The 90-Second Rule", d: "When triggered, your amygdala dumps cortisol. It takes 90 seconds to metabolize. If you react before 90 seconds, you are acting on biology, not logic. Do not speak. Do not type.", r: "\"This is not a crisis; this is chemistry.\"" },
+            { t: "The Fiction Audit", d: "Separate the objective reality from the narrative your brain is spinning. The reality: 'The client did not email back.' The fiction: 'I am getting fired.' Act only on the reality.", r: "\"I do not negotiate with my own fiction.\"" }
         ];
 
-        // TIME & DATE ENGINE
-        function updateTemporalData() {
-            const now = new Date();
-            let h = now.getHours();
-            const ampm = h >= 12 ? 'PM' : 'AM';
-            h = h % 12 || 12;
-            const m = now.getMinutes().toString().padStart(2, '0');
-            
-            document.getElementById('clock').innerText = `${h}:${m}`;
-            document.getElementById('ampm').innerText = ampm;
-            
-            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-            document.getElementById('dayOfWeek').innerText = days[now.getDay()];
-            
-            const dateOptions = { month: 'long', day: 'numeric', year: 'numeric' };
-            document.getElementById('fullDate').innerText = now.toLocaleDateString('en-US', dateOptions);
-            document.getElementById('monthlyTheme').innerText = months[now.getMonth()];
-        }
+        let isFlipped = false;
 
-        // TIMER LOGIC WITH DYNAMIC BREATHING INSTRUCTIONS
-        let timerSeconds = 90;
-        let timerRunning = false;
-        let interval;
-
-        function toggleTimer() {
-            const display = document.getElementById('timerDisplay');
-            const instruction = document.getElementById('timerInstruction');
-            const btn = document.getElementById('timerBtn');
-
-            if (timerRunning) {
-                // User aborted the timer
-                clearInterval(interval);
-                timerSeconds = 90;
-                display.innerText = "90";
-                display.classList.remove('text-[#b2945e]');
-                instruction.innerText = "Protocol aborted. Prepare to metabolize friction.";
-                instruction.classList.remove('text-stone-900');
-                btn.innerText = "Initiate Reset";
-                timerRunning = false;
-            } else {
-                // User started the timer
-                timerRunning = true;
-                btn.innerText = "Abort Protocol";
-                display.classList.add('text-[#b2945e]');
-                instruction.classList.add('text-stone-900'); // Make text darker during exercise
+        function flipCard() {
+            const card = document.getElementById('protocol-card');
+            const resetBtn = document.getElementById('reset-card-btn');
+            
+            if (!isFlipped) {
+                // Pick a random protocol before flipping
+                const p = protocols[Math.floor(Math.random() * protocols.length)];
+                document.getElementById('card-title').innerText = p.t;
+                document.getElementById('card-desc').innerText = p.d;
+                document.getElementById('card-reframe').innerText = p.r;
                 
-                // Immediately set first instruction
-                instruction.innerText = "Inhale slowly through the nose...";
+                card.classList.add('is-flipped');
+                isFlipped = true;
                 
-                interval = setInterval(() => {
-                    timerSeconds--;
-                    display.innerText = timerSeconds;
-                    
-                    // The 15-Second Clinical Breathing Cycle
-                    // Math: timerSeconds modulo 15 breaks the 90 seconds into six 15-second blocks
-                    const cyclePhase = timerSeconds % 15; 
-                    
-                    if (cyclePhase > 10) { 
-                        // Seconds 14, 13, 11 (4 seconds)
-                        instruction.innerText = "Deep inhale through the nose...";
-                    } else if (cyclePhase > 8) { 
-                        // Seconds 10, 9 (2 seconds)
-                        instruction.innerText = "Hold and anchor...";
-                    } else if (cyclePhase > 3) { 
-                        // Seconds 8, 7, 6, 5, 4 (5 seconds)
-                        instruction.innerText = "Slow exhale through the mouth...";
-                    } else { 
-                        // Seconds 3, 2, 1, 0 (4 seconds)
-                        instruction.innerText = "Hold empty. Let the friction fade.";
-                    }
-
-                    if (timerSeconds <= 0) {
-                        clearInterval(interval);
-                        timerRunning = false;
-                        timerSeconds = 90;
-                        display.innerText = "FLUSHED";
-                        instruction.innerText = "System reset complete. Bandwidth restored.";
-                        instruction.classList.remove('text-stone-900');
-                        btn.innerText = "Return to Protocol";
-                    }
-                }, 1000);
+                setTimeout(() => { resetBtn.classList.remove('hidden'); resetBtn.classList.add('block', 'fade-in'); }, 800);
             }
         }
 
-        // AUDIO LOGIC
-        // Update the file name in the quotes below to whatever you uploaded to GitHub!
-        const myAudio = new Audio('decompression (2).m4a'); 
-        let isAudioPlaying = false;
-
-        function toggleAudio() {
-            const btnText = document.getElementById('audio-text');
-            const btnIcon = document.getElementById('audio-icon');
-
-            if (isAudioPlaying) {
-                myAudio.pause();
-                isAudioPlaying = false;
-                btnText.innerText = "Play Stream";
-                btnIcon.innerHTML = `<i data-lucide="play" class="w-3 h-3"></i>`;
-            } else {
-                myAudio.play().catch(e => alert("Audio file not found. Ensure your audio file is uploaded to GitHub and named correctly in the code."));
-                isAudioPlaying = true;
-                btnText.innerText = "Pause Stream";
-                btnIcon.innerHTML = `<i data-lucide="pause" class="w-3 h-3"></i>`;
-            }
-            lucide.createIcons();
-        }
-
-        myAudio.onended = function() {
-            isAudioPlaying = false;
-            document.getElementById('audio-text').innerText = "Play Stream";
-            document.getElementById('audio-icon').innerHTML = `<i data-lucide="play" class="w-3 h-3"></i>`;
-            lucide.createIcons();
-        };
-
-        // NAVIGATION
-        function switchTab(tab) {
-            const tabs = ['dashboard', 'plan'];
-            tabs.forEach(t => {
-                document.getElementById('tab-' + t).classList.toggle('active', t === tab);
-                document.getElementById('btn-' + t).classList.toggle('active-tab', t === tab);
-                document.getElementById('btn-' + t).classList.toggle('text-stone-400', t !== tab);
-            });
-            lucide.createIcons();
-        }
-
-        function drawCard() {
-            const card = deck[Math.floor(Math.random() * deck.length)];
-            document.getElementById('cardTitle').innerText = card.t;
-            document.getElementById('cardDesc').innerText = `"${card.d}"`;
-        }
-
-        function requestNotifications() {
-            if (!("Notification" in window)) {
-                alert("Notifications not supported on this browser.");
-                return;
-            }
-            Notification.requestPermission();
-        }
-
-        // PERSISTENCE & INITIALIZATION
-        window.onload = () => {
-            const toBe = document.getElementById('toBeInput');
-            const fortress = document.getElementById('fortressInput');
+        function resetCard() {
+            const card = document.getElementById('protocol-card');
+            const resetBtn = document.getElementById('reset-card-btn');
             
-            toBe.value = localStorage.getItem('la_mobile_tobe') || "";
-            fortress.value = localStorage.getItem('la_mobile_fortress') || "";
-            
-            toBe.oninput = () => localStorage.setItem('la_mobile_tobe', toBe.value);
-            fortress.oninput = () => localStorage.setItem('la_mobile_fortress', fortress.value);
-            
-            setInterval(updateTemporalData, 1000);
-            updateTemporalData();
-            lucide.createIcons();
-        };
+            card.classList.remove('is-flipped');
+            resetBtn.classList.add('hidden');
+            resetBtn.classList.remove('block', 'fade-in');
+            isFlipped = false;
+        }
     </script>
 </body>
 </html>
-
-
-
