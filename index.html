@@ -13,12 +13,8 @@
         .font-serif { font-family: 'Cormorant Garamond', serif; }
         .blueprint-dot { background-image: radial-gradient(circle at 1px 1px, #e7e5e4 1px, transparent 0); background-size: 30px 30px; }
         
-        .tab-active { background-color: var(--charcoal); color: white; border-color: var(--charcoal); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-        .tab-inactive { background-color: transparent; color: var(--charcoal); border-color: transparent; }
-        .tab-inactive:hover { background-color: rgba(28, 25, 23, 0.05); }
-
-        .fade-in { animation: fadeIn 0.4s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.8s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         /* Custom Audio Player Styling */
         audio { width: 100%; height: 40px; border-radius: 8px; margin-top: 10px; }
@@ -26,7 +22,7 @@
         audio::-webkit-media-controls-play-button, audio::-webkit-media-controls-mute-button { background-color: #b2945e; border-radius: 50%; color: white;}
 
         /* --- MASSIVE 3D CARD ANIMATION --- */
-        .scene { width: 100%; height: 420px; perspective: 1000px; margin-top: 1.5rem; margin-bottom: 2rem; }
+        .scene { width: 100%; height: 420px; perspective: 1000px; margin-top: 1.5rem; margin-bottom: 1.5rem; }
         .card-container { width: 100%; height: 100%; position: relative; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; cursor: pointer; }
         .card-container.is-flipped { transform: rotateY(180deg); }
         .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; text-align: center; }
@@ -34,12 +30,12 @@
         .card-face-front::after { content: ''; position: absolute; inset: 12px; border: 1px solid rgba(178, 148, 94, 0.3); border-radius: 16px; }
         .card-face-back { background: #ffffff; color: #1c1917; transform: rotateY(180deg); border: 1px solid #e2e8f0; justify-content: space-between; padding: 40px 30px; }
         
-        /* Grid Tracker */
-        .grid-day { transition: all 0.3s ease; cursor: pointer; }
-        .grid-day.active { background-color: var(--gold); border-color: var(--gold); box-shadow: 0 0 10px rgba(178, 148, 94, 0.4); }
+        /* Journal Input styling */
+        .journal-input::-webkit-scrollbar { width: 4px; }
+        .journal-input::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 4px; }
     </style>
 </head>
-<body class="blueprint-dot min-h-screen flex flex-col">
+<body class="blueprint-dot min-h-screen flex flex-col fade-in">
 
     <!-- Navigation -->
     <nav class="p-5 flex justify-between items-center sticky top-0 z-50 bg-stone-50/90 backdrop-blur-md border-b border-stone-200">
@@ -50,103 +46,93 @@
             <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-stone-400">LiveAdaptiv</span>
         </div>
         <div class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] flex items-center gap-2">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Active
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Active System
         </div>
     </nav>
 
-    <main class="flex-1 max-w-lg mx-auto w-full p-6 pb-20">
+    <main class="flex-1 max-w-lg mx-auto w-full p-6 pb-32 space-y-16">
         
-        <!-- Triple State Toggle -->
-        <div class="flex bg-stone-200/50 p-1 rounded-xl mb-8">
-            <button onclick="switchTab('triage')" id="tab-triage" class="flex-1 py-3 rounded-lg text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all tab-active">
-                Triage
-            </button>
-            <button onclick="switchTab('philosophy')" id="tab-philosophy" class="flex-1 py-3 rounded-lg text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all tab-inactive">
-                Philosophy
-            </button>
-            <button onclick="switchTab('calendar')" id="tab-calendar" class="flex-1 py-3 rounded-lg text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all tab-inactive">
-                Calendar
-            </button>
+        <!-- SECTION 1: THE ANCHOR (Date & Time) -->
+        <div class="text-center pt-8">
+            <p id="live-date" class="text-xs font-bold uppercase tracking-widest text-[#b2945e] mb-2">Loading...</p>
+            <h1 id="live-time" class="text-7xl font-sans font-light text-stone-900 tracking-tight">00:00</h1>
+            <p class="text-stone-400 text-sm mt-4 font-serif italic max-w-xs mx-auto leading-relaxed">
+                "You are exactly here. Everything else is fiction."
+            </p>
         </div>
 
-        <!-- STATE 1: ACUTE TRIAGE (The Tactics) -->
-        <div id="view-triage" class="fade-in space-y-6">
+        <!-- SECTION 2: THE FLUSH (90 Second Timer) -->
+        <div class="border-t border-stone-200 pt-10">
             <div class="text-center mb-8">
-                <h1 class="text-4xl font-serif italic text-stone-900 mb-2">The Override</h1>
-                <p class="text-stone-500 text-sm">Step 1: Flush the chemistry. Step 2: Draw the protocol.</p>
+                <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Flush</h2>
+                <p class="text-stone-500 text-sm max-w-xs mx-auto">You cannot out-think chemistry. Clear the cortisol before you act.</p>
             </div>
 
-            <!-- The 90 Second Timer Box -->
-            <div class="bg-white border border-stone-200 rounded-[24px] p-6 text-center shadow-sm flex items-center justify-between gap-4">
-                <div class="flex-1 text-left pl-2">
-                    <h3 class="font-sans text-xs font-bold uppercase tracking-widest text-stone-900 mb-1">Biological Flush</h3>
-                    <!-- DYNAMIC TEXT TARGET -->
-                    <p id="flush-instruction" class="text-[10px] font-bold text-stone-500 uppercase tracking-widest transition-colors duration-500">Visual 90-sec protocol.</p>
+            <div class="bg-white border border-stone-200 rounded-[32px] p-8 text-center shadow-lg">
+                <div class="w-24 h-24 mx-auto border-4 border-stone-100 rounded-full flex items-center justify-center mb-6 relative">
+                    <div id="timer-ring" class="absolute inset-0 border-4 border-[#b2945e] rounded-full opacity-0 transition-opacity"></div>
+                    <span id="timer-display" class="font-serif text-4xl text-stone-900 italic relative z-10">90</span>
                 </div>
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 border-2 border-[#b2945e]/30 rounded-full flex items-center justify-center relative">
-                        <span id="timer-display" class="font-serif text-xl text-stone-900 italic font-bold">90</span>
-                    </div>
-                    <button id="timer-btn" onclick="startTimer()" class="w-14 h-14 rounded-full bg-stone-900 text-white flex items-center justify-center hover:bg-stone-800 transition-colors shadow-lg">
-                        <i data-lucide="play" class="w-5 h-5 ml-1"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- MASSIVE INTERACTIVE CARD DRAW -->
-            <div class="mt-12 text-center">
-                <p class="text-stone-400 text-[10px] uppercase tracking-[0.3em] font-bold mb-2">After flushing the system</p>
-                <h3 class="font-sans text-sm font-bold uppercase tracking-widest text-stone-900 mb-2">Tap Card to Draw Protocol</h3>
-                
-                <div class="scene">
-                    <div class="card-container" id="protocol-card" onclick="flipCard()">
-                        <!-- FRONT -->
-                        <div class="card-face card-face-front group">
-                            <div class="w-16 h-16 border border-[#b2945e]/50 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                                <span class="font-serif italic text-4xl pb-1">A</span>
-                            </div>
-                            <h3 class="text-lg font-bold uppercase tracking-[0.4em] text-white mb-2">Draw</h3>
-                            <p class="text-[10px] uppercase tracking-widest text-[#b2945e]">Tactical Override</p>
-                        </div>
-                        
-                        <!-- BACK -->
-                        <div class="card-face card-face-back">
-                            <div class="text-center w-full">
-                                <span class="text-[#b2945e] font-bold text-[10px] uppercase tracking-widest mb-2 block">Active Protocol</span>
-                                <h2 id="card-title" class="font-serif italic text-3xl text-stone-900 mb-6 leading-tight">Linear Override</h2>
-                                <div class="w-12 h-px bg-stone-200 mx-auto mb-6"></div>
-                                <p id="card-desc" class="text-sm text-stone-600 leading-relaxed font-medium">
-                                    Anxiety operates in loops. Logic operates in lines. Name 3 physical objects in the room. State the exact time aloud. Switch your brain from emotional computing to analytical computing.
-                                </p>
-                            </div>
-                            
-                            <div class="w-full text-center mt-6 p-4 bg-stone-50 rounded-xl border border-stone-100">
-                                <span class="block text-[9px] uppercase tracking-widest text-stone-400 font-bold mb-1">The Sovereign Reframe</span>
-                                <p id="card-reframe" class="text-xs font-serif italic text-stone-800 font-bold">"Panic is a circle. Logic is a line."</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button id="reset-card-btn" onclick="resetCard()" class="hidden mx-auto mt-6 px-6 py-2 rounded-full border border-stone-300 text-stone-500 font-sans text-[10px] uppercase tracking-widest hover:bg-stone-100 transition-colors">
-                    Draw Another Protocol
+                <p id="flush-instruction" class="text-[11px] font-bold text-stone-400 uppercase tracking-[0.2em] mb-8 transition-colors duration-500 h-4">Visual 90-sec protocol.</p>
+                <button id="timer-btn" onclick="startTimer()" class="w-full py-4 rounded-full bg-stone-900 text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-stone-800 transition-colors shadow-md">
+                    Initiate Sequence
                 </button>
             </div>
         </div>
 
-        <!-- STATE 2: THE PHILOSOPHY (The Depth) -->
-        <div id="view-philosophy" class="hidden fade-in space-y-6">
+        <!-- SECTION 3: THE PROTOCOL (Card Draw) -->
+        <div class="border-t border-stone-200 pt-10 text-center">
+            <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Protocol</h2>
+            <p class="text-stone-500 text-sm max-w-xs mx-auto">Tap the card to draw your active reframe.</p>
+            
+            <div class="scene">
+                <div class="card-container" id="protocol-card" onclick="flipCard()">
+                    <!-- FRONT -->
+                    <div class="card-face card-face-front group">
+                        <div class="w-16 h-16 border border-[#b2945e]/50 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                            <span class="font-serif italic text-4xl pb-1">A</span>
+                        </div>
+                        <h3 class="text-lg font-bold uppercase tracking-[0.4em] text-white mb-2">Draw</h3>
+                        <p class="text-[10px] uppercase tracking-widest text-[#b2945e]">Tactical Override</p>
+                    </div>
+                    
+                    <!-- BACK -->
+                    <div class="card-face card-face-back">
+                        <div class="text-center w-full">
+                            <span class="text-[#b2945e] font-bold text-[10px] uppercase tracking-widest mb-2 block">Active Protocol</span>
+                            <h2 id="card-title" class="font-serif italic text-3xl text-stone-900 mb-6 leading-tight">Linear Override</h2>
+                            <div class="w-12 h-px bg-stone-200 mx-auto mb-6"></div>
+                            <p id="card-desc" class="text-sm text-stone-600 leading-relaxed font-medium">
+                                Anxiety operates in loops. Logic operates in lines. Name 3 physical objects in the room. State the exact time aloud. Switch your brain from emotional computing to analytical computing.
+                            </p>
+                        </div>
+                        
+                        <div class="w-full text-center mt-6 p-4 bg-stone-50 rounded-xl border border-stone-100">
+                            <span class="block text-[9px] uppercase tracking-widest text-stone-400 font-bold mb-1">The Sovereign Reframe</span>
+                            <p id="card-reframe" class="text-xs font-serif italic text-stone-800 font-bold">"Panic is a circle. Logic is a line."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="reset-card-btn" onclick="resetCard()" class="hidden mx-auto px-6 py-2 rounded-full border border-stone-300 text-stone-500 font-sans text-[10px] uppercase tracking-widest hover:bg-stone-100 transition-colors">
+                Draw Another
+            </button>
+        </div>
+
+        <!-- SECTION 4: THE PHILOSOPHY (Audio & Tenets) -->
+        <div class="border-t border-stone-200 pt-10">
             <div class="text-center mb-8">
-                <h1 class="text-4xl font-serif italic text-stone-900 mb-2">The Architecture</h1>
-                <p class="text-stone-500 text-sm">The operating system beneath the tactics.</p>
+                <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Philosophy</h2>
+                <p class="text-stone-500 text-sm max-w-xs mx-auto">The operating system beneath the tactics.</p>
             </div>
 
             <!-- The Audio Player -->
-            <div class="bg-white border border-[#b2945e]/30 rounded-[24px] p-6 shadow-sm relative overflow-hidden">
+            <div class="bg-white border border-[#b2945e]/30 rounded-[24px] p-6 shadow-sm relative overflow-hidden mb-6">
                 <div class="absolute right-0 top-0 p-4 opacity-5"><i data-lucide="headphones" class="w-24 h-24"></i></div>
                 <div class="relative z-10">
                     <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] block mb-1">Deep Integration</span>
-                    <h3 class="font-serif text-2xl text-stone-900 italic mb-2">The Alchemist Decompression</h3>
-                    <p class="text-xs text-stone-500 mb-4 max-w-[85%]">A 2-minute and 45-second guided biological reset. Use this when you are in a safe space and need to fully metabolize the day's friction.</p>
+                    <h3 class="font-serif text-2xl text-stone-900 italic mb-2">The Decompression</h3>
+                    <p class="text-xs text-stone-500 mb-4 max-w-[85%]">A 2:45 guided biological reset. Use this when you are in a safe space to fully metabolize the day's friction.</p>
                     
                     <audio controls controlsList="nodownload">
                         <!-- LINK FOR YOUR 2:45 DECOMPRESSION AUDIO -->
@@ -156,67 +142,43 @@
                 </div>
             </div>
 
-            <!-- The Core Tenets -->
-            <div class="space-y-4">
-                <div class="bg-stone-50 p-6 rounded-2xl border border-stone-200">
-                    <h4 class="font-sans text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-2">Tenet 01</h4>
-                    <p class="font-serif text-xl text-stone-900 italic mb-2">"Stress is not an error."</p>
-                    <p class="text-xs text-stone-600 leading-relaxed">It is simply energy trapped in a loop. You are not broken, you are not weak, and you do not need to be 'fixed.' You simply need to learn the mechanics of your own energy.</p>
+            <!-- Core Tenet -->
+            <div class="bg-stone-50 p-6 rounded-2xl border border-stone-200">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-6 h-6 rounded-full bg-[#b2945e]/20 flex items-center justify-center text-[#b2945e]"><i data-lucide="shield" class="w-3 h-3"></i></div>
+                    <h4 class="font-sans text-[10px] font-bold uppercase tracking-widest text-stone-400">Core Architecture</h4>
                 </div>
-                
-                <div class="bg-stone-50 p-6 rounded-2xl border border-stone-200">
-                    <h4 class="font-sans text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-2">Tenet 02</h4>
-                    <p class="font-serif text-xl text-stone-900 italic mb-2">"Meaning is declared, not discovered."</p>
-                    <p class="text-xs text-stone-600 leading-relaxed">The world is not happening to you; it is raw material waiting for your architecture. If you look for threats, you will find a war. If you look for leverage, you will find a tool.</p>
-                </div>
-
-                <div class="bg-stone-50 p-6 rounded-2xl border border-stone-200">
-                    <h4 class="font-sans text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-2">Tenet 03</h4>
-                    <p class="font-serif text-xl text-stone-900 italic mb-2">"You are the Asset."</p>
-                    <p class="text-xs text-stone-600 leading-relaxed">You are not the worker. If the Asset breaks, the work stops. Protecting the Asset—through fierce boundaries and unapologetic rest—IS the work.</p>
-                </div>
+                <p class="font-serif text-xl text-stone-900 italic mb-2">"You are the Asset."</p>
+                <p class="text-xs text-stone-600 leading-relaxed">You are not the worker. If the Asset breaks, the work stops. Protecting the Asset—through fierce boundaries and unapologetic rest—IS the work.</p>
             </div>
         </div>
 
-        <!-- STATE 3: THE CALENDAR (The Execution) -->
-        <div id="view-calendar" class="hidden fade-in space-y-6">
+        <!-- SECTION 5: THE SEAL (Journaling) -->
+        <div class="border-t border-stone-200 pt-10 pb-8">
             <div class="text-center mb-8">
-                <h1 class="text-4xl font-serif italic text-stone-900 mb-2">The Sovereign Grid</h1>
-                <p class="text-stone-500 text-sm">Neuroplasticity requires repetitive execution.</p>
+                <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Seal</h2>
+                <p class="text-stone-500 text-sm max-w-xs mx-auto">Lock in the shift.</p>
             </div>
 
-            <!-- The 28-Day Interactive Tracker -->
-            <div class="bg-stone-900 p-8 rounded-[24px] shadow-xl border border-stone-800">
-                <div class="flex items-center justify-between mb-6">
+            <div class="bg-stone-900 p-8 rounded-[32px] shadow-2xl border border-stone-800">
+                <div class="space-y-8">
                     <div>
-                        <h3 class="font-sans text-xs font-bold uppercase tracking-widest text-[#b2945e]">Daily Execution</h3>
-                        <p class="text-[10px] text-stone-400 uppercase tracking-widest mt-1">28-Day Adherence Block</p>
+                        <label class="font-serif text-2xl text-stone-300 block mb-2">The reality is...</label>
+                        <input type="text" class="w-full bg-transparent border-b border-stone-700 py-2 text-white font-sans focus:outline-none focus:border-[#b2945e]" placeholder="e.g., the deadline was moved.">
                     </div>
-                    <div class="text-right">
-                        <span id="streak-counter" class="text-3xl font-serif italic text-white">0</span>
-                        <span class="text-[10px] text-stone-400 uppercase tracking-widest block">Days Logged</span>
+                    <div>
+                        <label class="font-serif text-2xl text-stone-300 block mb-2">I choose to be...</label>
+                        <input type="text" class="w-full bg-transparent border-b border-stone-700 py-2 text-white font-sans focus:outline-none focus:border-[#b2945e]" placeholder="e.g., decisive and unbothered.">
                     </div>
+                    <div>
+                        <label class="font-serif text-2xl text-stone-300 block mb-2">My next action is...</label>
+                        <input type="text" class="w-full bg-transparent border-b border-stone-700 py-2 text-white font-sans focus:outline-none focus:border-[#b2945e]" placeholder="e.g., to close the laptop.">
+                    </div>
+                    
+                    <button onclick="sealJournal()" id="seal-btn" class="w-full py-4 rounded-full bg-[#b2945e] text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-[#9ca3af] transition-all mt-4">
+                        Lock System
+                    </button>
                 </div>
-
-                <div class="grid grid-cols-7 gap-2" id="habit-grid">
-                    <!-- Javascript will populate 28 days here -->
-                </div>
-                
-                <p class="text-xs text-stone-400 mt-6 text-center italic font-serif">Tap a square upon completion of your daily Decompression Audio or Protocol Draw.</p>
-            </div>
-
-            <!-- Master System PDF Download -->
-            <div class="bg-white border border-stone-200 p-6 rounded-[24px] shadow-sm flex items-center gap-4">
-                <div class="p-4 bg-stone-100 rounded-full text-stone-400">
-                    <i data-lucide="calendar-days" class="w-6 h-6"></i>
-                </div>
-                <div class="flex-1">
-                    <h3 class="font-serif text-xl text-stone-900 italic mb-1">Master Sovereign System</h3>
-                    <p class="text-xs text-stone-500">Access your full 12-month physical printable calendar.</p>
-                </div>
-                <a href="#" class="px-4 py-2 rounded-full bg-stone-900 text-white text-[10px] uppercase tracking-widest font-bold hover:bg-[#b2945e] transition-colors whitespace-nowrap">
-                    Download PDF
-                </a>
             </div>
         </div>
 
@@ -225,23 +187,23 @@
     <script>
         lucide.createIcons();
 
-        // --- TAB SWITCHING LOGIC ---
-        function switchTab(tab) {
-            const tabs = ['triage', 'philosophy', 'calendar'];
+        // --- REAL-TIME CLOCK ENGINE ---
+        function updateTime() {
+            const now = new Date();
             
-            tabs.forEach(t => {
-                const btn = document.getElementById(`tab-${t}`);
-                const view = document.getElementById(`view-${t}`);
-                
-                if (t === tab) {
-                    btn.className = "flex-1 py-3 rounded-lg text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all tab-active";
-                    view.style.display = "block";
-                } else {
-                    btn.className = "flex-1 py-3 rounded-lg text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all tab-inactive";
-                    view.style.display = "none";
-                }
-            });
+            // Format Time (HH:MM)
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById('live-time').innerText = `${hours}:${minutes}`;
+
+            // Format Date (DAY, MON DD)
+            const options = { weekday: 'long', month: 'short', day: 'numeric' };
+            document.getElementById('live-date').innerText = now.toLocaleDateString('en-US', options);
         }
+        setInterval(updateTime, 1000);
+        updateTime();
 
         // --- 90 SECOND TIMER & SILENT DYNAMIC TEXT LOGIC ---
         let timerInterval;
@@ -254,12 +216,14 @@
             const display = document.getElementById('timer-display');
             const btn = document.getElementById('timer-btn');
             const instruction = document.getElementById('flush-instruction');
+            const ring = document.getElementById('timer-ring');
 
             clearInterval(timerInterval);
             timeLeft = 90;
             display.innerText = timeLeft;
-            btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>`;
-            lucide.createIcons();
+            btn.innerHTML = `Flushing...`;
+            ring.style.opacity = '1';
+            ring.classList.add('animate-pulse');
 
             timerInterval = setInterval(() => {
                 timeLeft--;
@@ -285,18 +249,16 @@
                     display.innerText = "0";
                     instruction.innerText = "System Reset Complete.";
                     instruction.style.color = "#059669"; // Emerald
-                    btn.innerHTML = `<i data-lucide="check" class="w-5 h-5"></i>`;
-                    btn.classList.add('bg-emerald-600');
-                    lucide.createIcons();
+                    btn.innerHTML = `Complete`;
+                    ring.classList.remove('animate-pulse');
                     
                     setTimeout(() => {
-                        btn.innerHTML = `<i data-lucide="play" class="w-5 h-5 ml-1"></i>`;
-                        btn.classList.remove('bg-emerald-600');
+                        btn.innerHTML = `Initiate Sequence`;
                         display.innerText = "90";
                         instruction.innerText = "Visual 90-sec protocol.";
-                        instruction.style.color = "#78716c"; // Gray
+                        instruction.style.color = "#a8a29e"; // Gray
+                        ring.style.opacity = '0';
                         isRunning = false;
-                        lucide.createIcons();
                     }, 4000);
                 }
             }, 1000);
@@ -340,29 +302,18 @@
             isFlipped = false;
         }
 
-        // --- CALENDAR GRID LOGIC ---
-        const gridContainer = document.getElementById('habit-grid');
-        let completedDays = 0;
-
-        for(let i = 0; i < 28; i++) {
-            const dayBox = document.createElement('div');
-            dayBox.className = "grid-day aspect-square rounded-md border border-stone-700 bg-stone-800/50 flex items-center justify-center text-[10px] text-stone-600 font-bold";
-            dayBox.innerText = i + 1;
+        // --- JOURNAL SEAL ---
+        function sealJournal() {
+            const btn = document.getElementById('seal-btn');
+            btn.innerHTML = '<i data-lucide="check" class="w-4 h-4 mx-auto"></i>';
+            btn.classList.replace('bg-[#b2945e]', 'bg-stone-600');
+            lucide.createIcons();
             
-            dayBox.addEventListener('click', function() {
-                if(this.classList.contains('active')) {
-                    this.classList.remove('active');
-                    this.style.color = "#57534e"; 
-                    completedDays--;
-                } else {
-                    this.classList.add('active');
-                    this.style.color = "#1c1917"; 
-                    completedDays++;
-                }
-                document.getElementById('streak-counter').innerText = completedDays;
+            const inputs = document.querySelectorAll('input[type="text"]');
+            inputs.forEach(input => {
+                input.disabled = true;
+                input.classList.add('opacity-50');
             });
-
-            gridContainer.appendChild(dayBox);
         }
     </script>
 </body>
