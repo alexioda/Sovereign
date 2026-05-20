@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sovereign Command | LiveAdaptiv</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #b2945e;
+      --gold-lt: #d4b483;
+      --stone: #fafaf9;
+      --charcoal: #1c1917;
+    }
+    * { box-sizing: border-box; }
+    body {
+      background-color: var(--stone);
+      color: var(--charcoal);
+      font-family: 'DM Sans', sans-serif;
+      overscroll-behavior: none;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .font-serif { font-family: 'Cormorant Garamond', serif; }
+    .blueprint-dot {
+      background-image: radial-gradient(circle at 1px 1px, #e7e5e4 1px, transparent 0);
+      background-size: 30px 30px;
+      transition: background-size 2s ease;
+    }
+    .blueprint-dot.breathing { animation: bgBreathe 8s ease-in-out infinite; }
+    @keyframes bgBreathe { 0%, 100% { background-size: 30px 30px; } 50% { background-size: 34px 34px; } }
+    .fade-in { animation: fadeIn 0.8s ease forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .streak-badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px; border-radius: 100px; background: rgba(178,148,94,0.1); border: 1px solid rgba(178,148,94,0.25); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); }
+    .streak-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+    .scene { width: 100%; height: 400px; perspective: 1000px; margin: 1.5rem 0; }
+    .card-container { width: 100%; height: 100%; position: relative; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; cursor: pointer; }
+    .card-container.is-flipped { transform: rotateY(180deg); }
+    .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.22); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; text-align: center; }
+    .card-face-front { background: linear-gradient(135deg, #1c1917 0%, #0f172a 100%); color: var(--gold); border: 1px solid #334155; }
+    .card-face-front::after { content: ''; position: absolute; inset: 12px; border: 1px solid rgba(178,148,94,0.25); border-radius: 16px; pointer-events: none; }
+    .card-face-back { background: #ffffff; color: var(--charcoal); transform: rotateY(180deg); border: 1px solid #e2e8f0; justify-content: space-between; padding: 36px 28px; }
+    .audio-player { display: flex; align-items: center; gap: 14px; background: var(--stone); border: 1px solid rgba(178,148,94,0.2); border-radius: 100px; padding: 10px 18px; margin-top: 16px; }
+    .audio-play-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--gold); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s, transform 0.15s; }
+    .audio-play-btn:hover { background: var(--gold-lt); transform: scale(1.05); }
+    .audio-play-btn svg { width: 14px; height: 14px; color: white; }
+    .audio-track { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .audio-progress-bg { width: 100%; height: 3px; background: #e7e5e4; border-radius: 100px; cursor: pointer; position: relative; }
+    .audio-progress-fill { height: 100%; background: var(--gold); border-radius: 100px; width: 0%; transition: width 0.5s linear; pointer-events: none; }
+    .audio-time { font-size: 9px; font-weight: 600; color: #a8a29e; letter-spacing: 0.05em; text-align: right; }
+    .timer-svg { position: absolute; inset: -6px; width: calc(100% + 12px); height: calc(100% + 12px); transform: rotate(-90deg); }
+    .timer-ring-track { fill: none; stroke: #f0ede9; stroke-width: 3; }
+    .timer-ring-progress { fill: none; stroke: var(--gold); stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset 1s linear, stroke 0.5s; }
+    .seal-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid #3a3632; padding: 10px 0; color: white; font-family: 'DM Sans', sans-serif; font-size: 1rem; outline: none; transition: border-color 0.2s; }
+    .seal-input:focus { border-bottom-color: var(--gold); }
+    .seal-input::placeholder { color: #57534e; }
+    .seal-input:disabled { opacity: 0.5; cursor: not-allowed; }
+    #save-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--charcoal); color: white; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 8px 18px; border-radius: 100px; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; white-space: nowrap; }
+    #save-toast.visible { opacity: 1; }
+    .upsell-card { display: block; padding: 22px 24px; border-radius: 20px; border: 1px solid #e7e5e4; background: white; text-decoration: none; transition: all 0.25s; }
+    .upsell-card:hover { border-color: var(--gold); box-shadow: 0 8px 24px rgba(178,148,94,0.12); transform: translateY(-2px); }
+    .upsell-card-dark { background: #1c1917; border-color: #3a3632; }
+    .upsell-card-dark:hover { border-color: var(--gold); }
+    #decree-section { transition: opacity 0.4s; }
+    #decree-text { transition: opacity 0.5s; }
+  </style>
+</head>
+<body class="blueprint-dot fade-in">
+  <nav class="p-5 flex justify-between items-center sticky top-0 z-50 bg-stone-50/90 backdrop-blur-md border-b border-stone-200">
+    <a href="https://liveadaptiv.com" class="flex items-center gap-3 hover:opacity-70 transition-opacity">
+      <div class="w-8 h-8 border border-[#b2945e]/40 rounded-full flex items-center justify-center">
+        <span class="font-serif italic text-lg text-[#b2945e] pb-0.5">A</span>
+      </div>
+      <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-stone-400">LiveAdaptiv</span>
+    </a>
+    <div class="flex items-center gap-3">
+      <div id="streak-badge" class="streak-badge" style="display:none">
+        <span class="streak-dot"></span>
+        <span id="streak-count">1</span> Day Streak
+      </div>
+      <div class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        Active
+      </div>
+    </div>
+  </nav>
+
+  <main class="flex-1 max-w-lg mx-auto w-full p-6 pb-12 space-y-16">
+    <div class="text-center pt-8">
+      <p id="live-date" class="text-xs font-bold uppercase tracking-widest text-[#b2945e] mb-2">Loading...</p>
+      <h1 id="live-time" class="text-7xl font-sans font-light text-stone-900 tracking-tight tabular-nums">00:00</h1>
+      <p class="text-stone-400 text-sm mt-4 font-serif italic max-w-xs mx-auto leading-relaxed">"You are exactly here. Everything else is fiction."</p>
+    </div>
+
+    <div class="border-t border-stone-200 pt-10">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Flush</h2>
+        <p class="text-stone-500 text-sm max-w-xs mx-auto">You cannot out-think chemistry. Clear the cortisol before you act.</p>
+      </div>
+      <div class="bg-white border border-stone-200 rounded-[32px] p-8 text-center shadow-sm">
+        <div class="w-28 h-28 mx-auto mb-6 relative flex items-center justify-center">
+          <svg class="timer-svg" viewBox="0 0 108 108">
+            <circle class="timer-ring-track" cx="54" cy="54" r="48"/>
+            <circle id="timer-ring-progress" class="timer-ring-progress" cx="54" cy="54" r="48" stroke-dasharray="301.6" stroke-dashoffset="0"/>
+          </svg>
+          <span id="timer-display" class="font-serif text-4xl text-stone-900 italic relative z-10">90</span>
+        </div>
+        <p id="flush-instruction" class="text-[11px] font-bold text-stone-400 uppercase tracking-[0.18em] mb-8 h-4 transition-colors duration-500">Visual 90-sec protocol</p>
+        <button id="timer-btn" onclick="startTimer()" class="w-full py-4 rounded-full bg-stone-900 text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-stone-800 transition-colors shadow-md">Initiate Sequence</button>
+      </div>
+    </div>
+
+    <div class="border-t border-stone-200 pt-10 text-center">
+      <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Protocol</h2>
+      <p class="text-stone-500 text-sm max-w-xs mx-auto">Tap the card to draw your active reframe.</p>
+      <div class="scene">
+        <div class="card-container" id="protocol-card" onclick="flipCard()">
+          <div class="card-face card-face-front">
+            <div class="w-16 h-16 border border-[#b2945e]/50 rounded-full flex items-center justify-center mb-6 transition-transform duration-500 hover:scale-110">
+              <span class="font-serif italic text-4xl pb-1 text-[#b2945e]">A</span>
+            </div>
+            <h3 class="text-lg font-bold uppercase tracking-[0.4em] text-white mb-2">Draw</h3>
+            <p class="text-[10px] uppercase tracking-widest text-[#b2945e]">Tactical Override</p>
+          </div>
+          <div class="card-face card-face-back">
+            <div class="text-center w-full">
+              <span class="text-[#b2945e] font-bold text-[10px] uppercase tracking-widest mb-3 block">Active Protocol</span>
+              <h2 id="card-title" class="font-serif italic text-3xl text-stone-900 mb-5 leading-tight">Linear Override</h2>
+              <div class="w-10 h-px bg-stone-200 mx-auto mb-5"></div>
+              <p id="card-desc" class="text-sm text-stone-600 leading-relaxed font-medium text-left"></p>
+            </div>
+            <div class="w-full text-center mt-6 p-4 bg-stone-50 rounded-xl border border-stone-100">
+              <span class="block text-[9px] uppercase tracking-widest text-stone-400 font-bold mb-1.5">The Sovereign Reframe</span>
+              <p id="card-reframe" class="text-xs font-serif italic text-stone-800 font-bold leading-relaxed"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button id="reset-card-btn" onclick="resetCard()" class="hidden mx-auto px-6 py-2 rounded-full border border-stone-200 text-stone-500 font-sans text-[10px] uppercase tracking-widest hover:bg-stone-100 transition-colors">Draw Another</button>
+    </div>
+
+    <div class="border-t border-stone-200 pt-10">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Philosophy</h2>
+        <p class="text-stone-500 text-sm max-w-xs mx-auto">The operating system beneath the tactics.</p>
+      </div>
+      <div class="bg-white border border-[#b2945e]/25 rounded-[24px] p-6 shadow-sm relative overflow-hidden mb-6">
+        <div class="absolute right-4 top-4 opacity-[0.04]"><i data-lucide="headphones" class="w-20 h-20"></i></div>
+        <div class="relative z-10">
+          <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] block mb-1">Deep Integration</span>
+          <h3 class="font-serif text-2xl text-stone-900 italic mb-1">The Decompression</h3>
+          <p class="text-xs text-stone-500 mb-4 max-w-[85%] leading-relaxed">A guided biological reset. Use when you have space to fully metabolize the day's friction.</p>
+          <div class="audio-player">
+            <button class="audio-play-btn" id="play-btn" onclick="toggleAudio()"><i data-lucide="play" id="play-icon" style="margin-left:2px"></i></button>
+            <div class="audio-track">
+              <div class="audio-progress-bg" id="progress-bg" onclick="seekAudio(event)">
+                <div class="audio-progress-fill" id="progress-fill"></div>
+              </div>
+              <div class="audio-time" id="audio-time">0:00</div>
+            </div>
+          </div>
+          <audio id="audio-el" preload="none"><source src="decompression.m4a" type="audio/mp4"></audio>
+        </div>
+      </div>
+      <div class="bg-stone-50 p-6 rounded-2xl border border-stone-200">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-6 h-6 rounded-full bg-[#b2945e]/15 flex items-center justify-center"><i data-lucide="shield" class="w-3 h-3 text-[#b2945e]"></i></div>
+          <h4 class="font-sans text-[10px] font-bold uppercase tracking-widest text-stone-400">Core Architecture</h4>
+        </div>
+        <p class="font-serif text-xl text-stone-900 italic mb-2">"You are the Asset."</p>
+        <p class="text-xs text-stone-600 leading-relaxed">You are not the worker. If the Asset breaks, the work stops. Protecting the Asset — through fierce boundaries and unapologetic rest — IS the work.</p>
+      </div>
+    </div>
+
+    <div class="border-t border-stone-200 pt-10 pb-2">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Seal</h2>
+        <p class="text-stone-500 text-sm max-w-xs mx-auto">Lock in the shift.</p>
+      </div>
+      <div class="bg-stone-900 p-8 rounded-[32px] shadow-2xl border border-stone-800 relative overflow-hidden">
+        <div class="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-[#b2945e]/5 blur-2xl pointer-events-none"></div>
+        <div class="space-y-8 relative z-10">
+          <div>
+            <label class="font-serif text-xl text-stone-300 block mb-2">The reality is...</label>
+            <input id="seal-1" type="text" class="seal-input" placeholder="e.g., the deadline was moved.">
+          </div>
+          <div>
+            <label class="font-serif text-xl text-stone-300 block mb-2">I choose to be...</label>
+            <input id="seal-2" type="text" class="seal-input" placeholder="e.g., decisive and unbothered.">
+          </div>
+          <div>
+            <label class="font-serif text-xl text-stone-300 block mb-2">My next action is...</label>
+            <input id="seal-3" type="text" class="seal-input" placeholder="e.g., close the laptop.">
+          </div>
+          <div class="pt-2 flex gap-3">
+            <button onclick="sealJournal()" id="seal-btn" class="flex-1 py-4 rounded-full bg-[#b2945e] text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-[#d4b483] transition-all">Lock System</button>
+            <button onclick="unlockJournal()" id="unlock-btn" style="display:none" class="px-5 py-4 rounded-full border border-stone-700 text-stone-400 font-bold text-[10px] uppercase tracking-[0.15em] hover:border-stone-500 transition-all">Edit</button>
+          </div>
+        </div>
+      </div>
+      <div id="delta-capture" class="mt-6 bg-white border border-stone-200 rounded-2xl p-6" style="display:none">
+        <p class="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-4">Post-Session Friction Level</p>
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-xs text-stone-400">1 — Flow</span>
+          <span id="delta-val" class="font-serif italic text-2xl text-[#b2945e]">5</span>
+          <span class="text-xs text-stone-400">10 — Overload</span>
+        </div>
+        <input type="range" min="1" max="10" value="5" id="delta-slider" oninput="updateDelta(this.value)" class="w-full accent-[#b2945e]">
+        <button onclick="saveDelta()" class="mt-4 w-full py-3 rounded-full bg-stone-900 text-white text-[10px] font-bold uppercase tracking-widest hover:bg-stone-800 transition-colors">Record &amp; Close</button>
+      </div>
+
+      <div id="decree-section" style="display:none" class="mt-6 bg-white border border-[#b2945e]/30 rounded-2xl p-6 shadow-sm">
+        <div class="flex items-center gap-2 mb-4">
+          <i data-lucide="crown" class="w-4 h-4 text-[#b2945e]"></i>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-[#b2945e]">The Decree</span>
+        </div>
+        <p id="decree-text" class="font-serif italic text-lg text-stone-900 leading-relaxed mb-5 opacity-0 transition-opacity duration-500">Forging your decree...</p>
+        <div class="flex gap-3">
+          <button onclick="shareDecree()" class="flex-1 py-2 rounded-full border border-stone-200 text-stone-600 text-[10px] font-bold uppercase tracking-widest hover:bg-stone-50 transition-colors"><i data-lucide="share-2" class="w-3 h-3 inline mr-1"></i> Share as Image</button>
+          <button onclick="copyDecree()" class="px-4 py-2 rounded-full border border-stone-200 text-stone-500 text-[10px] font-bold uppercase tracking-widest hover:bg-stone-50">Copy</button>
+        </div>
+        <div id="lead-capture" class="mt-6 pt-5 border-t border-stone-100" style="display:none">
+          <p class="text-xs text-stone-500 mb-3 font-medium">Want this delivered to your inbox? Get future decrees and early access to the full Adaptiv mind.</p>
+          <div class="flex gap-2">
+            <input id="lead-email" type="email" placeholder="Your email" class="flex-1 px-4 py-2 rounded-full border border-stone-200 text-sm text-stone-800 outline-none focus:border-[#b2945e] transition-colors">
+            <button onclick="captureLead()" class="px-5 py-2 rounded-full bg-[#b2945e] text-white font-bold text-[10px] uppercase tracking-widest hover:bg-[#d4b483] transition-colors">Send</button>
+          </div>
+          <p id="lead-msg" class="text-[10px] text-emerald-600 mt-2 hidden">Decree sent. Check your inbox.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-stone-200 pt-12 pb-8">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-serif italic text-stone-900 mb-2">Deepen the Architecture</h2>
+        <p class="text-stone-500 text-xs max-w-xs mx-auto">You have stabilized the symptom. Now upgrade the system.</p>
+      </div>
+      <div class="space-y-4 mb-10">
+        <a href="https://your-lemon-squeezy-link-here.com" target="_blank" class="upsell-card">
+          <div class="flex items-start gap-4">
+            <div class="p-3 bg-stone-50 rounded-xl flex-shrink-0 group-hover:bg-[#b2945e]/10 transition-colors"><i data-lucide="layers" class="w-5 h-5 text-stone-500"></i></div>
+            <div>
+              <h3 class="font-serif text-xl text-stone-900 italic mb-1">The Master Deck System</h3>
+              <p class="text-xs text-stone-500 mb-3 leading-relaxed">The complete 52-card clinical protocol system. Secure mobile app access plus printable assets.</p>
+              <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] flex items-center gap-1">Secure Access <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
+            </div>
+          </div>
+        </a>
+        <a href="https://calendly.com/alexioda" target="_blank" class="upsell-card upsell-card-dark">
+          <div class="flex items-start gap-4">
+            <div class="p-3 bg-stone-800 rounded-xl flex-shrink-0"><i data-lucide="activity" class="w-5 h-5 text-stone-300"></i></div>
+            <div>
+              <h3 class="font-serif text-xl text-white italic mb-1">Energy Leadership Index®</h3>
+              <p class="text-xs text-stone-400 mb-3 leading-relaxed">Stop managing symptoms. Map your complete autonomic baseline with a clinical 70-question diagnostic and 1:1 debrief session.</p>
+              <p class="text-[9px] text-stone-600 mb-3 italic">Energy Leadership Index® is a registered trademark of iPEC.</p>
+              <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] flex items-center gap-1">Book Assessment <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="text-center pt-6 border-t border-stone-200">
+        <a href="https://liveadaptiv.com" class="inline-flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-stone-400 hover:text-[#b2945e] transition-colors"><i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Return to Main Hub</a>
+      </div>
+    </div>
+  </main>
+
+  <div id="save-toast">Session saved</div>
+
+  <script>
+  lucide.createIcons();
+
+  function initStreak() {
+    const today = new Date().toDateString();
+    const lastVisit = localStorage.getItem('la_scc_last_visit');
+    let streak = parseInt(localStorage.getItem('la_scc_streak') || '0');
+    if (lastVisit !== today) {
+      const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
+      if (lastVisit === yesterday.toDateString()) streak += 1; else streak = 1;
+      localStorage.setItem('la_scc_streak', streak); localStorage.setItem('la_scc_last_visit', today);
+    }
+    if (streak >= 1) { document.getElementById('streak-badge').style.display = 'inline-flex'; document.getElementById('streak-count').textContent = streak; }
+  }
+
+  function updateTime() {
+    const now = new Date();
+    document.getElementById('live-time').textContent = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    document.getElementById('live-date').textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+  }
+  setInterval(updateTime, 1000); updateTime();
+
+  let timerInterval = null; let timeLeft = 90; let isRunning = false; const CIRCUMFERENCE = 2 * Math.PI * 48;
+  function startTimer() {
+    if (isRunning) return; isRunning = true;
+    const display = document.getElementById('timer-display'), btn = document.getElementById('timer-btn'), instruction = document.getElementById('flush-instruction'), ring = document.getElementById('timer-ring-progress'), body = document.body;
+    timeLeft = 90; display.textContent = '90'; btn.textContent = 'Flushing...'; body.classList.add('breathing'); clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      timeLeft--; display.textContent = timeLeft; ring.style.strokeDashoffset = CIRCUMFERENCE * (1 - (timeLeft / 90));
+      const cycle = (90 - timeLeft) % 12;
+      if (cycle < 4) { instruction.textContent = 'Deep inhale...'; instruction.style.color = '#b2945e'; ring.style.stroke = '#b2945e'; } 
+      else if (cycle < 10) { instruction.textContent = 'Long, slow exhale...'; instruction.style.color = '#1c1917'; ring.style.stroke = '#1c1917'; } 
+      else { instruction.textContent = 'Hold the emptiness...'; instruction.style.color = '#a8a29e'; ring.style.stroke = '#a8a29e'; }
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval); display.textContent = '✓'; instruction.textContent = 'System reset complete.'; instruction.style.color = '#059669'; ring.style.stroke = '#059669'; btn.textContent = 'Complete'; body.classList.remove('breathing');
+        setTimeout(() => { display.textContent = '90'; instruction.textContent = 'Visual 90-sec protocol'; instruction.style.color = ''; ring.style.strokeDashoffset = '0'; ring.style.stroke = ''; btn.textContent = 'Initiate Sequence'; isRunning = false; }, 3500);
+      }
+    }, 1000);
+  }
+
+  const protocols = [
+    { t: 'Linear Override', d: 'Anxiety operates in loops. Logic operates in lines. Name 3 physical objects in the room...', r: '"Panic is a circle. Logic is a line."' },
+    { t: 'The Faux-pology', d: 'Stop apologizing for your existence. Do not say "Sorry to bother you."...', r: '"I occupy my space without apology."' },
+    { t: 'Drop the Rope', d: 'You are in a power struggle. The easiest way to win a tug-of-war is to drop your end of the rope...', r: '"I do not need to be right to be effective."' },
+    { t: 'The 90-Second Rule', d: 'When triggered, your amygdala dumps cortisol. It takes 90 seconds to metabolize...', r: '"This is not a crisis. This is chemistry."' },
+    { t: 'The Fiction Audit', d: 'Separate the objective event from the narrative your brain is constructing...', r: '"I do not negotiate with my own fiction."' },
+    { t: 'The Seesaw', d: 'Judgment and curiosity cannot occupy the same space. Pivot to a "How" question...', r: '"Curiosity kills the reaction."' },
+    { t: 'No as Architecture', d: 'Every yes to a distraction is a silent no to your actual work. Protect the architecture.', r: '"My no is a sovereign decree, not an apology."' }
+  ];
+  let isFlipped = false, lastCardIdx = -1;
+  function getNewCard() { let idx; do { idx = Math.floor(Math.random() * protocols.length); } while (idx === lastCardIdx && protocols.length > 1); lastCardIdx = idx; return protocols[idx]; }
+  function loadCardContent() { const p = getNewCard(); document.getElementById('card-title').textContent = p.t; document.getElementById('card-desc').textContent = p.d; document.getElementById('card-reframe').textContent = p.r; }
+  function flipCard() {
+    if (isFlipped) return; loadCardContent(); document.getElementById('protocol-card').classList.add('is-flipped'); isFlipped = true;
+    setTimeout(() => { document.getElementById('reset-card-btn').classList.remove('hidden'); document.getElementById('reset-card-btn').classList.add('block'); }, 800);
+  }
+  function resetCard() {
+    loadCardContent(); document.getElementById('protocol-card').classList.remove('is-flipped');
+    document.getElementById('reset-card-btn').classList.add('hidden'); document.getElementById('reset-card-btn').classList.remove('block'); isFlipped = false;
+  }
+
+  const audioEl = document.getElementById('audio-el'); let audioPlaying = false;
+  function toggleAudio() { if (audioPlaying) { audioEl.pause(); audioPlaying = false; updatePlayIcon(false); } else { audioEl.play().catch(()=>{}); audioPlaying = true; updatePlayIcon(true); } }
+  function updatePlayIcon(playing) { const icon = document.getElementById('play-icon'); icon.setAttribute('data-lucide', playing ? 'pause' : 'play'); icon.style.marginLeft = playing ? '0' : '2px'; lucide.createIcons(); }
+  audioEl.addEventListener('timeupdate', () => { if (!audioEl.duration) return; document.getElementById('progress-fill').style.width = ((audioEl.currentTime / audioEl.duration) * 100) + '%'; document.getElementById('audio-time').textContent = `${Math.floor(audioEl.currentTime / 60)}:${String(Math.floor(audioEl.currentTime % 60)).padStart(2, '0')}`; });
+  audioEl.addEventListener('ended', () => { audioPlaying = false; updatePlayIcon(false); document.getElementById('progress-fill').style.width = '0%'; document.getElementById('audio-time').textContent = '0:00'; });
+  function seekAudio(e) { if (!audioEl.duration) return; const rect = e.currentTarget.getBoundingClientRect(); audioEl.currentTime = ((e.clientX - rect.left) / rect.width) * audioEl.duration; }
+
+  const SEAL_KEYS = ['seal-1', 'seal-2', 'seal-3'];
+  function loadSeal() { SEAL_KEYS.forEach(id => { const saved = localStorage.getItem('la_scc_' + id); if (saved) document.getElementById(id).value = saved; }); }
+  function saveSeal() { SEAL_KEYS.forEach(id => { localStorage.setItem('la_scc_' + id, document.getElementById(id).value); }); showToast('Session saved'); }
+  SEAL_KEYS.forEach(id => { document.getElementById(id).addEventListener('input', () => { clearTimeout(window._sealSaveTimer); window._sealSaveTimer = setTimeout(saveSeal, 800); }); });
+
+  function sealJournal() {
+    saveSeal(); SEAL_KEYS.forEach(id => document.getElementById(id).disabled = true);
+    document.getElementById('seal-btn').style.display = 'none'; document.getElementById('unlock-btn').style.display = 'block'; document.getElementById('delta-capture').style.display = 'block';
+    showToast('System locked');
+    
+    const reality = document.getElementById('seal-1').value || 'the friction I carried';
+    const identity = document.getElementById('seal-2').value || 'sovereign';
+    const action = document.getElementById('seal-3').value || 'close this loop';
+    const cardTitle = document.getElementById('card-title')?.textContent || '';
+    const frictionLevel = parseInt(document.getElementById('delta-slider').value) || 5;
+    generateDecree(reality, identity, action, cardTitle, frictionLevel);
+  }
+
+  function unlockJournal() {
+    SEAL_KEYS.forEach(id => document.getElementById(id).disabled = false);
+    document.getElementById('seal-btn').style.display = 'block'; document.getElementById('unlock-btn').style.display = 'none';
+    document.getElementById('delta-capture').style.display = 'none'; document.getElementById('decree-section').style.display = 'none';
+  }
+
+  function updateDelta(val) { document.getElementById('delta-val').textContent = val; }
+  function saveDelta() {
+    const val = document.getElementById('delta-slider').value; const log = JSON.parse(localStorage.getItem('la_scc_friction_log') || '[]');
+    log.push({ date: new Date().toDateString(), score: parseInt(val) }); if (log.length > 30) log.shift();
+    localStorage.setItem('la_scc_friction_log', JSON.stringify(log)); document.getElementById('delta-capture').style.display = 'none'; showToast('Friction logged');
+  }
+
+  let currentDecree = '';
+  async function generateDecree(reality, identity, action, cardTitle, frictionLevel) {
+    const section = document.getElementById('decree-section'), textEl = document.getElementById('decree-text');
+    section.style.display = 'block'; textEl.style.opacity = '0'; textEl.textContent = 'Forging your decree...';
+    setTimeout(() => { textEl.style.opacity = '1'; }, 100);
+    try {
+      const response = await fetch('/api/generate-decree', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reality, identity, action, cardTitle, frictionLevel }) });
+      const data = await response.json(); currentDecree = data.decree;
+      textEl.style.opacity = '0';
+      setTimeout(() => { textEl.textContent = currentDecree; textEl.style.opacity = '1'; document.getElementById('lead-capture').style.display = 'block'; }, 200);
+    } catch(e) { textEl.textContent = 'Decree unavailable at this moment. But your word is enough.'; textEl.style.opacity = '1'; document.getElementById('lead-capture').style.display = 'block'; }
+  }
+
+  function shareDecree() {
+    if (!currentDecree) return;
+    const decreeElement = document.getElementById('decree-section'), buttons = decreeElement.querySelectorAll('button');
+    buttons.forEach(b => b.style.display = 'none');
+    const originalPadding = decreeElement.style.padding; decreeElement.style.padding = '40px'; 
+    html2canvas(decreeElement, { backgroundColor: '#ffffff', scale: 2, logging: false }).then(canvas => {
+      decreeElement.style.padding = originalPadding; buttons.forEach(b => b.style.display = '');
+      const link = document.createElement('a'); link.download = 'Sovereign-Decree.png'; link.href = canvas.toDataURL('image/png'); link.click(); showToast('Decree image saved');
+    }).catch(() => { decreeElement.style.padding = originalPadding; buttons.forEach(b => b.style.display = ''); navigator.clipboard.writeText(currentDecree).then(() => showToast('Decree copied')); });
+  }
+
+  function copyDecree() { if (currentDecree) { navigator.clipboard.writeText(currentDecree).then(() => showToast('Copied')); } }
+
+  async function captureLead() {
+    const email = document.getElementById('lead-email').value.trim();
+    if (!email || !email.includes('@')) { const msgEl = document.getElementById('lead-msg'); msgEl.textContent = 'Please enter a valid email.'; msgEl.classList.remove('hidden'); return; }
+    const btn = document.querySelector('#lead-capture button'); btn.disabled = true; btn.textContent = 'Sending...';
+    try {
+      const response = await fetch('/api/capture-lead', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, decree: currentDecree, reality: document.getElementById('seal-1').value, identity: document.getElementById('seal-2').value, action: document.getElementById('seal-3').value, cardTitle: document.getElementById('card-title')?.textContent || '', frictionLevel: document.getElementById('delta-slider').value })
+      });
+      if (response.ok) { document.getElementById('lead-msg').textContent = 'Decree sent. Check your inbox.'; document.getElementById('lead-msg').classList.remove('hidden'); document.getElementById('lead-capture').style.display = 'none'; } 
+      else { throw new Error('API error'); }
+    } catch(e) { document.getElementById('lead-msg').textContent = 'Something went wrong. Please try again.'; document.getElementById('lead-msg').classList.remove('hidden'); btn.disabled = false; btn.textContent = 'Send'; }
+  }
+
+  function showToast(msg) { const toast = document.getElementById('save-toast'); toast.textContent = msg; toast.classList.add('visible'); clearTimeout(toast._t); toast._t = setTimeout(() => toast.classList.remove('visible'), 1800); }
+
+  document.addEventListener('DOMContentLoaded', () => { initStreak(); loadSeal(); lucide.createIcons(); });
+  </script>
+</body>
+</html>
