@@ -12,10 +12,14 @@
     :root {
       --gold: #b2945e;
       --gold-lt: #d4b483;
+      --gold-pale: rgba(178,148,94,0.08);
       --stone: #fafaf9;
       --charcoal: #1c1917;
+      --muted: #78716c;
     }
-    * { box-sizing: border-box; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       background-color: var(--stone);
       color: var(--charcoal);
@@ -25,51 +29,303 @@
       display: flex;
       flex-direction: column;
     }
+
     .font-serif { font-family: 'Cormorant Garamond', serif; }
+
     .blueprint-dot {
       background-image: radial-gradient(circle at 1px 1px, #e7e5e4 1px, transparent 0);
       background-size: 30px 30px;
-      transition: background-size 2s ease;
     }
-    .blueprint-dot.breathing { animation: bgBreathe 8s ease-in-out infinite; }
-    @keyframes bgBreathe { 0%, 100% { background-size: 30px 30px; } 50% { background-size: 34px 34px; } }
-    .fade-in { animation: fadeIn 0.8s ease forwards; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .streak-badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px; border-radius: 100px; background: rgba(178,148,94,0.1); border: 1px solid rgba(178,148,94,0.25); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); }
-    .streak-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
-    .scene { width: 100%; height: 400px; perspective: 1000px; margin: 1.5rem 0; }
-    .card-container { width: 100%; height: 100%; position: relative; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; cursor: pointer; }
+    .blueprint-dot.breathing {
+      animation: bgBreathe 8s ease-in-out infinite;
+    }
+    @keyframes bgBreathe {
+      0%, 100% { background-size: 30px 30px; }
+      50% { background-size: 34px 34px; }
+    }
+
+    .fade-in { animation: fadeIn 0.9s ease forwards; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .streak-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      background: rgba(178,148,94,0.1);
+      border: 1px solid rgba(178,148,94,0.25);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .streak-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .scene {
+      width: 100%; height: 400px;
+      perspective: 1000px;
+      margin: 1.5rem 0;
+    }
+    .card-container {
+      width: 100%; height: 100%;
+      position: relative;
+      transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
     .card-container.is-flipped { transform: rotateY(180deg); }
-    .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.22); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; text-align: center; }
-    .card-face-front { background: linear-gradient(135deg, #1c1917 0%, #0f172a 100%); color: var(--gold); border: 1px solid #334155; }
-    .card-face-front::after { content: ''; position: absolute; inset: 12px; border: 1px solid rgba(178,148,94,0.25); border-radius: 16px; pointer-events: none; }
-    .card-face-back { background: #ffffff; color: var(--charcoal); transform: rotateY(180deg); border: 1px solid #e2e8f0; justify-content: space-between; padding: 36px 28px; }
-    .audio-player { display: flex; align-items: center; gap: 14px; background: var(--stone); border: 1px solid rgba(178,148,94,0.2); border-radius: 100px; padding: 10px 18px; margin-top: 16px; }
-    .audio-play-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--gold); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s, transform 0.15s; }
+    .card-face {
+      position: absolute;
+      width: 100%; height: 100%;
+      backface-visibility: hidden;
+      border-radius: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.22);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+      text-align: center;
+    }
+    .card-face-front {
+      background: linear-gradient(135deg, #1c1917 0%, #0f172a 100%);
+      color: var(--gold);
+      border: 1px solid #334155;
+    }
+    .card-face-front::after {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border: 1px solid rgba(178,148,94,0.25);
+      border-radius: 16px;
+      pointer-events: none;
+    }
+    .card-face-back {
+      background: #ffffff;
+      color: var(--charcoal);
+      transform: rotateY(180deg);
+      border: 1px solid #e2e8f0;
+      justify-content: space-between;
+      padding: 36px 28px;
+    }
+
+    .audio-player {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--stone);
+      border: 1px solid rgba(178,148,94,0.2);
+      border-radius: 100px;
+      padding: 10px 18px;
+      margin-top: 16px;
+    }
+    .audio-play-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s, transform 0.15s;
+    }
     .audio-play-btn:hover { background: var(--gold-lt); transform: scale(1.05); }
     .audio-play-btn svg { width: 14px; height: 14px; color: white; }
     .audio-track { flex: 1; display: flex; flex-direction: column; gap: 4px; }
-    .audio-progress-bg { width: 100%; height: 3px; background: #e7e5e4; border-radius: 100px; cursor: pointer; position: relative; }
-    .audio-progress-fill { height: 100%; background: var(--gold); border-radius: 100px; width: 0%; transition: width 0.5s linear; pointer-events: none; }
-    .audio-time { font-size: 9px; font-weight: 600; color: #a8a29e; letter-spacing: 0.05em; text-align: right; }
-    .timer-svg { position: absolute; inset: -6px; width: calc(100% + 12px); height: calc(100% + 12px); transform: rotate(-90deg); }
+    .audio-progress-bg {
+      width: 100%; height: 3px;
+      background: #e7e5e4;
+      border-radius: 100px;
+      cursor: pointer;
+      position: relative;
+    }
+    .audio-progress-fill {
+      height: 100%;
+      background: var(--gold);
+      border-radius: 100px;
+      width: 0%;
+      transition: width 0.5s linear;
+      pointer-events: none;
+    }
+    .audio-time {
+      font-size: 9px;
+      font-weight: 600;
+      color: #a8a29e;
+      letter-spacing: 0.05em;
+      text-align: right;
+    }
+
+    .timer-svg {
+      position: absolute;
+      inset: -6px;
+      width: calc(100% + 12px);
+      height: calc(100% + 12px);
+      transform: rotate(-90deg);
+    }
     .timer-ring-track { fill: none; stroke: #f0ede9; stroke-width: 3; }
-    .timer-ring-progress { fill: none; stroke: var(--gold); stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset 1s linear, stroke 0.5s; }
-    .seal-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid #3a3632; padding: 10px 0; color: white; font-family: 'DM Sans', sans-serif; font-size: 1rem; outline: none; transition: border-color 0.2s; }
+    .timer-ring-progress {
+      fill: none;
+      stroke: var(--gold);
+      stroke-width: 3;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1s linear, stroke 0.5s;
+    }
+
+    .seal-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #3a3632;
+      padding: 10px 0;
+      color: white;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
     .seal-input:focus { border-bottom-color: var(--gold); }
     .seal-input::placeholder { color: #57534e; }
     .seal-input:disabled { opacity: 0.5; cursor: not-allowed; }
-    #save-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--charcoal); color: white; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 8px 18px; border-radius: 100px; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; white-space: nowrap; }
+
+    #save-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--charcoal);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      border-radius: 100px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      z-index: 999;
+      white-space: nowrap;
+    }
     #save-toast.visible { opacity: 1; }
-    .upsell-card { display: block; padding: 22px 24px; border-radius: 20px; border: 1px solid #e7e5e4; background: white; text-decoration: none; transition: all 0.25s; }
-    .upsell-card:hover { border-color: var(--gold); box-shadow: 0 8px 24px rgba(178,148,94,0.12); transform: translateY(-2px); }
-    .upsell-card-dark { background: #1c1917; border-color: #3a3632; }
+
+    .upsell-card {
+      display: block;
+      padding: 22px 24px;
+      border-radius: 20px;
+      border: 1px solid #e7e5e4;
+      background: white;
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+    .upsell-card:hover {
+      border-color: var(--gold);
+      box-shadow: 0 8px 24px rgba(178,148,94,0.12);
+      transform: translateY(-2px);
+    }
+    .upsell-card-dark {
+      background: #1c1917;
+      border-color: #3a3632;
+    }
     .upsell-card-dark:hover { border-color: var(--gold); }
+
     #decree-section { transition: opacity 0.4s; }
     #decree-text { transition: opacity 0.5s; }
+
+    .progress-dots {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    .progress-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #e7e5e4;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .progress-dot.active {
+      background: var(--gold);
+      transform: scale(1.3);
+    }
+    .progress-dot.done {
+      background: var(--gold);
+      opacity: 0.4;
+    }
+
+    .delta-display {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: #f5f4f2;
+      border-radius: 12px;
+      margin-top: 12px;
+    }
+    .delta-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .delta-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-style: italic;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    @media (hover: none) {
+      .upsell-card:hover { transform: none; }
+      .audio-play-btn:hover { transform: none; }
+    }
+
+    .skeleton {
+      background: linear-gradient(90deg, #f0ede9 25%, #e7e4e0 50%, #f0ede9 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 4px;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .char-count {
+      font-size: 9px;
+      color: #a8a29e;
+      text-align: right;
+      margin-top: 4px;
+      transition: color 0.2s;
+    }
+    .char-count.warn { color: #ef4444; }
   </style>
 </head>
 <body class="blueprint-dot fade-in">
+
+  <!-- NAV -->
   <nav class="p-5 flex justify-between items-center sticky top-0 z-50 bg-stone-50/90 backdrop-blur-md border-b border-stone-200">
     <a href="https://liveadaptiv.com" class="flex items-center gap-3 hover:opacity-70 transition-opacity">
       <div class="w-8 h-8 border border-[#b2945e]/40 rounded-full flex items-center justify-center">
@@ -90,267 +346,685 @@
   </nav>
 
   <main class="flex-1 max-w-lg mx-auto w-full p-6 pb-12 space-y-16">
-    <div class="text-center pt-8">
+
+    <!-- MODE TOGGLE -->
+    <div class="flex justify-center mb-4">
+      <div class="bg-stone-200/50 p-1 rounded-full flex inline-flex text-[10px] font-bold uppercase tracking-widest">
+        <button id="mode-deep" onclick="setMode('deep')" class="px-4 py-2 rounded-full bg-white text-stone-800 shadow-sm transition-all">Deep Protocol</button>
+        <button id="mode-quick" onclick="setMode('quick')" class="px-4 py-2 rounded-full text-stone-500 hover:text-stone-800 transition-all">Quick Reset</button>
+      </div>
+    </div>
+
+    <!-- HERO (Clock + Teaser) -->
+    <div class="text-center pt-8 reveal">
       <p id="live-date" class="text-xs font-bold uppercase tracking-widest text-[#b2945e] mb-2">Loading...</p>
       <h1 id="live-time" class="text-7xl font-sans font-light text-stone-900 tracking-tight tabular-nums">00:00</h1>
       <p class="text-stone-400 text-sm mt-4 font-serif italic max-w-xs mx-auto leading-relaxed">"You are exactly here. Everything else is fiction."</p>
-    </div>
 
-    <div class="border-t border-stone-200 pt-10">
-      <div class="text-center mb-8">
-        <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Flush</h2>
-        <p class="text-stone-500 text-sm max-w-xs mx-auto">You cannot out-think chemistry. Clear the cortisol before you act.</p>
-      </div>
-      <div class="bg-white border border-stone-200 rounded-[32px] p-8 text-center shadow-sm">
-        <div class="w-28 h-28 mx-auto mb-6 relative flex items-center justify-center">
-          <svg class="timer-svg" viewBox="0 0 108 108">
-            <circle class="timer-ring-track" cx="54" cy="54" r="48"/>
-            <circle id="timer-ring-progress" class="timer-ring-progress" cx="54" cy="54" r="48" stroke-dasharray="301.6" stroke-dashoffset="0"/>
-          </svg>
-          <span id="timer-display" class="font-serif text-4xl text-stone-900 italic relative z-10">90</span>
-        </div>
-        <p id="flush-instruction" class="text-[11px] font-bold text-stone-400 uppercase tracking-[0.18em] mb-8 h-4 transition-colors duration-500">Visual 90-sec protocol</p>
-        <button id="timer-btn" onclick="startTimer()" class="w-full py-4 rounded-full bg-stone-900 text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-stone-800 transition-colors shadow-md">Initiate Sequence</button>
-      </div>
-    </div>
-
-    <div class="border-t border-stone-200 pt-10 text-center">
-      <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Protocol</h2>
-      <p class="text-stone-500 text-sm max-w-xs mx-auto">Tap the card to draw your active reframe.</p>
-      <div class="scene">
-        <div class="card-container" id="protocol-card" onclick="flipCard()">
-          <div class="card-face card-face-front">
-            <div class="w-16 h-16 border border-[#b2945e]/50 rounded-full flex items-center justify-center mb-6 transition-transform duration-500 hover:scale-110">
-              <span class="font-serif italic text-4xl pb-1 text-[#b2945e]">A</span>
-            </div>
-            <h3 class="text-lg font-bold uppercase tracking-[0.4em] text-white mb-2">Draw</h3>
-            <p class="text-[10px] uppercase tracking-widest text-[#b2945e]">Tactical Override</p>
-          </div>
-          <div class="card-face card-face-back">
-            <div class="text-center w-full">
-              <span class="text-[#b2945e] font-bold text-[10px] uppercase tracking-widest mb-3 block">Active Protocol</span>
-              <h2 id="card-title" class="font-serif italic text-3xl text-stone-900 mb-5 leading-tight">Linear Override</h2>
-              <div class="w-10 h-px bg-stone-200 mx-auto mb-5"></div>
-              <p id="card-desc" class="text-sm text-stone-600 leading-relaxed font-medium text-left"></p>
-            </div>
-            <div class="w-full text-center mt-6 p-4 bg-stone-50 rounded-xl border border-stone-100">
-              <span class="block text-[9px] uppercase tracking-widest text-stone-400 font-bold mb-1.5">The Sovereign Reframe</span>
-              <p id="card-reframe" class="text-xs font-serif italic text-stone-800 font-bold leading-relaxed"></p>
-            </div>
-          </div>
+      <!-- TEASER: Example Decree -->
+      <div class="mt-6 mb-12 max-w-sm mx-auto">
+        <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-stone-400 text-center mb-3">The Artifact You Earn</p>
+        <div class="bg-[#1c1917] p-6 rounded-2xl border border-[#3a3632] shadow-lg relative">
+          <i data-lucide="quote" class="absolute top-4 left-4 w-4 h-4 text-[#b2945e] opacity-50"></i>
+          <p id="teaser-text" class="font-serif italic text-stone-300 text-[15px] leading-relaxed mt-2 text-center">
+            <!-- filled by JS -->
+          </p>
+          <p class="text-[10px] text-stone-500 text-center mt-4 uppercase tracking-widest">— Example Decree</p>
         </div>
       </div>
-      <button id="reset-card-btn" onclick="resetCard()" class="hidden mx-auto px-6 py-2 rounded-full border border-stone-200 text-stone-500 font-sans text-[10px] uppercase tracking-widest hover:bg-stone-100 transition-colors">Draw Another</button>
+
+      <!-- Progress Dots (hidden in quick mode) -->
+      <div class="progress-dots mt-6" id="progress-dots">
+        <div class="progress-dot active" title="The Flush"></div>
+        <div class="progress-dot" title="The Protocol"></div>
+        <div class="progress-dot" title="The Philosophy"></div>
+        <div class="progress-dot" title="The Seal"></div>
+      </div>
+      <p class="text-[9px] uppercase tracking-widest text-stone-400 font-bold" id="progress-label">Step 1 of 4 — The Flush</p>
     </div>
 
-    <div class="border-t border-stone-200 pt-10">
-      <div class="text-center mb-8">
-        <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Philosophy</h2>
-        <p class="text-stone-500 text-sm max-w-xs mx-auto">The operating system beneath the tactics.</p>
+    <!-- DEEP SECTIONS WRAPPER (Protocol + Philosophy) -->
+    <div id="deep-sections" class="transition-all duration-500 overflow-hidden">
+
+      <!-- THE FLUSH -->
+      <div class="border-t border-stone-200 pt-10 reveal" id="section-flush">
+        <div class="text-center mb-8">
+          <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] block mb-2">Step 1</span>
+          <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Flush</h2>
+          <p class="text-stone-500 text-sm max-w-xs mx-auto">You cannot out-think chemistry. Clear the cortisol before you act.</p>
+        </div>
+
+        <!-- FRICTION INTAKE -->
+        <div class="mb-6 bg-white border border-stone-200 rounded-2xl p-5">
+          <p class="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-3">Before you begin — current friction level</p>
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-xs text-stone-400">1 — Flow</span>
+            <span id="pre-val" class="font-serif italic text-2xl text-[#b2945e]">5</span>
+            <span class="text-xs text-stone-400">10 — Overload</span>
+          </div>
+          <input type="range" min="1" max="10" value="5" id="pre-slider"
+            oninput="document.getElementById('pre-val').textContent=this.value"
+            class="w-full accent-[#b2945e]">
+        </div>
+
+        <div class="bg-white border border-stone-200 rounded-[32px] p-8 text-center shadow-sm">
+          <div class="w-28 h-28 mx-auto mb-6 relative flex items-center justify-center">
+            <svg class="timer-svg" viewBox="0 0 108 108">
+              <circle class="timer-ring-track" cx="54" cy="54" r="48"/>
+              <circle id="timer-ring-progress" class="timer-ring-progress" cx="54" cy="54" r="48"
+                stroke-dasharray="301.6" stroke-dashoffset="0"/>
+            </svg>
+            <span id="timer-display" class="font-serif text-4xl text-stone-900 italic relative z-10">90</span>
+          </div>
+          <p id="flush-instruction" class="text-[11px] font-bold text-stone-400 uppercase tracking-[0.18em] mb-8 h-4 transition-colors duration-500">Visual 90-sec protocol</p>
+          <button id="timer-btn" onclick="startTimer()"
+            class="w-full py-4 rounded-full bg-stone-900 text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-stone-800 transition-colors shadow-md">
+            Initiate Sequence
+          </button>
+        </div>
       </div>
-      <div class="bg-white border border-[#b2945e]/25 rounded-[24px] p-6 shadow-sm relative overflow-hidden mb-6">
-        <div class="absolute right-4 top-4 opacity-[0.04]"><i data-lucide="headphones" class="w-20 h-20"></i></div>
-        <div class="relative z-10">
-          <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] block mb-1">Deep Integration</span>
-          <h3 class="font-serif text-2xl text-stone-900 italic mb-1">The Decompression</h3>
-          <p class="text-xs text-stone-500 mb-4 max-w-[85%] leading-relaxed">A guided biological reset. Use when you have space to fully metabolize the day's friction.</p>
-          <div class="audio-player">
-            <button class="audio-play-btn" id="play-btn" onclick="toggleAudio()"><i data-lucide="play" id="play-icon" style="margin-left:2px"></i></button>
-            <div class="audio-track">
-              <div class="audio-progress-bg" id="progress-bg" onclick="seekAudio(event)">
-                <div class="audio-progress-fill" id="progress-fill"></div>
+
+      <!-- THE PROTOCOL -->
+      <div class="border-t border-stone-200 pt-10 text-center reveal" id="section-protocol">
+        <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] block mb-2">Step 2</span>
+        <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Protocol</h2>
+        <p class="text-stone-500 text-sm max-w-xs mx-auto">Tap the card to draw your active reframe.</p>
+
+        <div class="scene">
+          <div class="card-container" id="protocol-card" onclick="flipCard()">
+            <div class="card-face card-face-front">
+              <div class="w-16 h-16 border border-[#b2945e]/50 rounded-full flex items-center justify-center mb-6 transition-transform duration-500 hover:scale-110">
+                <span class="font-serif italic text-4xl pb-1 text-[#b2945e]">A</span>
               </div>
-              <div class="audio-time" id="audio-time">0:00</div>
+              <h3 class="text-lg font-bold uppercase tracking-[0.4em] text-white mb-2">Draw</h3>
+              <p class="text-[10px] uppercase tracking-widest text-[#b2945e]">Tactical Override</p>
+            </div>
+            <div class="card-face card-face-back">
+              <div class="text-center w-full">
+                <span class="text-[#b2945e] font-bold text-[10px] uppercase tracking-widest mb-3 block">Active Protocol</span>
+                <h2 id="card-title" class="font-serif italic text-3xl text-stone-900 mb-5 leading-tight">Linear Override</h2>
+                <div class="w-10 h-px bg-stone-200 mx-auto mb-5"></div>
+                <p id="card-desc" class="text-sm text-stone-600 leading-relaxed font-medium text-left"></p>
+              </div>
+              <div class="w-full text-center mt-6 p-4 bg-stone-50 rounded-xl border border-stone-100">
+                <span class="block text-[9px] uppercase tracking-widest text-stone-400 font-bold mb-1.5">The Sovereign Reframe</span>
+                <p id="card-reframe" class="text-xs font-serif italic text-stone-800 font-bold leading-relaxed"></p>
+              </div>
             </div>
           </div>
-          <audio id="audio-el" preload="none"><source src="decompression.m4a" type="audio/mp4"></audio>
         </div>
+        <button id="reset-card-btn" onclick="resetCard()"
+          class="hidden mx-auto px-6 py-2 rounded-full border border-stone-200 text-stone-500 font-sans text-[10px] uppercase tracking-widest hover:bg-stone-100 transition-colors">
+          Draw Another
+        </button>
       </div>
-      <div class="bg-stone-50 p-6 rounded-2xl border border-stone-200">
-        <div class="flex items-center gap-3 mb-3">
-          <div class="w-6 h-6 rounded-full bg-[#b2945e]/15 flex items-center justify-center"><i data-lucide="shield" class="w-3 h-3 text-[#b2945e]"></i></div>
-          <h4 class="font-sans text-[10px] font-bold uppercase tracking-widest text-stone-400">Core Architecture</h4>
-        </div>
-        <p class="font-serif text-xl text-stone-900 italic mb-2">"You are the Asset."</p>
-        <p class="text-xs text-stone-600 leading-relaxed">You are not the worker. If the Asset breaks, the work stops. Protecting the Asset — through fierce boundaries and unapologetic rest — IS the work.</p>
-      </div>
-    </div>
 
-    <div class="border-t border-stone-200 pt-10 pb-2">
-      <div class="text-center mb-8">
-        <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Seal</h2>
-        <p class="text-stone-500 text-sm max-w-xs mx-auto">Lock in the shift.</p>
+      <!-- THE PHILOSOPHY -->
+      <div class="border-t border-stone-200 pt-10 reveal" id="section-philosophy">
+        <div class="text-center mb-8">
+          <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] block mb-2">Step 3</span>
+          <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Philosophy</h2>
+          <p class="text-stone-500 text-sm max-w-xs mx-auto">The operating system beneath the tactics.</p>
+        </div>
+
+        <div class="bg-white border border-[#b2945e]/25 rounded-[24px] p-6 shadow-sm relative overflow-hidden mb-6">
+          <div class="absolute right-4 top-4 opacity-[0.04]">
+            <i data-lucide="headphones" class="w-20 h-20"></i>
+          </div>
+          <div class="relative z-10">
+            <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] block mb-1">Deep Integration</span>
+            <h3 class="font-serif text-2xl text-stone-900 italic mb-1">The Decompression</h3>
+            <p class="text-xs text-stone-500 mb-4 max-w-[85%] leading-relaxed">A guided biological reset. Use when you have space to fully metabolize the day's friction.</p>
+
+            <div id="audio-ui">
+              <div class="audio-player">
+                <button class="audio-play-btn" id="play-btn" onclick="toggleAudio()">
+                  <i data-lucide="play" id="play-icon" style="margin-left:2px"></i>
+                </button>
+                <div class="audio-track">
+                  <div class="audio-progress-bg" id="progress-bg" onclick="seekAudio(event)">
+                    <div class="audio-progress-fill" id="progress-fill"></div>
+                  </div>
+                  <div class="audio-time" id="audio-time">0:00</div>
+                </div>
+              </div>
+            </div>
+            <div id="audio-unavailable" style="display:none" class="text-[10px] text-stone-400 italic mt-3">
+              Audio unavailable — check back soon.
+            </div>
+
+            <audio id="audio-el" preload="none">
+              <source src="decompression.m4a" type="audio/mp4">
+              <source src="decompression.m4p" type="audio/mp4">
+              <source src="decompression.mp3" type="audio/mpeg">
+            </audio>
+          </div>
+        </div>
+
+        <div class="bg-stone-50 p-6 rounded-2xl border border-stone-200">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-6 h-6 rounded-full bg-[#b2945e]/15 flex items-center justify-center">
+              <i data-lucide="shield" class="w-3 h-3 text-[#b2945e]"></i>
+            </div>
+            <h4 class="font-sans text-[10px] font-bold uppercase tracking-widest text-stone-400">Core Architecture</h4>
+          </div>
+          <p class="font-serif text-xl text-stone-900 italic mb-2">"You are the Asset."</p>
+          <p class="text-xs text-stone-600 leading-relaxed">You are not the worker. If the Asset breaks, the work stops. Protecting the Asset — through fierce boundaries and unapologetic rest — IS the work.</p>
+        </div>
+
+        <div class="mt-4 bg-white border border-stone-200 rounded-2xl p-5">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-6 h-6 rounded-full bg-[#b2945e]/15 flex items-center justify-center">
+              <i data-lucide="zap" class="w-3 h-3 text-[#b2945e]"></i>
+            </div>
+            <h4 class="font-sans text-[10px] font-bold uppercase tracking-widest text-stone-400">Today's Signal</h4>
+          </div>
+          <p id="daily-insight" class="font-serif text-lg text-stone-900 italic leading-relaxed"></p>
+        </div>
       </div>
+
+    </div> <!-- end deep-sections -->
+
+    <!-- THE SEAL (always visible) -->
+    <div class="border-t border-stone-200 pt-10 pb-2 reveal" id="section-seal">
+      <div class="text-center mb-8">
+        <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] block mb-2">Step 4</span>
+        <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Seal</h2>
+        <p class="text-stone-500 text-sm max-w-xs mx-auto">Lock in the shift. Three lines. No more.</p>
+      </div>
+
       <div class="bg-stone-900 p-8 rounded-[32px] shadow-2xl border border-stone-800 relative overflow-hidden">
         <div class="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-[#b2945e]/5 blur-2xl pointer-events-none"></div>
         <div class="space-y-8 relative z-10">
           <div>
             <label class="font-serif text-xl text-stone-300 block mb-2">The reality is...</label>
-            <input id="seal-1" type="text" class="seal-input" placeholder="e.g., the deadline was moved.">
+            <input id="seal-1" type="text" class="seal-input" placeholder="e.g., the deadline was moved." maxlength="120" oninput="updateCharCount('seal-1','cc-1',120)">
+            <div class="char-count" id="cc-1">120</div>
           </div>
           <div>
             <label class="font-serif text-xl text-stone-300 block mb-2">I choose to be...</label>
-            <input id="seal-2" type="text" class="seal-input" placeholder="e.g., decisive and unbothered.">
+            <input id="seal-2" type="text" class="seal-input" placeholder="e.g., decisive and unbothered." maxlength="80" oninput="updateCharCount('seal-2','cc-2',80)">
+            <div class="char-count" id="cc-2">80</div>
           </div>
           <div>
             <label class="font-serif text-xl text-stone-300 block mb-2">My next action is...</label>
-            <input id="seal-3" type="text" class="seal-input" placeholder="e.g., close the laptop.">
+            <input id="seal-3" type="text" class="seal-input" placeholder="e.g., close the laptop." maxlength="80" oninput="updateCharCount('seal-3','cc-3',80)">
+            <div class="char-count" id="cc-3">80</div>
           </div>
           <div class="pt-2 flex gap-3">
-            <button onclick="sealJournal()" id="seal-btn" class="flex-1 py-4 rounded-full bg-[#b2945e] text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-[#d4b483] transition-all">Lock System</button>
-            <button onclick="unlockJournal()" id="unlock-btn" style="display:none" class="px-5 py-4 rounded-full border border-stone-700 text-stone-400 font-bold text-[10px] uppercase tracking-[0.15em] hover:border-stone-500 transition-all">Edit</button>
+            <button onclick="sealJournal()" id="seal-btn"
+              class="flex-1 py-4 rounded-full bg-[#b2945e] text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-[#d4b483] transition-all disabled:opacity-50">
+              Lock System
+            </button>
+            <button onclick="unlockJournal()" id="unlock-btn" style="display:none"
+              class="px-5 py-4 rounded-full border border-stone-700 text-stone-400 font-bold text-[10px] uppercase tracking-[0.15em] hover:border-stone-500 transition-all">
+              Edit
+            </button>
           </div>
         </div>
       </div>
+
+      <!-- FRICTION DELTA -->
       <div id="delta-capture" class="mt-6 bg-white border border-stone-200 rounded-2xl p-6" style="display:none">
-        <p class="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-4">Post-Session Friction Level</p>
+        <p class="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-1">Post-Session Friction Level</p>
+        <p class="text-xs text-stone-500 mb-4">How does the load feel now compared to when you started?</p>
         <div class="flex justify-between items-center mb-2">
           <span class="text-xs text-stone-400">1 — Flow</span>
           <span id="delta-val" class="font-serif italic text-2xl text-[#b2945e]">5</span>
           <span class="text-xs text-stone-400">10 — Overload</span>
         </div>
-        <input type="range" min="1" max="10" value="5" id="delta-slider" oninput="updateDelta(this.value)" class="w-full accent-[#b2945e]">
-        <button onclick="saveDelta()" class="mt-4 w-full py-3 rounded-full bg-stone-900 text-white text-[10px] font-bold uppercase tracking-widest hover:bg-stone-800 transition-colors">Record &amp; Close</button>
+        <input type="range" min="1" max="10" value="5" id="delta-slider"
+          oninput="updateDelta(this.value)" class="w-full accent-[#b2945e]">
+
+        <div id="delta-comparison" class="delta-display mt-4" style="display:none">
+          <div>
+            <div class="delta-label">Before</div>
+            <div class="delta-value" id="delta-before">—</div>
+          </div>
+          <div class="text-stone-300 font-sans text-lg">→</div>
+          <div>
+            <div class="delta-label">After</div>
+            <div class="delta-value" id="delta-after">—</div>
+          </div>
+          <div>
+            <div class="delta-label">Shift</div>
+            <div class="delta-value" id="delta-shift">—</div>
+          </div>
+        </div>
+
+        <button onclick="saveDelta()"
+          class="mt-4 w-full py-3 rounded-full bg-stone-900 text-white text-[10px] font-bold uppercase tracking-widest hover:bg-stone-800 transition-colors">
+          Record &amp; Close
+        </button>
       </div>
 
+      <!-- DECREE + LEAD CAPTURE -->
       <div id="decree-section" style="display:none" class="mt-6 bg-white border border-[#b2945e]/30 rounded-2xl p-6 shadow-sm">
         <div class="flex items-center gap-2 mb-4">
           <i data-lucide="crown" class="w-4 h-4 text-[#b2945e]"></i>
           <span class="text-[10px] font-bold uppercase tracking-widest text-[#b2945e]">The Decree</span>
         </div>
-        <p id="decree-text" class="font-serif italic text-lg text-stone-900 leading-relaxed mb-5 opacity-0 transition-opacity duration-500">Forging your decree...</p>
-        <div class="flex gap-3">
-          <button onclick="shareDecree()" class="flex-1 py-2 rounded-full border border-stone-200 text-stone-600 text-[10px] font-bold uppercase tracking-widest hover:bg-stone-50 transition-colors"><i data-lucide="share-2" class="w-3 h-3 inline mr-1"></i> Share as Image</button>
-          <button onclick="copyDecree()" class="px-4 py-2 rounded-full border border-stone-200 text-stone-500 text-[10px] font-bold uppercase tracking-widest hover:bg-stone-50">Copy</button>
+
+        <div id="decree-loading" class="mb-5">
+          <div class="skeleton h-4 w-full mb-2"></div>
+          <div class="skeleton h-4 w-4/5 mb-2"></div>
+          <div class="skeleton h-4 w-3/5"></div>
         </div>
+
+        <p id="decree-text"
+          class="font-serif italic text-lg text-stone-900 leading-relaxed mb-5 opacity-0 transition-opacity duration-500"
+          style="display:none">
+        </p>
+
+        <div id="decree-actions" class="flex gap-3" style="display:none">
+          <button onclick="shareDecree()"
+            class="flex-1 py-2 rounded-full border border-stone-200 text-stone-600 text-[10px] font-bold uppercase tracking-widest hover:bg-stone-50 transition-colors">
+            <i data-lucide="share-2" class="w-3 h-3 inline mr-1"></i> Share
+          </button>
+          <button onclick="copyDecree()"
+            class="px-4 py-2 rounded-full border border-stone-200 text-stone-500 text-[10px] font-bold uppercase tracking-widest hover:bg-stone-50">
+            Copy
+          </button>
+        </div>
+
         <div id="lead-capture" class="mt-6 pt-5 border-t border-stone-100" style="display:none">
-          <p class="text-xs text-stone-500 mb-3 font-medium">Want this delivered to your inbox? Get future decrees and early access to the full Adaptiv mind.</p>
+          <p class="text-xs text-stone-500 mb-1 font-medium">Want this in your inbox?</p>
+          <p class="text-xs text-stone-400 mb-3">Get your decree delivered + early access to the full Adaptiv protocol.</p>
           <div class="flex gap-2">
-            <input id="lead-email" type="email" placeholder="Your email" class="flex-1 px-4 py-2 rounded-full border border-stone-200 text-sm text-stone-800 outline-none focus:border-[#b2945e] transition-colors">
-            <button onclick="captureLead()" class="px-5 py-2 rounded-full bg-[#b2945e] text-white font-bold text-[10px] uppercase tracking-widest hover:bg-[#d4b483] transition-colors">Send</button>
+            <input id="lead-email" type="email" placeholder="Your email"
+              class="flex-1 px-4 py-2 rounded-full border border-stone-200 text-sm text-stone-800 outline-none focus:border-[#b2945e] transition-colors">
+            <button onclick="captureLead()" id="lead-btn"
+              class="px-5 py-2 rounded-full bg-[#b2945e] text-white font-bold text-[10px] uppercase tracking-widest hover:bg-[#d4b483] transition-colors">
+              Send
+            </button>
           </div>
-          <p id="lead-msg" class="text-[10px] text-emerald-600 mt-2 hidden">Decree sent. Check your inbox.</p>
+          <p id="lead-msg" class="text-[10px] mt-2 hidden"></p>
         </div>
       </div>
     </div>
 
-    <div class="border-t border-stone-200 pt-12 pb-8">
+    <!-- DEEPEN / UPSELL -->
+    <div class="border-t border-stone-200 pt-12 pb-8 reveal">
       <div class="text-center mb-8">
         <h2 class="text-2xl font-serif italic text-stone-900 mb-2">Deepen the Architecture</h2>
-        <p class="text-stone-500 text-xs max-w-xs mx-auto">You have stabilized the symptom. Now upgrade the system.</p>
+        <p class="text-stone-500 text-xs max-w-xs mx-auto">Go deeper than symptom management. Build the structure underneath.</p>
       </div>
       <div class="space-y-4 mb-10">
-        <a href="https://billing.liveadaptiv.com/checkout/buy/6a5f971f-024c-4904-b7c1-0ec8518ef93d" target="_blank" class="upsell-card">
+        <a href="https://billing.liveadaptiv.com" target="_blank" rel="noopener" class="upsell-card">
           <div class="flex items-start gap-4">
-            <div class="p-3 bg-stone-50 rounded-xl flex-shrink-0 group-hover:bg-[#b2945e]/10 transition-colors"><i data-lucide="layers" class="w-5 h-5 text-stone-500"></i></div>
+            <div class="p-3 bg-stone-50 rounded-xl flex-shrink-0">
+              <i data-lucide="layers" class="w-5 h-5 text-stone-500"></i>
+            </div>
             <div>
-              <h3 class="font-serif text-xl text-stone-900 italic mb-1">The Master Deck System</h3>
-              <p class="text-xs text-stone-500 mb-3 leading-relaxed">The complete 52-card clinical protocol system. Secure mobile app access plus printable assets.</p>
-              <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] flex items-center gap-1">Secure Access <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
+              <h3 class="font-serif text-xl text-stone-900 italic mb-1">The Alchemist Field Guide</h3>
+              <p class="text-xs text-stone-500 mb-3 leading-relaxed">The complete protocol system for the pattern underneath the symptom. Built for the profile that keeps going past the point of sustainable.</p>
+              <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] flex items-center gap-1">
+                Secure Access <i data-lucide="arrow-right" class="w-3 h-3"></i>
+              </span>
             </div>
           </div>
         </a>
-        <a href="https://calendly.com/alexioda" target="_blank" class="upsell-card upsell-card-dark">
+        <a href="https://billing.liveadaptiv.com/eli" target="_blank" rel="noopener" class="upsell-card upsell-card-dark">
           <div class="flex items-start gap-4">
-            <div class="p-3 bg-stone-800 rounded-xl flex-shrink-0"><i data-lucide="activity" class="w-5 h-5 text-stone-300"></i></div>
+            <div class="p-3 bg-stone-800 rounded-xl flex-shrink-0">
+              <i data-lucide="activity" class="w-5 h-5 text-stone-300"></i>
+            </div>
             <div>
               <h3 class="font-serif text-xl text-white italic mb-1">Energy Leadership Index®</h3>
-              <p class="text-xs text-stone-400 mb-3 leading-relaxed">Stop managing symptoms. Map your complete autonomic baseline with a clinical 70-question diagnostic and 1:1 debrief session.</p>
+              <p class="text-xs text-stone-400 mb-3 leading-relaxed">Map your complete autonomic baseline. 70-question clinical diagnostic with a 1:1 debrief. Not a personality quiz — a structural reading.</p>
               <p class="text-[9px] text-stone-600 mb-3 italic">Energy Leadership Index® is a registered trademark of iPEC.</p>
-              <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] flex items-center gap-1">Book Assessment <i data-lucide="arrow-right" class="w-3 h-3"></i></span>
+              <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] flex items-center gap-1">
+                Book Assessment <i data-lucide="arrow-right" class="w-3 h-3"></i>
+              </span>
             </div>
           </div>
         </a>
       </div>
+
+      <div class="bg-[#b2945e]/8 border border-[#b2945e]/20 rounded-2xl p-6 mb-8 text-center">
+        <i data-lucide="target" class="w-5 h-5 text-[#b2945e] mx-auto mb-3"></i>
+        <h3 class="font-serif text-xl text-stone-900 italic mb-2">Know Your Score</h3>
+        <p class="text-xs text-stone-500 mb-4 leading-relaxed">The Kinetic Audit measures your current load — not performance, the internal state that precedes performance. Three minutes. Free.</p>
+        <a href="https://audit.liveadaptiv.com?utm_source=scc&utm_medium=app&utm_campaign=sovereign_command" target="_blank" rel="noopener"
+          class="inline-block px-8 py-3 rounded-full bg-stone-900 text-white font-bold text-[10px] uppercase tracking-widest hover:bg-stone-800 transition-colors">
+          Take the Kinetic Audit →
+        </a>
+      </div>
+
       <div class="text-center pt-6 border-t border-stone-200">
-        <a href="https://liveadaptiv.com" class="inline-flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-stone-400 hover:text-[#b2945e] transition-colors"><i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Return to Main Hub</a>
+        <a href="https://liveadaptiv.com"
+          class="inline-flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-stone-400 hover:text-[#b2945e] transition-colors">
+          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Return to Main Hub
+        </a>
       </div>
     </div>
+
   </main>
 
   <div id="save-toast">Session saved</div>
 
   <script>
+  // ── INIT ────────────────────────────────────────────────────
   lucide.createIcons();
 
+  // ── STREAK ──────────────────────────────────────────────────
   function initStreak() {
     const today = new Date().toDateString();
     const lastVisit = localStorage.getItem('la_scc_last_visit');
     let streak = parseInt(localStorage.getItem('la_scc_streak') || '0');
     if (lastVisit !== today) {
-      const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
-      if (lastVisit === yesterday.toDateString()) streak += 1; else streak = 1;
-      localStorage.setItem('la_scc_streak', streak); localStorage.setItem('la_scc_last_visit', today);
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      streak = lastVisit === yesterday.toDateString() ? streak + 1 : 1;
+      localStorage.setItem('la_scc_streak', streak);
+      localStorage.setItem('la_scc_last_visit', today);
     }
-    if (streak >= 1) { document.getElementById('streak-badge').style.display = 'inline-flex'; document.getElementById('streak-count').textContent = streak; }
+    if (streak >= 1) {
+      document.getElementById('streak-badge').style.display = 'inline-flex';
+      document.getElementById('streak-count').textContent = streak;
+    }
   }
 
+  // ── CLOCK ───────────────────────────────────────────────────
   function updateTime() {
     const now = new Date();
-    document.getElementById('live-time').textContent = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-    document.getElementById('live-date').textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+    document.getElementById('live-time').textContent =
+      `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+    document.getElementById('live-date').textContent =
+      now.toLocaleDateString('en-US', { weekday:'long', month:'short', day:'numeric' });
   }
-  setInterval(updateTime, 1000); updateTime();
+  setInterval(updateTime, 1000);
+  updateTime();
 
-  let timerInterval = null; let timeLeft = 90; let isRunning = false; const CIRCUMFERENCE = 2 * Math.PI * 48;
+  // ── SCROLL REVEALS ──────────────────────────────────────────
+  function initReveal() {
+    const els = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    els.forEach(el => obs.observe(el));
+  }
+
+  // ── PROGRESS DOTS ───────────────────────────────────────────
+  const STEPS = ['The Flush','The Protocol','The Philosophy','The Seal'];
+  let currentStep = 0;
+  function advanceProgress(step) {
+    const dots = document.getElementById('progress-dots');
+    if (!dots || dots.style.display === 'none') return; // hidden in quick mode
+    const dotsAll = dots.querySelectorAll('.progress-dot');
+    dotsAll.forEach((d, i) => {
+      d.classList.remove('active','done');
+      if (i < step) d.classList.add('done');
+      else if (i === step) d.classList.add('active');
+    });
+    if (step < STEPS.length) {
+      document.getElementById('progress-label').textContent =
+        `Step ${step+1} of ${STEPS.length} — ${STEPS[step]}`;
+    } else {
+      document.getElementById('progress-label').textContent = 'Session complete';
+    }
+  }
+
+  // ── TIMER ───────────────────────────────────────────────────
+  let timerInterval = null;
+  let timeLeft = 90;
+  let isRunning = false;
+  const CIRCUMFERENCE = 2 * Math.PI * 48;
+
   function startTimer() {
-    if (isRunning) return; isRunning = true;
-    const display = document.getElementById('timer-display'), btn = document.getElementById('timer-btn'), instruction = document.getElementById('flush-instruction'), ring = document.getElementById('timer-ring-progress'), body = document.body;
-    timeLeft = 90; display.textContent = '90'; btn.textContent = 'Flushing...'; body.classList.add('breathing'); clearInterval(timerInterval);
+    if (isRunning) return;
+    isRunning = true;
+    const display = document.getElementById('timer-display');
+    const btn = document.getElementById('timer-btn');
+    const instruction = document.getElementById('flush-instruction');
+    const ring = document.getElementById('timer-ring-progress');
+    const body = document.body;
+
+    timeLeft = 90;
+    display.textContent = '90';
+    btn.textContent = 'Flushing...';
+    btn.disabled = true;
+    body.classList.add('breathing');
+    clearInterval(timerInterval);
+
     timerInterval = setInterval(() => {
-      timeLeft--; display.textContent = timeLeft; ring.style.strokeDashoffset = CIRCUMFERENCE * (1 - (timeLeft / 90));
+      timeLeft--;
+      display.textContent = timeLeft;
+      ring.style.strokeDashoffset = CIRCUMFERENCE * (1 - (timeLeft / 90));
+
       const cycle = (90 - timeLeft) % 12;
-      if (cycle < 4) { instruction.textContent = 'Deep inhale...'; instruction.style.color = '#b2945e'; ring.style.stroke = '#b2945e'; } 
-      else if (cycle < 10) { instruction.textContent = 'Long, slow exhale...'; instruction.style.color = '#1c1917'; ring.style.stroke = '#1c1917'; } 
-      else { instruction.textContent = 'Hold the emptiness...'; instruction.style.color = '#a8a29e'; ring.style.stroke = '#a8a29e'; }
+      if (cycle < 4) {
+        instruction.textContent = 'Deep inhale...';
+        instruction.style.color = '#b2945e';
+        ring.style.stroke = '#b2945e';
+      } else if (cycle < 10) {
+        instruction.textContent = 'Long, slow exhale...';
+        instruction.style.color = '#1c1917';
+        ring.style.stroke = '#1c1917';
+      } else {
+        instruction.textContent = 'Hold the emptiness...';
+        instruction.style.color = '#a8a29e';
+        ring.style.stroke = '#a8a29e';
+      }
+
       if (timeLeft <= 0) {
-        clearInterval(timerInterval); display.textContent = '✓'; instruction.textContent = 'System reset complete.'; instruction.style.color = '#059669'; ring.style.stroke = '#059669'; btn.textContent = 'Complete'; body.classList.remove('breathing');
-        setTimeout(() => { display.textContent = '90'; instruction.textContent = 'Visual 90-sec protocol'; instruction.style.color = ''; ring.style.strokeDashoffset = '0'; ring.style.stroke = ''; btn.textContent = 'Initiate Sequence'; isRunning = false; }, 3500);
+        clearInterval(timerInterval);
+        display.textContent = '✓';
+        instruction.textContent = 'System reset complete.';
+        instruction.style.color = '#059669';
+        ring.style.stroke = '#059669';
+        body.classList.remove('breathing');
+        advanceProgress(1);
+        setTimeout(() => {
+          display.textContent = '90';
+          instruction.textContent = 'Visual 90-sec protocol';
+          instruction.style.color = '';
+          ring.style.strokeDashoffset = '0';
+          ring.style.stroke = '';
+          btn.textContent = 'Run Again';
+          btn.disabled = false;
+          btn.onclick = startTimer;
+          isRunning = false;
+        }, 3500);
       }
     }, 1000);
   }
 
+  // ── PROTOCOL CARDS ──────────────────────────────────────────
   const protocols = [
-    { t: 'Linear Override', d: 'Anxiety operates in loops. Logic operates in lines. Name 3 physical objects in the room...', r: '"Panic is a circle. Logic is a line."' },
-    { t: 'The Faux-pology', d: 'Stop apologizing for your existence. Do not say "Sorry to bother you."...', r: '"I occupy my space without apology."' },
-    { t: 'Drop the Rope', d: 'You are in a power struggle. The easiest way to win a tug-of-war is to drop your end of the rope...', r: '"I do not need to be right to be effective."' },
-    { t: 'The 90-Second Rule', d: 'When triggered, your amygdala dumps cortisol. It takes 90 seconds to metabolize...', r: '"This is not a crisis. This is chemistry."' },
-    { t: 'The Fiction Audit', d: 'Separate the objective event from the narrative your brain is constructing...', r: '"I do not negotiate with my own fiction."' },
-    { t: 'The Seesaw', d: 'Judgment and curiosity cannot occupy the same space. Pivot to a "How" question...', r: '"Curiosity kills the reaction."' },
-    { t: 'No as Architecture', d: 'Every yes to a distraction is a silent no to your actual work. Protect the architecture.', r: '"My no is a sovereign decree, not an apology."' }
+    { t: 'Linear Override', d: 'Anxiety operates in loops. Logic operates in lines. Name 3 physical objects...', r: '"Panic is a circle. Logic is a line."' },
+    { t: 'The Faux-pology', d: 'Stop apologizing for your existence...', r: '"I occupy my space without apology."' },
+    { t: 'Drop the Rope', d: 'You are in a power struggle...', r: '"I do not need to be right to be effective."' },
+    { t: 'The 90-Second Rule', d: 'When triggered, your amygdala dumps cortisol...', r: '"This is not a crisis. This is chemistry."' },
+    { t: 'The Fiction Audit', d: 'Separate the objective event from the narrative...', r: '"I do not negotiate with my own fiction."' },
+    { t: 'The Seesaw', d: 'Judgment and curiosity cannot occupy the same space...', r: '"Curiosity kills the reaction."' },
+    { t: 'No as Architecture', d: 'Every yes to a distraction is a silent no...', r: '"My no is a sovereign decree, not an apology."' },
+    { t: 'The Knowing Gap', d: 'You know what needs to change...', r: '"Knowing is not doing. Doing is doing."' },
+    { t: 'Asset Protection', d: 'You are not the worker. You are the asset...', r: '"Protecting myself is protecting the work."' }
   ];
-  let isFlipped = false, lastCardIdx = -1;
-  function getNewCard() { let idx; do { idx = Math.floor(Math.random() * protocols.length); } while (idx === lastCardIdx && protocols.length > 1); lastCardIdx = idx; return protocols[idx]; }
-  function loadCardContent() { const p = getNewCard(); document.getElementById('card-title').textContent = p.t; document.getElementById('card-desc').textContent = p.d; document.getElementById('card-reframe').textContent = p.r; }
+  let isFlipped = false;
+  let lastCardIdx = -1;
+
+  function getNewCard() {
+    let idx;
+    do { idx = Math.floor(Math.random() * protocols.length); }
+    while (idx === lastCardIdx && protocols.length > 1);
+    lastCardIdx = idx;
+    return protocols[idx];
+  }
+
+  function loadCardContent() {
+    const p = getNewCard();
+    document.getElementById('card-title').textContent = p.t;
+    document.getElementById('card-desc').textContent = p.d;
+    document.getElementById('card-reframe').textContent = p.r;
+  }
+
   function flipCard() {
-    if (isFlipped) return; loadCardContent(); document.getElementById('protocol-card').classList.add('is-flipped'); isFlipped = true;
-    setTimeout(() => { document.getElementById('reset-card-btn').classList.remove('hidden'); document.getElementById('reset-card-btn').classList.add('block'); }, 800);
+    if (isFlipped) return;
+    loadCardContent();
+    document.getElementById('protocol-card').classList.add('is-flipped');
+    isFlipped = true;
+    advanceProgress(2);
+    setTimeout(() => {
+      const btn = document.getElementById('reset-card-btn');
+      btn.classList.remove('hidden');
+      btn.classList.add('block');
+    }, 800);
   }
+
   function resetCard() {
-    loadCardContent(); document.getElementById('protocol-card').classList.remove('is-flipped');
-    document.getElementById('reset-card-btn').classList.add('hidden'); document.getElementById('reset-card-btn').classList.remove('block'); isFlipped = false;
+    loadCardContent();
+    document.getElementById('protocol-card').classList.remove('is-flipped');
+    const btn = document.getElementById('reset-card-btn');
+    btn.classList.add('hidden');
+    btn.classList.remove('block');
+    isFlipped = false;
   }
 
-  const audioEl = document.getElementById('audio-el'); let audioPlaying = false;
-  function toggleAudio() { if (audioPlaying) { audioEl.pause(); audioPlaying = false; updatePlayIcon(false); } else { audioEl.play().catch(()=>{}); audioPlaying = true; updatePlayIcon(true); } }
-  function updatePlayIcon(playing) { const icon = document.getElementById('play-icon'); icon.setAttribute('data-lucide', playing ? 'pause' : 'play'); icon.style.marginLeft = playing ? '0' : '2px'; lucide.createIcons(); }
-  audioEl.addEventListener('timeupdate', () => { if (!audioEl.duration) return; document.getElementById('progress-fill').style.width = ((audioEl.currentTime / audioEl.duration) * 100) + '%'; document.getElementById('audio-time').textContent = `${Math.floor(audioEl.currentTime / 60)}:${String(Math.floor(audioEl.currentTime % 60)).padStart(2, '0')}`; });
-  audioEl.addEventListener('ended', () => { audioPlaying = false; updatePlayIcon(false); document.getElementById('progress-fill').style.width = '0%'; document.getElementById('audio-time').textContent = '0:00'; });
-  function seekAudio(e) { if (!audioEl.duration) return; const rect = e.currentTarget.getBoundingClientRect(); audioEl.currentTime = ((e.clientX - rect.left) / rect.width) * audioEl.duration; }
+  // ── DAILY INSIGHT ────────────────────────────────────────────
+  const insights = [
+    "The pattern isn't the problem. It's the ego's last working answer...",
+    "You cannot out-think chemistry. Run the protocol first.",
+    "The biological cost of sustained high performance doesn't wait...",
+    "Knowing what's wrong and being able to stop are two different neurological events.",
+    "The leader who transmits calm doesn't feel less. They metabolize faster.",
+    "Rest is not the reward for completed work. It is the infrastructure.",
+    "The friction is information. The only question is whether you're reading it.",
+    "You built the pattern when you needed it. You can renegotiate with it.",
+    "Architecture runs without motivation. That is its entire value.",
+    "The version of you that keeps going is not the strongest. It is the most practiced.",
+    "Stress is not the enemy. It is compressed energy waiting for a protocol.",
+    "The gap between knowing and doing is not a character flaw. It is a protection.",
+    "Sovereignty is not the absence of pressure. It is structure that holds.",
+    "The body keeps the score whether or not you're keeping score.",
+    "You are not discovering yourself. You are writing yourself. Every day is a draft."
+  ];
 
-  const SEAL_KEYS = ['seal-1', 'seal-2', 'seal-3'];
-  function loadSeal() { SEAL_KEYS.forEach(id => { const saved = localStorage.getItem('la_scc_' + id); if (saved) document.getElementById(id).value = saved; }); }
-  function saveSeal() { SEAL_KEYS.forEach(id => { localStorage.setItem('la_scc_' + id, document.getElementById(id).value); }); showToast('Session saved'); }
-  SEAL_KEYS.forEach(id => { document.getElementById(id).addEventListener('input', () => { clearTimeout(window._sealSaveTimer); window._sealSaveTimer = setTimeout(saveSeal, 800); }); });
+  function setDailyInsight() {
+    const day = new Date().getDay() + new Date().getDate();
+    const insight = insights[day % insights.length];
+    document.getElementById('daily-insight').textContent = `"${insight}"`;
+  }
+
+  // ── AUDIO ────────────────────────────────────────────────────
+  const audioEl = document.getElementById('audio-el');
+  let audioPlaying = false;
+
+  function checkAudioSupport() {
+    if (!audioEl.canPlayType('audio/mp4') && !audioEl.canPlayType('audio/mpeg')) {
+      document.getElementById('audio-ui').style.display = 'none';
+      document.getElementById('audio-unavailable').style.display = 'block';
+    }
+    audioEl.addEventListener('error', () => {
+      document.getElementById('audio-ui').style.display = 'none';
+      document.getElementById('audio-unavailable').style.display = 'block';
+    });
+  }
+
+  function toggleAudio() {
+    if (audioPlaying) {
+      audioEl.pause();
+      audioPlaying = false;
+      updatePlayIcon(false);
+    } else {
+      audioEl.play()
+        .then(() => {
+          audioPlaying = true;
+          updatePlayIcon(true);
+        })
+        .catch(() => {
+          document.getElementById('audio-ui').style.display = 'none';
+          document.getElementById('audio-unavailable').style.display = 'block';
+        });
+    }
+  }
+
+  function updatePlayIcon(playing) {
+    const icon = document.getElementById('play-icon');
+    icon.setAttribute('data-lucide', playing ? 'pause' : 'play');
+    icon.style.marginLeft = playing ? '0' : '2px';
+    lucide.createIcons();
+  }
+
+  audioEl.addEventListener('timeupdate', () => {
+    if (!audioEl.duration) return;
+    const pct = (audioEl.currentTime / audioEl.duration) * 100;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    const m = Math.floor(audioEl.currentTime / 60);
+    const s = String(Math.floor(audioEl.currentTime % 60)).padStart(2,'0');
+    document.getElementById('audio-time').textContent = `${m}:${s}`;
+  });
+
+  audioEl.addEventListener('ended', () => {
+    audioPlaying = false;
+    updatePlayIcon(false);
+    document.getElementById('progress-fill').style.width = '0%';
+    document.getElementById('audio-time').textContent = '0:00';
+  });
+
+  function seekAudio(e) {
+    if (!audioEl.duration) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    audioEl.currentTime = ((e.clientX - rect.left) / rect.width) * audioEl.duration;
+  }
+
+  // ── SEAL ─────────────────────────────────────────────────────
+  const SEAL_KEYS = ['seal-1','seal-2','seal-3'];
+
+  function loadSeal() {
+    SEAL_KEYS.forEach(id => {
+      const saved = localStorage.getItem('la_scc_' + id);
+      if (saved) {
+        document.getElementById(id).value = saved;
+        updateCharCount(id, 'cc-' + id.split('-')[1], id === 'seal-1' ? 120 : 80);
+      }
+    });
+  }
+
+  function saveSeal() {
+    SEAL_KEYS.forEach(id => {
+      localStorage.setItem('la_scc_' + id, document.getElementById(id).value);
+    });
+    showToast('Session saved');
+  }
+
+  function updateCharCount(inputId, countId, max) {
+    const len = document.getElementById(inputId).value.length;
+    const el = document.getElementById(countId);
+    el.textContent = max - len;
+    el.classList.toggle('warn', len >= max - 10);
+  }
+
+  SEAL_KEYS.forEach(id => {
+    document.getElementById(id).addEventListener('input', () => {
+      clearTimeout(window._sealSaveTimer);
+      window._sealSaveTimer = setTimeout(saveSeal, 800);
+    });
+  });
 
   function sealJournal() {
-    saveSeal(); SEAL_KEYS.forEach(id => document.getElementById(id).disabled = true);
-    document.getElementById('seal-btn').style.display = 'none'; document.getElementById('unlock-btn').style.display = 'block'; document.getElementById('delta-capture').style.display = 'block';
+    const vals = SEAL_KEYS.map(id => document.getElementById(id).value.trim());
+    if (!vals[0] && !vals[1] && !vals[2]) {
+      showToast('Add at least one line to seal');
+      return;
+    }
+    saveSeal();
+    SEAL_KEYS.forEach(id => document.getElementById(id).disabled = true);
+    document.getElementById('seal-btn').style.display = 'none';
+    document.getElementById('unlock-btn').style.display = 'block';
+    document.getElementById('delta-capture').style.display = 'block';
+
+    const preVal = document.getElementById('pre-slider').value;
+    document.getElementById('delta-before').textContent = preVal;
+    document.getElementById('delta-comparison').style.display = 'flex';
+
     showToast('System locked');
-    
-    const reality = document.getElementById('seal-1').value || 'the friction I carried';
-    const identity = document.getElementById('seal-2').value || 'sovereign';
-    const action = document.getElementById('seal-3').value || 'close this loop';
+    advanceProgress(3);
+
+    const reality = vals[0] || 'the friction I carried';
+    const identity = vals[1] || 'sovereign';
+    const action = vals[2] || 'close this loop';
     const cardTitle = document.getElementById('card-title')?.textContent || '';
     const frictionLevel = parseInt(document.getElementById('delta-slider').value) || 5;
     generateDecree(reality, identity, action, cardTitle, frictionLevel);
@@ -358,60 +1032,295 @@
 
   function unlockJournal() {
     SEAL_KEYS.forEach(id => document.getElementById(id).disabled = false);
-    document.getElementById('seal-btn').style.display = 'block'; document.getElementById('unlock-btn').style.display = 'none';
-    document.getElementById('delta-capture').style.display = 'none'; document.getElementById('decree-section').style.display = 'none';
+    document.getElementById('seal-btn').style.display = 'block';
+    document.getElementById('unlock-btn').style.display = 'none';
+    document.getElementById('delta-capture').style.display = 'none';
+    document.getElementById('decree-section').style.display = 'none';
   }
 
-  function updateDelta(val) { document.getElementById('delta-val').textContent = val; }
+  // ── DELTA ────────────────────────────────────────────────────
+  function updateDelta(val) {
+    document.getElementById('delta-val').textContent = val;
+    document.getElementById('delta-after').textContent = val;
+    const before = parseInt(document.getElementById('pre-slider').value);
+    const after = parseInt(val);
+    const shift = before - after;
+    const el = document.getElementById('delta-shift');
+    if (shift > 0) { el.textContent = '−' + shift; el.style.color = '#059669'; }
+    else if (shift < 0) { el.textContent = '+' + Math.abs(shift); el.style.color = '#ef4444'; }
+    else { el.textContent = '0'; el.style.color = '#a8a29e'; }
+  }
+
   function saveDelta() {
-    const val = document.getElementById('delta-slider').value; const log = JSON.parse(localStorage.getItem('la_scc_friction_log') || '[]');
-    log.push({ date: new Date().toDateString(), score: parseInt(val) }); if (log.length > 30) log.shift();
-    localStorage.setItem('la_scc_friction_log', JSON.stringify(log)); document.getElementById('delta-capture').style.display = 'none'; showToast('Friction logged');
+    const val = document.getElementById('delta-slider').value;
+    const log = JSON.parse(localStorage.getItem('la_scc_friction_log') || '[]');
+    log.push({
+      date: new Date().toDateString(),
+      pre: parseInt(document.getElementById('pre-slider').value),
+      post: parseInt(val)
+    });
+    if (log.length > 30) log.shift();
+    localStorage.setItem('la_scc_friction_log', JSON.stringify(log));
+    document.getElementById('delta-capture').style.display = 'none';
+    showToast('Friction logged ✓');
+    advanceProgress(4);
   }
 
+  // ── MODE TOGGLE ──────────────────────────────────────────────
+  function setMode(mode) {
+    const deepBtn = document.getElementById('mode-deep');
+    const quickBtn = document.getElementById('mode-quick');
+    const deepSections = document.getElementById('deep-sections');
+    const progressDots = document.getElementById('progress-dots');
+    const progressLabel = document.getElementById('progress-label');
+
+    if (mode === 'quick') {
+      quickBtn.classList.add('bg-white', 'text-stone-800', 'shadow-sm');
+      quickBtn.classList.remove('text-stone-500');
+      deepBtn.classList.remove('bg-white', 'text-stone-800', 'shadow-sm');
+      deepBtn.classList.add('text-stone-500');
+
+      deepSections.style.display = 'none';
+      if (progressDots) progressDots.style.display = 'none';
+      if (progressLabel) progressLabel.textContent = 'Quick Reset — Flush & Seal';
+      localStorage.setItem('la_scc_mode', 'quick');
+    } else {
+      deepBtn.classList.add('bg-white', 'text-stone-800', 'shadow-sm');
+      deepBtn.classList.remove('text-stone-500');
+      quickBtn.classList.remove('bg-white', 'text-stone-800', 'shadow-sm');
+      quickBtn.classList.add('text-stone-500');
+
+      deepSections.style.display = 'block';
+      if (progressDots) progressDots.style.display = 'flex';
+      if (progressLabel) progressLabel.textContent = 'Step 1 of 4 — The Flush';
+      localStorage.setItem('la_scc_mode', 'deep');
+    }
+  }
+
+  // ── TEASER ───────────────────────────────────────────────────
+  const teaserExamples = [
+    "I carried the weight of a shifting deadline and the fear of failure. I see now that panic is a circle, but logic is a line. I choose to be sovereign and unbothered. I am closing the laptop.",
+    "I arrived convinced something was wrong with me. I leave knowing the friction was information. I am not broken — I am recalibrating.",
+    "I dragged the morning's tension into the afternoon. Now I name the pattern and let it go. My next move is clean, not forced."
+  ];
+  function setTeaser() {
+    const teaser = teaserExamples[Math.floor(Math.random() * teaserExamples.length)];
+    const el = document.getElementById('teaser-text');
+    if (el) el.textContent = `"${teaser}"`;
+  }
+
+  // ── DECREE ───────────────────────────────────────────────────
   let currentDecree = '';
+
   async function generateDecree(reality, identity, action, cardTitle, frictionLevel) {
-    const section = document.getElementById('decree-section'), textEl = document.getElementById('decree-text');
-    section.style.display = 'block'; textEl.style.opacity = '0'; textEl.textContent = 'Forging your decree...';
-    setTimeout(() => { textEl.style.opacity = '1'; }, 100);
+    const section = document.getElementById('decree-section');
+    const loading = document.getElementById('decree-loading');
+    const textEl = document.getElementById('decree-text');
+    const actions = document.getElementById('decree-actions');
+
+    // Reset any crisis styling
+    section.style.background = '';
+    section.style.borderColor = '';
+    textEl.style.fontStyle = '';
+    textEl.style.fontSize = '';
+    textEl.style.color = '';
+
+    section.style.display = 'block';
+    loading.style.display = 'block';
+    textEl.style.display = 'none';
+    actions.style.display = 'none';
+
     try {
-      const response = await fetch('/api/generate-decree', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reality, identity, action, cardTitle, frictionLevel }) });
-      const data = await response.json(); currentDecree = data.decree;
+      const response = await fetch('/api/generate-decree', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reality, identity, action, cardTitle, frictionLevel })
+      });
+
+      if (!response.ok) throw new Error('API error ' + response.status);
+      const data = await response.json();
+
+      loading.style.display = 'none';
+
+      if (data.crisis) {
+        section.style.background = '#fff8f0';
+        section.style.borderColor = 'rgba(239,68,68,0.2)';
+        textEl.style.display = 'block';
+        textEl.style.fontStyle = 'normal';
+        textEl.style.fontSize = '0.9rem';
+        textEl.style.color = '#78716c';
+        textEl.style.opacity = '0';
+        textEl.textContent = data.message;
+        setTimeout(() => { textEl.style.opacity = '1'; }, 200);
+        return;
+      }
+
+      currentDecree = data.decree;
+
+      textEl.style.display = 'block';
       textEl.style.opacity = '0';
-      setTimeout(() => { textEl.textContent = currentDecree; textEl.style.opacity = '1'; document.getElementById('lead-capture').style.display = 'block'; }, 200);
-    } catch(e) { textEl.textContent = 'Decree unavailable at this moment. But your word is enough.'; textEl.style.opacity = '1'; document.getElementById('lead-capture').style.display = 'block'; }
+      textEl.textContent = currentDecree;
+      setTimeout(() => {
+        textEl.style.opacity = '1';
+        actions.style.display = 'flex';
+        document.getElementById('lead-capture').style.display = 'block';
+      }, 200);
+
+    } catch(e) {
+      loading.style.display = 'none';
+      textEl.style.display = 'block';
+      textEl.textContent = 'The system is quiet right now. Your word is enough.';
+      textEl.style.opacity = '1';
+      actions.style.display = 'flex';
+      document.getElementById('lead-capture').style.display = 'block';
+    }
   }
 
+  // PREMIUM SHARE CARD (no UI elements)
   function shareDecree() {
     if (!currentDecree) return;
-    const decreeElement = document.getElementById('decree-section'), buttons = decreeElement.querySelectorAll('button');
-    buttons.forEach(b => b.style.display = 'none');
-    const originalPadding = decreeElement.style.padding; decreeElement.style.padding = '40px'; 
-    html2canvas(decreeElement, { backgroundColor: '#ffffff', scale: 2, logging: false }).then(canvas => {
-      decreeElement.style.padding = originalPadding; buttons.forEach(b => b.style.display = '');
-      const link = document.createElement('a'); link.download = 'Sovereign-Decree.png'; link.href = canvas.toDataURL('image/png'); link.click(); showToast('Decree image saved');
-    }).catch(() => { decreeElement.style.padding = originalPadding; buttons.forEach(b => b.style.display = ''); navigator.clipboard.writeText(currentDecree).then(() => showToast('Decree copied')); });
+
+    const renderContainer = document.createElement('div');
+    renderContainer.style.position = 'absolute';
+    renderContainer.style.left = '-9999px';
+    renderContainer.style.top = '0';
+    renderContainer.style.width = '600px';
+    renderContainer.style.padding = '60px 40px';
+    renderContainer.style.backgroundColor = '#1c1917';
+    renderContainer.style.color = '#fafaf9';
+    renderContainer.style.fontFamily = "'DM Sans', sans-serif";
+    renderContainer.style.display = 'flex';
+    renderContainer.style.flexDirection = 'column';
+    renderContainer.style.justifyContent = 'center';
+    renderContainer.style.alignItems = 'center';
+
+    renderContainer.innerHTML = `
+      <div style="margin-bottom: 30px; text-align: center;">
+        <span style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 24px; color: #b2945e; border: 1px solid rgba(178,148,94,0.4); border-radius: 50%; width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px;">A</span>
+        <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3em; color: #a8a29e;">LiveAdaptiv</div>
+      </div>
+      <div class="decree-text" style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 26px; line-height: 1.5; text-align: center; color: #fafaf9; border-left: 3px solid #b2945e; padding-left: 20px; margin-bottom: 30px;">
+      </div>
+      <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: #57534e;">Sovereign Command</div>
+      <div style="font-size: 8px; color: #57534e; margin-top: 10px;">liveadaptiv.com</div>
+    `;
+
+    // Safely inject the decree text
+    const decreeEl = renderContainer.querySelector('.decree-text');
+    if (decreeEl) decreeEl.textContent = `"${currentDecree}"`;
+
+    document.body.appendChild(renderContainer);
+
+    html2canvas(renderContainer, {
+      backgroundColor: '#1c1917',
+      scale: 2,
+      logging: false
+    }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = 'LiveAdaptiv-Sovereign-Decree.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      document.body.removeChild(renderContainer);
+      showToast('Decree image saved');
+    }).catch(err => {
+      console.error("Screenshot failed:", err);
+      document.body.removeChild(renderContainer);
+      navigator.clipboard.writeText(currentDecree).then(() => showToast('Decree copied to clipboard'));
+    });
   }
 
-  function copyDecree() { if (currentDecree) { navigator.clipboard.writeText(currentDecree).then(() => showToast('Copied')); } }
+  function copyDecree() {
+    if (!currentDecree) return;
+    navigator.clipboard.writeText(currentDecree)
+      .then(() => showToast('Copied'))
+      .catch(() => showToast('Copy failed'));
+  }
 
+  // ── LEAD CAPTURE ─────────────────────────────────────────────
   async function captureLead() {
     const email = document.getElementById('lead-email').value.trim();
-    if (!email || !email.includes('@')) { const msgEl = document.getElementById('lead-msg'); msgEl.textContent = 'Please enter a valid email.'; msgEl.classList.remove('hidden'); return; }
-    const btn = document.querySelector('#lead-capture button'); btn.disabled = true; btn.textContent = 'Sending...';
+    const msgEl = document.getElementById('lead-msg');
+    const btn = document.getElementById('lead-btn');
+
+    if (!email || !email.includes('@') || !email.includes('.')) {
+      msgEl.textContent = 'Please enter a valid email.';
+      msgEl.className = 'text-[10px] mt-2 text-red-500';
+      msgEl.classList.remove('hidden');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    msgEl.classList.add('hidden');
+
     try {
       const response = await fetch('/api/capture-lead', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, decree: currentDecree, reality: document.getElementById('seal-1').value, identity: document.getElementById('seal-2').value, action: document.getElementById('seal-3').value, cardTitle: document.getElementById('card-title')?.textContent || '', frictionLevel: document.getElementById('delta-slider').value })
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          decree: currentDecree,
+          reality: document.getElementById('seal-1').value,
+          identity: document.getElementById('seal-2').value,
+          action: document.getElementById('seal-3').value,
+          cardTitle: document.getElementById('card-title')?.textContent || '',
+          frictionLevel: document.getElementById('delta-slider').value
+        })
       });
-      if (response.ok) { document.getElementById('lead-msg').textContent = 'Decree sent. Check your inbox.'; document.getElementById('lead-msg').classList.remove('hidden'); document.getElementById('lead-capture').style.display = 'none'; } 
-      else { throw new Error('API error'); }
-    } catch(e) { document.getElementById('lead-msg').textContent = 'Something went wrong. Please try again.'; document.getElementById('lead-msg').classList.remove('hidden'); btn.disabled = false; btn.textContent = 'Send'; }
+
+      if (response.ok) {
+        msgEl.textContent = 'Decree sent. Check your inbox.';
+        msgEl.className = 'text-[10px] mt-2 text-emerald-600';
+        msgEl.classList.remove('hidden');
+        document.getElementById('lead-capture').style.display = 'none';
+
+        // Remove any previous confirmation paragraph
+        const old = document.querySelector('.lead-confirm');
+        if (old) old.remove();
+        const confirm = document.createElement('p');
+        confirm.className = 'text-xs text-stone-400 mt-4 text-center font-serif italic lead-confirm';
+        confirm.textContent = 'Your decree is on its way.';
+        document.getElementById('decree-section').appendChild(confirm);
+      } else {
+        throw new Error('API error');
+      }
+    } catch(e) {
+      msgEl.textContent = 'Something went wrong. Please try again.';
+      msgEl.className = 'text-[10px] mt-2 text-red-500';
+      msgEl.classList.remove('hidden');
+      btn.disabled = false;
+      btn.textContent = 'Send';
+    }
   }
 
-  function showToast(msg) { const toast = document.getElementById('save-toast'); toast.textContent = msg; toast.classList.add('visible'); clearTimeout(toast._t); toast._t = setTimeout(() => toast.classList.remove('visible'), 1800); }
+  // ── TOAST ────────────────────────────────────────────────────
+  function showToast(msg) {
+    const toast = document.getElementById('save-toast');
+    toast.textContent = msg;
+    toast.classList.add('visible');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => toast.classList.remove('visible'), 2000);
+  }
 
-  document.addEventListener('DOMContentLoaded', () => { initStreak(); loadSeal(); lucide.createIcons(); });
+  // ── STARTUP ──────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    initStreak();
+    loadSeal();
+    setDailyInsight();
+    setTeaser();          // random example decree
+    checkAudioSupport();
+    initReveal();
+    lucide.createIcons();
+
+    // restore saved mode
+    const savedMode = localStorage.getItem('la_scc_mode') || 'deep';
+    setMode(savedMode);
+
+    // initial char counts
+    updateCharCount('seal-1','cc-1',120);
+    updateCharCount('seal-2','cc-2',80);
+    updateCharCount('seal-3','cc-3',80);
+  });
   </script>
 </body>
 </html>
