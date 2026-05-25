@@ -35,12 +35,13 @@ module.exports = async (req, res) => {
   }
 
   const resend = new Resend(process.env.RESEND_API_KEY);
-  
-  // NOTE: Ensure this matches your verified Resend subdomain exactly
   const senderEmail = "Adaptiv <decree@send.liveadaptiv.com>";
 
+  // UTM parameters for email links
+  const emailUtm = "utm_source=scc&utm_medium=email&utm_campaign=sovereign_command";
+
   try {
-    // 1. Notification to You
+    // 1. Notification to you
     await resend.emails.send({
       from: senderEmail,
       to: process.env.NOTIFY_EMAIL,
@@ -59,7 +60,7 @@ module.exports = async (req, res) => {
       `
     });
 
-    // 2. Email to the User
+    // 2. Decree to user
     await resend.emails.send({
       from: senderEmail,
       to: email,
@@ -74,8 +75,8 @@ module.exports = async (req, res) => {
           <p style="color:#666;font-size:14px;">This was forged from your reality: <em>${reality}</em><br>
           Your chosen identity: <em>${identity}</em><br>
           Your commitment: <em>${action}</em></p>
-          <p style="margin-top:30px;font-size:14px;">You are ready for the full Adaptiv mind.<br>
-          <a href="https://liveadaptiv.com" style="color:#b2945e;font-weight:bold;">Start your 7-day free trial →</a></p>
+          <p style="margin-top:30px;font-size:14px;">Ready for the full Adaptiv protocol?<br>
+          <a href="https://audit.liveadaptiv.com?${emailUtm}" style="color:#b2945e;font-weight:bold;">Take the free Kinetic Audit →</a></p>
           <p style="font-size:11px;color:#aaa;margin-top:20px;">LiveAdaptiv — The anti-hustle AI coach</p>
         </div>
       `
