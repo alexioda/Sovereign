@@ -1,4 +1,4 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require("@google/generative-ai");
 const { buildFreeDecreePrompt, containsCrisisLanguage } = require("../lib/adaptiv-mind");
 
 const ALLOWED_ORIGINS = [
@@ -41,12 +41,18 @@ module.exports = async (req, res) => {
 
   try {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    
+    // Surgical safety settings: blocking only high-probability dangerous content
+    const safetySettings = [
+      { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+      { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+      { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+      { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+    ];
+
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
-      generationConfig: {
-        maxOutputTokens: 300, // Wide open runway
-        temperature: 0.7,       
-      }
+      safetySettings: safetySettings
     });
 
     const prompt = buildFreeDecreePrompt(
@@ -57,9 +63,14 @@ module.exports = async (req, res) => {
       parseInt(frictionLevel) || 5
     );
 
-    const result = await model.generateContent(prompt);
+    const result = await model.generateContent({
+      contents: [{ role: "user", parts: [{ text: prompt }] }],
+      generationConfig: {
+        maxOutputTokens: 300,   
+        temperature: 0.7,       
+      }
+    });
     
-    // Save the completely untouched AI response for our diagnostic log
     const rawAIResponse = result.response.text();
     let cleanText = rawAIResponse.trim();
 
@@ -70,17 +81,15 @@ module.exports = async (req, res) => {
       });
     }
 
-    // Strip out markdown, quotes, and newlines
     cleanText = cleanText.replace(/^["']|["']$/g, ''); 
     cleanText = cleanText.replace(/\*\*/g, ''); 
     cleanText = cleanText.replace(/\n/g, ' '); 
     cleanText = cleanText.replace(/\s{2,}/g, ' ').trim(); 
 
-    // Send BOTH the cleaned decree AND the secret diagnostic payload
     return res.status(200).json({ 
       decree: cleanText,
       diagnostic_data: {
-        version: "v5_diagnostic_live",
+        version: "v7_surgical_safety",
         untouched_ai_text: rawAIResponse
       }
     });
