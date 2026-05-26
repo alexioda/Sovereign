@@ -1112,13 +1112,14 @@
   // ── DECREE ───────────────────────────────────────────────────
   let currentDecree = '';
 
-  async function generateDecree(reality, identity, action, cardTitle, frictionLevel) {
+async function generateDecree(reality, identity, action, cardTitle, frictionLevel) {
+    console.log("1. Starting decree generation...");
     const section = document.getElementById('decree-section');
     const loading = document.getElementById('decree-loading');
     const textEl = document.getElementById('decree-text');
     const actions = document.getElementById('decree-actions');
 
-    // Reset any crisis styling
+    // Reset styles
     section.style.background = '';
     section.style.borderColor = '';
     textEl.style.fontStyle = '';
@@ -1131,16 +1132,22 @@
     actions.style.display = 'none';
 
     try {
+      console.log("2. Sending request to Vercel...");
       const response = await fetch('/api/generate-decree', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reality, identity, action, cardTitle, frictionLevel })
       });
 
-      if (!response.ok) throw new Error('API error ' + response.status);
+      console.log("3. Vercel responded with status:", response.status);
       const data = await response.json();
+      console.log("4. Full data from server:", data);
 
       loading.style.display = 'none';
+
+      if (!response.ok) {
+        throw new Error(data.error || 'API failed');
+      }
 
       if (data.crisis) {
         section.style.background = '#fff8f0';
@@ -1149,27 +1156,26 @@
         textEl.style.fontStyle = 'normal';
         textEl.style.fontSize = '0.9rem';
         textEl.style.color = '#78716c';
-        textEl.style.opacity = '0';
         textEl.textContent = data.message;
-        setTimeout(() => { textEl.style.opacity = '1'; }, 200);
+        textEl.style.opacity = '1';
         return;
       }
 
       currentDecree = data.decree;
+      console.log("5. currentDecree saved as:", currentDecree);
 
       textEl.style.display = 'block';
-      textEl.style.opacity = '0';
-      textEl.textContent = currentDecree;
-      setTimeout(() => {
-        textEl.style.opacity = '1';
-        actions.style.display = 'flex';
-        document.getElementById('lead-capture').style.display = 'block';
-      }, 200);
+      textEl.style.opacity = '1';
+      textEl.textContent = currentDecree || "[Empty Response Received from AI]";
+      
+      actions.style.display = 'flex';
+      document.getElementById('lead-capture').style.display = 'block';
 
     } catch(e) {
+      console.error("DEBUG ERROR:", e);
       loading.style.display = 'none';
       textEl.style.display = 'block';
-      textEl.textContent = 'The system is quiet right now. Your word is enough.';
+      textEl.textContent = 'Error: ' + e.message;
       textEl.style.opacity = '1';
       actions.style.display = 'flex';
       document.getElementById('lead-capture').style.display = 'block';
