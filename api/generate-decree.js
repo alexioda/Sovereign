@@ -44,7 +44,7 @@ module.exports = async (req, res) => {
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
       generationConfig: {
-        maxOutputTokens: 250,   
+        maxOutputTokens: 300, // Wide open runway
         temperature: 0.7,       
       }
     });
@@ -58,25 +58,35 @@ module.exports = async (req, res) => {
     );
 
     const result = await model.generateContent(prompt);
-    let rawText = result.response.text().trim();
+    
+    // Save the completely untouched AI response for our diagnostic log
+    const rawAIResponse = result.response.text();
+    let cleanText = rawAIResponse.trim();
 
-    if (rawText === "SAFE_EXIT") {
+    if (cleanText === "SAFE_EXIT") {
       return res.status(200).json({
         crisis: true,
         message: "The system is quiet right now. Your word is enough. If you are carrying a weight heavier than stress, please dial 988."
       });
     }
 
-    // Flatten the text, remove all line breaks (\n), bullets, and quotes
-    rawText = rawText.replace(/^["']|["']$/g, ''); 
-    rawText = rawText.replace(/\*\*/g, ''); 
-    rawText = rawText.replace(/\n/g, ' '); 
-    rawText = rawText.replace(/\s{2,}/g, ' ').trim(); 
+    // Strip out markdown, quotes, and newlines
+    cleanText = cleanText.replace(/^["']|["']$/g, ''); 
+    cleanText = cleanText.replace(/\*\*/g, ''); 
+    cleanText = cleanText.replace(/\n/g, ' '); 
+    cleanText = cleanText.replace(/\s{2,}/g, ' ').trim(); 
 
-    return res.status(200).json({ decree: rawText });
+    // Send BOTH the cleaned decree AND the secret diagnostic payload
+    return res.status(200).json({ 
+      decree: cleanText,
+      diagnostic_data: {
+        version: "v5_diagnostic_live",
+        untouched_ai_text: rawAIResponse
+      }
+    });
     
   } catch (error) {
     console.error("Decree generation error:", error);
-    return res.status(500).json({ error: "Failed to generate decree" });
+    return res.status(500).json({ error: "Failed to generate decree", details: error.message });
   }
 };
