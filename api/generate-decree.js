@@ -31,7 +31,6 @@ module.exports = async (req, res) => {
     return res.status(500).json({ error: "Server configuration error" });
   }
 
-  // 1. Crisis pre-check on user inputs
   const combinedInput = `${reality} ${identity} ${action}`;
   if (containsCrisisLanguage(combinedInput)) {
     return res.status(200).json({
@@ -45,8 +44,8 @@ module.exports = async (req, res) => {
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
       generationConfig: {
-        maxOutputTokens: 250, // Full runway
-        temperature: 0.7, // Balanced precision
+        maxOutputTokens: 250,   
+        temperature: 0.7,       
       }
     });
 
@@ -61,7 +60,6 @@ module.exports = async (req, res) => {
     const result = await model.generateContent(prompt);
     let rawText = result.response.text().trim();
 
-    // 2. AI crisis exit check
     if (rawText === "SAFE_EXIT") {
       return res.status(200).json({
         crisis: true,
@@ -69,10 +67,12 @@ module.exports = async (req, res) => {
       });
     }
 
-    // 3. Clean format (strip stray quotes/markdown, but DO NOT slice the text)
-    rawText = rawText.replace(/^["']|["']$/g, '').replace(/\*\*/g, '').trim();
+    // Flatten the text, remove all line breaks (\n), bullets, and quotes
+    rawText = rawText.replace(/^["']|["']$/g, ''); 
+    rawText = rawText.replace(/\*\*/g, ''); 
+    rawText = rawText.replace(/\n/g, ' '); 
+    rawText = rawText.replace(/\s{2,}/g, ' ').trim(); 
 
-    // 4. Send the complete, untouched paragraph to the browser
     return res.status(200).json({ decree: rawText });
     
   } catch (error) {
