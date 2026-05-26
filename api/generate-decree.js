@@ -42,8 +42,6 @@ module.exports = async (req, res) => {
   try {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     
-    // Surgical safety settings: keeping standard protections, but dropping DANGEROUS_CONTENT 
-    // to prevent clinical coaching language from triggering the kill switch.
     const safetySettings = [
       { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
       { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
@@ -51,12 +49,11 @@ module.exports = async (req, res) => {
       { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
     ];
 
-    // Correcting the model name to 2.5-flash
+    // Removed maxOutputTokens entirely. We will let the prompt's word count rule dictate the length.
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
       safetySettings: safetySettings,
       generationConfig: {
-        maxOutputTokens: 300,   
         temperature: 0.7,       
       }
     });
@@ -72,7 +69,6 @@ module.exports = async (req, res) => {
     const result = await model.generateContent(prompt);
     const response = result.response;
     
-    // Extracting the literal finish reason so we aren't guessing
     const candidate = response.candidates[0];
     const finishReason = candidate.finishReason;
 
@@ -100,7 +96,7 @@ module.exports = async (req, res) => {
     return res.status(200).json({ 
       decree: cleanText,
       diagnostic_data: {
-        version: "v8_finish_reason",
+        version: "v9_no_limits",
         untouched_ai_text: rawAIResponse,
         finish_reason: finishReason
       }
