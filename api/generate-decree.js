@@ -13,40 +13,6 @@ function isOriginAllowed(origin) {
   return false;
 }
 
-// Post-process: enforce word limit, strip markdown, and avoid consecutive I-starts
-function postProcess(text) {
-  // Clean up stray markdown or quotes that Gemini sometimes adds
-  let cleanText = text.replace(/^["']|["']$/g, '').replace(/\*\*/g, '').trim();
-
-  // Hard word count enforcement (bumped to 60 words to allow the full 3 steps to breathe)
-  const words = cleanText.split(/\s+/);
-  if (words.length > 60) {
-    const truncated = words.slice(0, 55).join(' ');
-    const lastPeriod = truncated.lastIndexOf('.');
-    if (lastPeriod > 0) {
-        cleanText = truncated.slice(0, lastPeriod + 1);
-    } else {
-        cleanText = truncated + '.'; // Ensure it ends with punctuation if aggressively cut
-    }
-  }
- 
-  // Avoid two consecutive sentences starting with "I"
-  const sentences = cleanText.match(/[^\.!\?]+[\.!\?]+/g);
-  if (sentences && sentences.length >= 2) {
-    for (let i = 0; i < sentences.length - 1; i++) {
-      const curr = sentences[i].trim();
-      const next = sentences[i + 1].trim();
-      if (curr.startsWith('I ') && next.startsWith('I ')) {
-        const rest = next.slice(2);
-        sentences[i + 1] = 'It is ' + rest.charAt(0).toLowerCase() + rest.slice(1);
-      }
-    }
-    return sentences.join(' ');
-  }
- 
-  return cleanText;
-}
-
 module.exports = async (req, res) => {
   const origin = req.headers.origin || "";
  
@@ -68,10 +34,9 @@ module.exports = async (req, res) => {
   // 1. Crisis pre-check on user inputs
   const combinedInput = `${reality} ${identity} ${action}`;
   if (containsCrisisLanguage(combinedInput)) {
-    console.warn("Crisis language detected, returning safe exit.");
     return res.status(200).json({
       crisis: true,
-      message: "The system is quiet right now. Your word is enough. If you are carrying a weight heavier than stress, please dial 988. You are the asset; protect it."
+      message: "The system is quiet right now. Your word is enough. If you are carrying a weight heavier than stress, please dial 988."
     });
   }
 
@@ -80,8 +45,8 @@ module.exports = async (req, res) => {
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
       generationConfig: {
-        maxOutputTokens: 200, // Runway cleared for a complete thought
-        temperature: 0.7, // Balanced for precision and flow
+        maxOutputTokens: 250, // Full runway
+        temperature: 0.7, // Balanced precision
       }
     });
 
@@ -94,22 +59,24 @@ module.exports = async (req, res) => {
     );
 
     const result = await model.generateContent(prompt);
-    const rawText = result.response.text().trim();
+    let rawText = result.response.text().trim();
 
     // 2. AI crisis exit check
     if (rawText === "SAFE_EXIT") {
-      console.warn("AI returned SAFE_EXIT, sending crisis response.");
       return res.status(200).json({
         crisis: true,
-        message: "The system is quiet right now. Your word is enough. If you are carrying a weight heavier than stress, please dial 988. You are the asset; protect it."
+        message: "The system is quiet right now. Your word is enough. If you are carrying a weight heavier than stress, please dial 988."
       });
     }
 
-    const decree = postProcess(rawText);
-    return res.status(200).json({ decree });
+    // 3. Clean format (strip stray quotes/markdown, but DO NOT slice the text)
+    rawText = rawText.replace(/^["']|["']$/g, '').replace(/\*\*/g, '').trim();
+
+    // 4. Send the complete, untouched paragraph to the browser
+    return res.status(200).json({ decree: rawText });
+    
   } catch (error) {
     console.error("Decree generation error:", error);
-    console.warn("Fallback triggered due to API failure.");
     return res.status(500).json({ error: "Failed to generate decree" });
   }
 };
