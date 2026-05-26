@@ -42,17 +42,23 @@ module.exports = async (req, res) => {
   try {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     
-    // Surgical safety settings: blocking only high-probability dangerous content
+    // Surgical safety settings: keeping standard protections, but dropping DANGEROUS_CONTENT 
+    // to prevent clinical coaching language from triggering the kill switch.
     const safetySettings = [
       { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
       { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
       { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
-      { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
+      { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
     ];
 
+    // Correcting the model name to 2.5-flash
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
-      safetySettings: safetySettings
+      safetySettings: safetySettings,
+      generationConfig: {
+        maxOutputTokens: 300,   
+        temperature: 0.7,       
+      }
     });
 
     const prompt = buildFreeDecreePrompt(
@@ -63,15 +69,20 @@ module.exports = async (req, res) => {
       parseInt(frictionLevel) || 5
     );
 
-    const result = await model.generateContent({
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
-      generationConfig: {
-        maxOutputTokens: 300,   
-        temperature: 0.7,       
-      }
-    });
+    const result = await model.generateContent(prompt);
+    const response = result.response;
     
-    const rawAIResponse = result.response.text();
+    // Extracting the literal finish reason so we aren't guessing
+    const candidate = response.candidates[0];
+    const finishReason = candidate.finishReason;
+
+    let rawAIResponse = "";
+    if (candidate && candidate.content && candidate.content.parts && candidate.content.parts.length > 0) {
+        rawAIResponse = candidate.content.parts[0].text;
+    } else {
+        rawAIResponse = `[BLOCKED BY GOOGLE: ${finishReason}]`;
+    }
+
     let cleanText = rawAIResponse.trim();
 
     if (cleanText === "SAFE_EXIT") {
@@ -89,8 +100,9 @@ module.exports = async (req, res) => {
     return res.status(200).json({ 
       decree: cleanText,
       diagnostic_data: {
-        version: "v7_surgical_safety",
-        untouched_ai_text: rawAIResponse
+        version: "v8_finish_reason",
+        untouched_ai_text: rawAIResponse,
+        finish_reason: finishReason
       }
     });
     
