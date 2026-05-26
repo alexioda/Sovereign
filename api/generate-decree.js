@@ -9,43 +9,47 @@ const ALLOWED_ORIGINS = [
 
 function isOriginAllowed(origin) {
   if (ALLOWED_ORIGINS.includes(origin)) return true;
-  if (origin.endsWith(".vercel.app")) return true;
+  if (origin && origin.endsWith(".vercel.app")) return true;
   return false;
 }
 
-// Post-process: enforce word limit & avoid consecutive I-starts
+// Post-process: enforce word limit, strip markdown, and avoid consecutive I-starts
 function postProcess(text) {
-  // Hard word count enforcement (under 55 words)
-  const words = text.split(/\s+/);
-  if (words.length > 55) {
-    // Truncate to the last sentence break within 50 words
-    const truncated = words.slice(0, 50).join(' ');
+  // Clean up stray markdown or quotes that Gemini sometimes adds
+  let cleanText = text.replace(/^["']|["']$/g, '').replace(/\*\*/g, '').trim();
+
+  // Hard word count enforcement (bumped to 60 words to allow the full 3 steps to breathe)
+  const words = cleanText.split(/\s+/);
+  if (words.length > 60) {
+    const truncated = words.slice(0, 55).join(' ');
     const lastPeriod = truncated.lastIndexOf('.');
-    if (lastPeriod > 0) return truncated.slice(0, lastPeriod + 1);
-    return truncated;
+    if (lastPeriod > 0) {
+        cleanText = truncated.slice(0, lastPeriod + 1);
+    } else {
+        cleanText = truncated + '.'; // Ensure it ends with punctuation if aggressively cut
+    }
   }
-  
+ 
   // Avoid two consecutive sentences starting with "I"
-  const sentences = text.match(/[^\.!\?]+[\.!\?]+/g);
+  const sentences = cleanText.match(/[^\.!\?]+[\.!\?]+/g);
   if (sentences && sentences.length >= 2) {
     for (let i = 0; i < sentences.length - 1; i++) {
       const curr = sentences[i].trim();
       const next = sentences[i + 1].trim();
       if (curr.startsWith('I ') && next.startsWith('I ')) {
-        // Rewrite the second sentence by removing the "I " prefix
         const rest = next.slice(2);
         sentences[i + 1] = 'It is ' + rest.charAt(0).toLowerCase() + rest.slice(1);
       }
     }
-    return sentences.join('');
+    return sentences.join(' ');
   }
-  
-  return text;
+ 
+  return cleanText;
 }
 
 module.exports = async (req, res) => {
   const origin = req.headers.origin || "";
-  
+ 
   if (!isOriginAllowed(origin)) {
     return res.status(403).json({ error: "Forbidden. Invalid Origin." });
   }
@@ -67,7 +71,7 @@ module.exports = async (req, res) => {
     console.warn("Crisis language detected, returning safe exit.");
     return res.status(200).json({
       crisis: true,
-      message: "If you're in distress, help is available.\nCall or text 988 (US) for 24/7 confidential support."
+      message: "The system is quiet right now. Your word is enough. If you are carrying a weight heavier than stress, please dial 988. You are the asset; protect it."
     });
   }
 
@@ -76,8 +80,8 @@ module.exports = async (req, res) => {
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
       generationConfig: {
-        maxOutputTokens: 70,   // 70 tokens ≈ ~50 words
-        temperature: 0.7,
+        maxOutputTokens: 200, // Runway cleared for a complete thought
+        temperature: 0.7, // Balanced for precision and flow
       }
     });
 
@@ -97,7 +101,7 @@ module.exports = async (req, res) => {
       console.warn("AI returned SAFE_EXIT, sending crisis response.");
       return res.status(200).json({
         crisis: true,
-        message: "If you're in distress, help is available.\nCall or text 988 (US) for 24/7 confidential support."
+        message: "The system is quiet right now. Your word is enough. If you are carrying a weight heavier than stress, please dial 988. You are the asset; protect it."
       });
     }
 
