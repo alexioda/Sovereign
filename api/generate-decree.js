@@ -104,3 +104,89 @@ module.exports = async (req, res) => {
         responseMimeType: "application/json"
       }
     });
+
+    let sharpened = { sovereign_reframe: reality, actual_stake: reality };
+
+    try {
+      const preprocessPrompt = buildPreprocessingPrompt(reality, identity, action);
+      const preprocessResult = await preprocessModel.generateContent(preprocessPrompt);
+      const rawJson = preprocessResult.response.text();
+      sharpened = JSON.parse(rawJson);
+    } catch (e) {
+      console.warn("Preprocessing failed — falling back to raw inputs:", e?.message);
+    }
+
+    // ── PASS 2: Generate the Decree ───────────────────────────────
+    const decreeModel = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash",
+      safetySettings,
+      generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: 100,
+      }
+    });
+
+    const decreePrompt = buildFreeDecreePrompt(
+      sharpened.sovereign_reframe,
+      identity,
+      action,
+      cardTitle || "",
+      parseInt(frictionLevel) || 5
+    );
+
+    const decreeResult = await decreeModel.generateContent(decreePrompt);
+    let rawText = decreeResult.response.text().trim();
+
+    // Handle AI-triggered safe exit
+    if (rawText === "SAFE_EXIT") {
+      console.warn("AI triggered SAFE_EXIT");
+      return res.status(200).json({
+        crisis: true,
+        message: "The system is quiet right now. Your word is enough. If you are carrying a weight heavier than stress, please reach out to someone you trust — or dial 988."
+      });
+    }
+
+    // Clean formatting artifacts
+    let cleanText = rawText
+      .replace(/^["']|["']$/g, '') // strip wrapping quotes
+      .replace(/\*\*/g, '') // strip markdown bold
+      .replace(/\n/g, ' ') // flatten line breaks
+      .replace(/\s{2,}/g, ' ') // collapse whitespace
+      .trim();
+
+    // Post-process: word cap + consecutive I-fix
+    cleanText = postProcess(cleanText);
+
+    return res.status(200).json({ decree: cleanText });
+
+  } catch (error) {
+    console.error("Decree generation error:", error?.message || error);
+
+    // Friction-matched fallback decrees in Alex voice
+    const fl = parseInt(frictionLevel) || 5;
+    const fallbacks = {
+      high: [
+        "The system is under load. That is the data, not the verdict. I chose to stay clear anyway. One action, then the next. That is the architecture.",
+        "The pressure is real. So is the choice. I am not what this moment is demanding — I am what I bring to it. Closing the loop now.",
+        "This is friction, not failure. I carry it without becoming it. My next move is small and deliberate."
+      ],
+      mid: [
+        "The weight is present. I named it. That is the first move. Now I choose who I am being while I carry it forward.",
+        "Something tightened today. I noticed before it accumulated. That is the protocol working. One action, then rest.",
+        "The friction is information. I read it. I chose my response. The decree stands."
+      ],
+      low: [
+        "The system is clear. The work is here. I show up with what I have and let that be enough.",
+        "Clarity is its own kind of courage. I am in it today. One deliberate action seals the session.",
+        "The load is light. I use the space well. Presence is the practice."
+      ]
+    };
+
+    const range = fl >= 7 ? 'high' : fl >= 4 ? 'mid' : 'low';
+    const options = fallbacks[range];
+    const fallback = options[Math.floor(Math.random() * options.length)];
+
+    console.warn("Using fallback decree for range:", range);
+    return res.status(200).json({ decree: fallback, fallback: true });
+  }
+};
