@@ -110,7 +110,11 @@ module.exports = async (req, res) => {
     try {
       const preprocessPrompt = buildPreprocessingPrompt(reality, identity, action);
       const preprocessResult = await preprocessModel.generateContent(preprocessPrompt);
-      const rawJson = preprocessResult.response.text();
+      
+      // FIX: Strip rogue markdown ticks from Gemini's JSON before parsing
+      let rawJson = preprocessResult.response.text();
+      rawJson = rawJson.replace(/```json/gi, '').replace(/```/gi, '').trim();
+      
       sharpened = JSON.parse(rawJson);
     } catch (e) {
       console.warn("Preprocessing failed — falling back to raw inputs:", e?.message);
@@ -122,7 +126,7 @@ module.exports = async (req, res) => {
       safetySettings,
       generationConfig: {
         temperature: 0.7,
-        maxOutputTokens: 100,
+        // FIX: Removed maxOutputTokens. Let the prompt handle the length.
       }
     });
 
