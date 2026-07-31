@@ -16,6 +16,20 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+// User-supplied text (reality/identity/action/cardTitle/decree, and email
+// as a defense-in-depth measure) is interpolated directly into HTML email
+// templates below — escape it so markup in a journal entry can't inject
+// content into the admin notification or the user's own email.
+function escHtml(str) {
+  if (str === undefined || str === null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 module.exports = async (req, res) => {
   const origin = req.headers.origin || "";
 
@@ -64,23 +78,23 @@ module.exports = async (req, res) => {
           <table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:20px;">
             <tr style="border-bottom:1px solid #e7e5e4;">
               <td style="padding:8px 0;color:#78716c;width:120px;">Email</td>
-              <td style="padding:8px 0;">${email}</td>
+              <td style="padding:8px 0;">${escHtml(email)}</td>
             </tr>
             <tr style="border-bottom:1px solid #e7e5e4;">
               <td style="padding:8px 0;color:#78716c;">Reality</td>
-              <td style="padding:8px 0;">${reality || '—'}</td>
+              <td style="padding:8px 0;">${escHtml(reality) || '—'}</td>
             </tr>
             <tr style="border-bottom:1px solid #e7e5e4;">
               <td style="padding:8px 0;color:#78716c;">Identity</td>
-              <td style="padding:8px 0;">${identity || '—'}</td>
+              <td style="padding:8px 0;">${escHtml(identity) || '—'}</td>
             </tr>
             <tr style="border-bottom:1px solid #e7e5e4;">
               <td style="padding:8px 0;color:#78716c;">Action</td>
-              <td style="padding:8px 0;">${action || '—'}</td>
+              <td style="padding:8px 0;">${escHtml(action) || '—'}</td>
             </tr>
             <tr style="border-bottom:1px solid #e7e5e4;">
               <td style="padding:8px 0;color:#78716c;">Protocol</td>
-              <td style="padding:8px 0;">${cardTitle || '—'}</td>
+              <td style="padding:8px 0;">${escHtml(cardTitle) || '—'}</td>
             </tr>
             <tr>
               <td style="padding:8px 0;color:#78716c;">Friction Level</td>
@@ -91,7 +105,7 @@ module.exports = async (req, res) => {
             <p style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#b2945e;margin:0 0 8px 0;">
               Their Decree
             </p>
-            <p style="font-style:italic;font-size:1.1rem;line-height:1.6;margin:0;">${decree}</p>
+            <p style="font-style:italic;font-size:1.1rem;line-height:1.6;margin:0;">${escHtml(decree)}</p>
           </div>
         </div>
       `
@@ -119,16 +133,16 @@ module.exports = async (req, res) => {
 
           <div style="background:#f9f8f6;border-left:3px solid #b2945e;padding:24px 28px;border-radius:4px;margin-bottom:32px;">
             <p style="font-style:italic;font-size:1.2rem;line-height:1.7;margin:0;color:#1c1917;">
-              ${decree}
+              ${escHtml(decree)}
             </p>
           </div>
 
           <div style="border-top:1px solid #e7e5e4;padding-top:24px;margin-bottom:32px;">
             <p style="font-size:12px;color:#a8a29e;line-height:1.6;margin:0;font-family:Arial,sans-serif;">
               <em>Built from:</em><br>
-              ${reality ? `Reality: ${reality}<br>` : ''}
-              ${identity ? `Identity: ${identity}<br>` : ''}
-              ${action ? `Action: ${action}` : ''}
+              ${reality ? `Reality: ${escHtml(reality)}<br>` : ''}
+              ${identity ? `Identity: ${escHtml(identity)}<br>` : ''}
+              ${action ? `Action: ${escHtml(action)}` : ''}
             </p>
           </div>
 

@@ -639,6 +639,7 @@
             </button>
           </div>
           <p id="lead-msg" class="text-[10px] mt-2 hidden"></p>
+          <p class="text-[9px] text-stone-400 mt-2 leading-relaxed">Your email and this reflection are sent to our email provider to deliver your decree. See our <a href="https://liveadaptiv.com/privacy.html" target="_blank" class="underline hover:text-stone-600">privacy policy</a>.</p>
         </div>
       </div>
     </div>
@@ -696,6 +697,7 @@
           class="inline-flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-stone-400 hover:text-[#b2945e] transition-colors">
           <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Return to Main Hub
         </a>
+        <p class="text-[9px] text-stone-400 mt-6 leading-relaxed max-w-xs mx-auto">Self-guided reflection tool — not therapy or medical advice. In crisis, call or text 988.</p>
       </div>
     </div>
 
@@ -1025,8 +1027,9 @@
     const reality = vals[0] || 'the friction I carried';
     const identity = vals[1] || 'sovereign';
     const action = vals[2] || 'close this loop';
-    const cardTitle = document.getElementById('card-title')?.textContent || '';
-    const frictionLevel = parseInt(document.getElementById('delta-slider').value) || 5;
+    const isQuickMode = localStorage.getItem('la_scc_mode') === 'quick';
+    const cardTitle = isQuickMode ? 'Quick Reset (no protocol selected)' : (document.getElementById('card-title')?.textContent || '');
+    const frictionLevel = parseInt(document.getElementById('pre-slider').value) || 5;
     generateDecree(reality, identity, action, cardTitle, frictionLevel);
   }
 
@@ -1113,7 +1116,6 @@
   let currentDecree = '';
 
 async function generateDecree(reality, identity, action, cardTitle, frictionLevel) {
-    console.log("1. Starting decree generation...");
     const section = document.getElementById('decree-section');
     const loading = document.getElementById('decree-loading');
     const textEl = document.getElementById('decree-text');
@@ -1132,16 +1134,13 @@ async function generateDecree(reality, identity, action, cardTitle, frictionLeve
     actions.style.display = 'none';
 
     try {
-      console.log("2. Sending request to Vercel...");
       const response = await fetch('/api/generate-decree', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reality, identity, action, cardTitle, frictionLevel })
       });
 
-      console.log("3. Vercel responded with status:", response.status);
       const data = await response.json();
-      console.log("4. Full data from server:", data);
 
       loading.style.display = 'none';
 
@@ -1162,7 +1161,6 @@ async function generateDecree(reality, identity, action, cardTitle, frictionLeve
       }
 
       currentDecree = data.decree;
-      console.log("5. currentDecree saved as:", currentDecree);
 
       textEl.style.display = 'block';
       textEl.style.opacity = '1';
@@ -1172,10 +1170,10 @@ async function generateDecree(reality, identity, action, cardTitle, frictionLeve
       document.getElementById('lead-capture').style.display = 'block';
 
     } catch(e) {
-      console.error("DEBUG ERROR:", e);
+      console.error("Decree generation failed:", e);
       loading.style.display = 'none';
       textEl.style.display = 'block';
-      textEl.textContent = 'Error: ' + e.message;
+      textEl.textContent = "Something interrupted the connection. Please try again in a moment.";
       textEl.style.opacity = '1';
       actions.style.display = 'flex';
       document.getElementById('lead-capture').style.display = 'block';
