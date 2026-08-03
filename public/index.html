@@ -383,46 +383,46 @@
       <p class="text-[9px] uppercase tracking-widest text-stone-400 font-bold" id="progress-label">Step 1 of 4 — The Flush</p>
     </div>
 
+    <!-- THE FLUSH (always visible — Quick Reset is "Flush & Seal") -->
+    <div class="border-t border-stone-200 pt-10 reveal" id="section-flush">
+      <div class="text-center mb-8">
+        <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] block mb-2">Step 1</span>
+        <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Flush</h2>
+        <p class="text-stone-500 text-sm max-w-xs mx-auto">You cannot out-think chemistry. Clear the cortisol before you act.</p>
+      </div>
+
+      <!-- FRICTION INTAKE -->
+      <div class="mb-6 bg-white border border-stone-200 rounded-2xl p-5">
+        <p class="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-3">Before you begin — current friction level</p>
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-xs text-stone-400">1 — Flow</span>
+          <span id="pre-val" class="font-serif italic text-2xl text-[#b2945e]">5</span>
+          <span class="text-xs text-stone-400">10 — Overload</span>
+        </div>
+        <input type="range" min="1" max="10" value="5" id="pre-slider"
+          oninput="document.getElementById('pre-val').textContent=this.value"
+          class="w-full accent-[#b2945e]">
+      </div>
+
+      <div class="bg-white border border-stone-200 rounded-[32px] p-8 text-center shadow-sm">
+        <div class="w-28 h-28 mx-auto mb-6 relative flex items-center justify-center">
+          <svg class="timer-svg" viewBox="0 0 108 108">
+            <circle class="timer-ring-track" cx="54" cy="54" r="48"/>
+            <circle id="timer-ring-progress" class="timer-ring-progress" cx="54" cy="54" r="48"
+              stroke-dasharray="301.6" stroke-dashoffset="0"/>
+          </svg>
+          <span id="timer-display" class="font-serif text-4xl text-stone-900 italic relative z-10">90</span>
+        </div>
+        <p id="flush-instruction" class="text-[11px] font-bold text-stone-400 uppercase tracking-[0.18em] mb-8 h-4 transition-colors duration-500">Visual 90-sec protocol</p>
+        <button id="timer-btn" onclick="startTimer()"
+          class="w-full py-4 rounded-full bg-stone-900 text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-stone-800 transition-colors shadow-md">
+          Initiate Sequence
+        </button>
+      </div>
+    </div>
+
     <!-- DEEP SECTIONS WRAPPER (Protocol + Philosophy) -->
     <div id="deep-sections" class="transition-all duration-500 overflow-hidden">
-
-      <!-- THE FLUSH -->
-      <div class="border-t border-stone-200 pt-10 reveal" id="section-flush">
-        <div class="text-center mb-8">
-          <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] block mb-2">Step 1</span>
-          <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Flush</h2>
-          <p class="text-stone-500 text-sm max-w-xs mx-auto">You cannot out-think chemistry. Clear the cortisol before you act.</p>
-        </div>
-
-        <!-- FRICTION INTAKE -->
-        <div class="mb-6 bg-white border border-stone-200 rounded-2xl p-5">
-          <p class="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-3">Before you begin — current friction level</p>
-          <div class="flex justify-between items-center mb-2">
-            <span class="text-xs text-stone-400">1 — Flow</span>
-            <span id="pre-val" class="font-serif italic text-2xl text-[#b2945e]">5</span>
-            <span class="text-xs text-stone-400">10 — Overload</span>
-          </div>
-          <input type="range" min="1" max="10" value="5" id="pre-slider"
-            oninput="document.getElementById('pre-val').textContent=this.value"
-            class="w-full accent-[#b2945e]">
-        </div>
-
-        <div class="bg-white border border-stone-200 rounded-[32px] p-8 text-center shadow-sm">
-          <div class="w-28 h-28 mx-auto mb-6 relative flex items-center justify-center">
-            <svg class="timer-svg" viewBox="0 0 108 108">
-              <circle class="timer-ring-track" cx="54" cy="54" r="48"/>
-              <circle id="timer-ring-progress" class="timer-ring-progress" cx="54" cy="54" r="48"
-                stroke-dasharray="301.6" stroke-dashoffset="0"/>
-            </svg>
-            <span id="timer-display" class="font-serif text-4xl text-stone-900 italic relative z-10">90</span>
-          </div>
-          <p id="flush-instruction" class="text-[11px] font-bold text-stone-400 uppercase tracking-[0.18em] mb-8 h-4 transition-colors duration-500">Visual 90-sec protocol</p>
-          <button id="timer-btn" onclick="startTimer()"
-            class="w-full py-4 rounded-full bg-stone-900 text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-stone-800 transition-colors shadow-md">
-            Initiate Sequence
-          </button>
-        </div>
-      </div>
 
       <!-- THE PROTOCOL -->
       <div class="border-t border-stone-200 pt-10 text-center reveal" id="section-protocol">
@@ -707,7 +707,16 @@
 
   <script>
   // ── INIT ────────────────────────────────────────────────────
-  lucide.createIcons();
+  // Guarded so a blocked/failed lucide CDN load can't throw here and abort
+  // every top-level statement below it (clock, audio wiring, DOMContentLoaded).
+  function safeCreateIcons() {
+    try {
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    } catch (err) {
+      console.error('lucide failed to initialize:', err);
+    }
+  }
+  safeCreateIcons();
 
   // ── STREAK ──────────────────────────────────────────────────
   function initStreak() {
@@ -946,7 +955,7 @@
     const icon = document.getElementById('play-icon');
     icon.setAttribute('data-lucide', playing ? 'pause' : 'play');
     icon.style.marginLeft = playing ? '0' : '2px';
-    lucide.createIcons();
+    safeCreateIcons();
   }
 
   audioEl.addEventListener('timeupdate', () => {
@@ -1173,10 +1182,11 @@ async function generateDecree(reality, identity, action, cardTitle, frictionLeve
       console.error("Decree generation failed:", e);
       loading.style.display = 'none';
       textEl.style.display = 'block';
-      textEl.textContent = "Something interrupted the connection. Please try again in a moment.";
+      textEl.textContent = "Something interrupted the connection. Hit Edit below and lock the seal again to retry.";
       textEl.style.opacity = '1';
-      actions.style.display = 'flex';
-      document.getElementById('lead-capture').style.display = 'block';
+      // No decree text exists in this path — don't offer Share/Copy/Send for
+      // content that isn't there. "Edit" (already shown by sealJournal) is
+      // the retry path.
     }
   }
 
@@ -1267,7 +1277,9 @@ async function generateDecree(reality, identity, action, cardTitle, frictionLeve
           reality: document.getElementById('seal-1').value,
           identity: document.getElementById('seal-2').value,
           action: document.getElementById('seal-3').value,
-          cardTitle: document.getElementById('card-title')?.textContent || '',
+          cardTitle: localStorage.getItem('la_scc_mode') === 'quick'
+            ? 'Quick Reset (no protocol selected)'
+            : (document.getElementById('card-title')?.textContent || ''),
           frictionLevel: document.getElementById('delta-slider').value
         })
       });
@@ -1314,7 +1326,7 @@ async function generateDecree(reality, identity, action, cardTitle, frictionLeve
     setTeaser();          // random example decree
     checkAudioSupport();
     initReveal();
-    lucide.createIcons();
+    safeCreateIcons();
 
     // restore saved mode
     const savedMode = localStorage.getItem('la_scc_mode') || 'deep';
