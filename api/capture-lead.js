@@ -163,7 +163,7 @@ module.exports = async (req, res) => {
             <p style="font-size:12px;font-family:Arial,sans-serif;color:#78716c;margin:0 0 12px 0;line-height:1.6;">
               If the session landed — the Kinetic Blueprint goes one layer deeper. It measures the internal load that precedes the behavioral shift. Three minutes. Free.
             </p>
-            <a href="https://audit.liveadaptiv.com?utm_source=scc&utm_medium=email&utm_campaign=decree_followup"
+            <a href="https://blueprint.liveadaptiv.com?utm_source=scc&utm_medium=email&utm_campaign=decree_followup"
               style="font-size:11px;color:#b2945e;font-family:Arial,sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;">
               Take the Kinetic Blueprint →
             </a>

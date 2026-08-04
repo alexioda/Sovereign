@@ -349,7 +349,7 @@
 
     <!-- MODE TOGGLE -->
     <div class="flex justify-center mb-4">
-      <div class="bg-stone-200/50 p-1 rounded-full flex inline-flex text-[10px] font-bold uppercase tracking-widest">
+      <div class="bg-stone-200/50 p-1 rounded-full inline-flex text-[10px] font-bold uppercase tracking-widest">
         <button id="mode-deep" onclick="setMode('deep')" class="px-4 py-2 rounded-full bg-white text-stone-800 shadow-sm transition-all">Deep Protocol</button>
         <button id="mode-quick" onclick="setMode('quick')" class="px-4 py-2 rounded-full text-stone-500 hover:text-stone-800 transition-all">Quick Reset</button>
       </div>
@@ -383,46 +383,46 @@
       <p class="text-[9px] uppercase tracking-widest text-stone-400 font-bold" id="progress-label">Step 1 of 4 — The Flush</p>
     </div>
 
+    <!-- THE FLUSH (always visible — Quick Reset is "Flush & Seal") -->
+    <div class="border-t border-stone-200 pt-10 reveal" id="section-flush">
+      <div class="text-center mb-8">
+        <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] block mb-2">Step 1</span>
+        <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Flush</h2>
+        <p class="text-stone-500 text-sm max-w-xs mx-auto">You cannot out-think chemistry. Clear the cortisol before you act.</p>
+      </div>
+
+      <!-- FRICTION INTAKE -->
+      <div class="mb-6 bg-white border border-stone-200 rounded-2xl p-5">
+        <p class="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-3">Before you begin — current friction level</p>
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-xs text-stone-400">1 — Flow</span>
+          <span id="pre-val" class="font-serif italic text-2xl text-[#b2945e]">5</span>
+          <span class="text-xs text-stone-400">10 — Overload</span>
+        </div>
+        <input type="range" min="1" max="10" value="5" id="pre-slider"
+          oninput="document.getElementById('pre-val').textContent=this.value"
+          class="w-full accent-[#b2945e]">
+      </div>
+
+      <div class="bg-white border border-stone-200 rounded-[32px] p-8 text-center shadow-sm">
+        <div class="w-28 h-28 mx-auto mb-6 relative flex items-center justify-center">
+          <svg class="timer-svg" viewBox="0 0 108 108">
+            <circle class="timer-ring-track" cx="54" cy="54" r="48"/>
+            <circle id="timer-ring-progress" class="timer-ring-progress" cx="54" cy="54" r="48"
+              stroke-dasharray="301.6" stroke-dashoffset="0"/>
+          </svg>
+          <span id="timer-display" class="font-serif text-4xl text-stone-900 italic relative z-10">90</span>
+        </div>
+        <p id="flush-instruction" class="text-[11px] font-bold text-stone-400 uppercase tracking-[0.18em] mb-8 h-4 transition-colors duration-500">Visual 90-sec protocol</p>
+        <button id="timer-btn" onclick="startTimer()"
+          class="w-full py-4 rounded-full bg-stone-900 text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-stone-800 transition-colors shadow-md">
+          Initiate Sequence
+        </button>
+      </div>
+    </div>
+
     <!-- DEEP SECTIONS WRAPPER (Protocol + Philosophy) -->
     <div id="deep-sections" class="transition-all duration-500 overflow-hidden">
-
-      <!-- THE FLUSH -->
-      <div class="border-t border-stone-200 pt-10 reveal" id="section-flush">
-        <div class="text-center mb-8">
-          <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] block mb-2">Step 1</span>
-          <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Flush</h2>
-          <p class="text-stone-500 text-sm max-w-xs mx-auto">You cannot out-think chemistry. Clear the cortisol before you act.</p>
-        </div>
-
-        <!-- FRICTION INTAKE -->
-        <div class="mb-6 bg-white border border-stone-200 rounded-2xl p-5">
-          <p class="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-3">Before you begin — current friction level</p>
-          <div class="flex justify-between items-center mb-2">
-            <span class="text-xs text-stone-400">1 — Flow</span>
-            <span id="pre-val" class="font-serif italic text-2xl text-[#b2945e]">5</span>
-            <span class="text-xs text-stone-400">10 — Overload</span>
-          </div>
-          <input type="range" min="1" max="10" value="5" id="pre-slider"
-            oninput="document.getElementById('pre-val').textContent=this.value"
-            class="w-full accent-[#b2945e]">
-        </div>
-
-        <div class="bg-white border border-stone-200 rounded-[32px] p-8 text-center shadow-sm">
-          <div class="w-28 h-28 mx-auto mb-6 relative flex items-center justify-center">
-            <svg class="timer-svg" viewBox="0 0 108 108">
-              <circle class="timer-ring-track" cx="54" cy="54" r="48"/>
-              <circle id="timer-ring-progress" class="timer-ring-progress" cx="54" cy="54" r="48"
-                stroke-dasharray="301.6" stroke-dashoffset="0"/>
-            </svg>
-            <span id="timer-display" class="font-serif text-4xl text-stone-900 italic relative z-10">90</span>
-          </div>
-          <p id="flush-instruction" class="text-[11px] font-bold text-stone-400 uppercase tracking-[0.18em] mb-8 h-4 transition-colors duration-500">Visual 90-sec protocol</p>
-          <button id="timer-btn" onclick="startTimer()"
-            class="w-full py-4 rounded-full bg-stone-900 text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-stone-800 transition-colors shadow-md">
-            Initiate Sequence
-          </button>
-        </div>
-      </div>
 
       <!-- THE PROTOCOL -->
       <div class="border-t border-stone-200 pt-10 text-center reveal" id="section-protocol">
@@ -495,7 +495,6 @@
 
             <audio id="audio-el" preload="none">
               <source src="decompression.m4a" type="audio/mp4">
-              <source src="decompression.m4p" type="audio/mp4">
               <source src="decompression.mp3" type="audio/mpeg">
             </audio>
           </div>
@@ -672,8 +671,8 @@
             </div>
             <div>
               <h3 class="font-serif text-xl text-white italic mb-1">Energy Leadership Index®</h3>
-              <p class="text-xs text-stone-400 mb-3 leading-relaxed">Map your complete autonomic baseline. 70-question clinical diagnostic with a 1:1 debrief. Not a personality quiz — a structural reading.</p>
-              <p class="text-[9px] text-stone-600 mb-3 italic">Energy Leadership Index® is a registered trademark of iPEC.</p>
+              <p class="text-xs text-stone-400 mb-3 leading-relaxed">A separate offering: iPEC's energy-leadership assessment, delivered one-to-one with me as a certified Master Practitioner. A structured reading of how you lead under pressure — distinct from the LiveAdaptiv frameworks, and not a clinical or medical instrument.</p>
+              <p class="text-[9px] text-stone-600 mb-3 italic">Energy Leadership Index® is a registered trademark of iPEC. Offered through my iPEC credential, not part of the LiveAdaptiv system.</p>
               <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] flex items-center gap-1">
                 Book Assessment <i data-lucide="arrow-right" class="w-3 h-3"></i>
               </span>
@@ -686,7 +685,7 @@
         <i data-lucide="target" class="w-5 h-5 text-[#b2945e] mx-auto mb-3"></i>
         <h3 class="font-serif text-xl text-stone-900 italic mb-2">Know Your Score</h3>
         <p class="text-xs text-stone-500 mb-4 leading-relaxed">The Kinetic Blueprint measures your current load — not performance, the internal state that precedes performance. Three minutes. Free.</p>
-        <a href="https://audit.liveadaptiv.com?utm_source=scc&utm_medium=app&utm_campaign=sovereign_command" target="_blank" rel="noopener"
+        <a href="https://blueprint.liveadaptiv.com?utm_source=scc&utm_medium=app&utm_campaign=sovereign_command" target="_blank" rel="noopener"
           class="inline-block px-8 py-3 rounded-full bg-stone-900 text-white font-bold text-[10px] uppercase tracking-widest hover:bg-stone-800 transition-colors">
           Take the Kinetic Blueprint →
         </a>
@@ -707,7 +706,16 @@
 
   <script>
   // ── INIT ────────────────────────────────────────────────────
-  lucide.createIcons();
+  // Guarded so a blocked/failed lucide CDN load can't throw here and abort
+  // every top-level statement below it (clock, audio wiring, DOMContentLoaded).
+  function safeCreateIcons() {
+    try {
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    } catch (err) {
+      console.error('lucide failed to initialize:', err);
+    }
+  }
+  safeCreateIcons();
 
   // ── STREAK ──────────────────────────────────────────────────
   function initStreak() {
@@ -899,7 +907,7 @@
     "Stress is not the enemy. It is compressed energy waiting for a protocol.",
     "The gap between knowing and doing is not a character flaw. It is a protection.",
     "Sovereignty is not the absence of pressure. It is structure that holds.",
-    "The body keeps the score whether or not you're keeping score.",
+    "The nervous system keeps its own ledger, and it does not forget what you refused to feel.",
     "You are not discovering yourself. You are writing yourself. Every day is a draft."
   ];
 
@@ -946,7 +954,7 @@
     const icon = document.getElementById('play-icon');
     icon.setAttribute('data-lucide', playing ? 'pause' : 'play');
     icon.style.marginLeft = playing ? '0' : '2px';
-    lucide.createIcons();
+    safeCreateIcons();
   }
 
   audioEl.addEventListener('timeupdate', () => {
@@ -1173,10 +1181,11 @@ async function generateDecree(reality, identity, action, cardTitle, frictionLeve
       console.error("Decree generation failed:", e);
       loading.style.display = 'none';
       textEl.style.display = 'block';
-      textEl.textContent = "Something interrupted the connection. Please try again in a moment.";
+      textEl.textContent = "Something interrupted the connection. Hit Edit below and lock the seal again to retry.";
       textEl.style.opacity = '1';
-      actions.style.display = 'flex';
-      document.getElementById('lead-capture').style.display = 'block';
+      // No decree text exists in this path — don't offer Share/Copy/Send for
+      // content that isn't there. "Edit" (already shown by sealJournal) is
+      // the retry path.
     }
   }
 
@@ -1267,7 +1276,9 @@ async function generateDecree(reality, identity, action, cardTitle, frictionLeve
           reality: document.getElementById('seal-1').value,
           identity: document.getElementById('seal-2').value,
           action: document.getElementById('seal-3').value,
-          cardTitle: document.getElementById('card-title')?.textContent || '',
+          cardTitle: localStorage.getItem('la_scc_mode') === 'quick'
+            ? 'Quick Reset (no protocol selected)'
+            : (document.getElementById('card-title')?.textContent || ''),
           frictionLevel: document.getElementById('delta-slider').value
         })
       });
@@ -1314,7 +1325,7 @@ async function generateDecree(reality, identity, action, cardTitle, frictionLeve
     setTeaser();          // random example decree
     checkAudioSupport();
     initReveal();
-    lucide.createIcons();
+    safeCreateIcons();
 
     // restore saved mode
     const savedMode = localStorage.getItem('la_scc_mode') || 'deep';
