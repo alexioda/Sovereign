@@ -46,7 +46,7 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { email, decree, reality, identity, action, cardTitle, frictionLevel } = req.body;
+  const { email, decree, reality, identity, action, cardTitle, frictionPre, frictionPost } = req.body;
 
   if (!email || !isValidEmail(email)) {
     return res.status(400).json({ error: "Valid email required." });
@@ -98,7 +98,7 @@ module.exports = async (req, res) => {
             </tr>
             <tr>
               <td style="padding:8px 0;color:#78716c;">Friction Level</td>
-              <td style="padding:8px 0;">${frictionLevel || '—'} / 10</td>
+              <td style="padding:8px 0;">${frictionPre ?? '—'} → ${frictionPost ?? '—'} / 10</td>
             </tr>
           </table>
           <div style="background:#f5f4f2;border-left:3px solid #b2945e;padding:16px 20px;border-radius:4px;">

@@ -2,12 +2,133 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Sovereign Command | LiveAdaptiv</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <meta name="description" content="A 90-second nervous-system reset and a three-line daily seal. A self-guided reflection tool from LiveAdaptiv.">
+  <meta name="theme-color" content="#fafaf9">
+  <meta property="og:title" content="Sovereign Command | LiveAdaptiv">
+  <meta property="og:description" content="A 90-second nervous-system reset and a three-line daily seal. Architecture for the modern soul.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://liveadaptiv.com">
+  <meta property="og:site_name" content="LiveAdaptiv">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+  <style>
+/* Compiled utility subset — replaces the Tailwind Play CDN.
+   Only the classes this page actually uses. */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* layout */
+.block{display:block}.inline-block{display:inline-block}.hidden{display:none}
+.flex{display:flex}.inline-flex{display:inline-flex}
+.flex-1{flex:1 1 0%}.flex-shrink-0{flex-shrink:0}
+.items-center{align-items:center}.items-start{align-items:flex-start}
+.justify-center{justify-content:center}.justify-between{justify-content:space-between}
+.relative{position:relative}.sticky{position:sticky}.top-0{top:0}
+.z-10{z-index:10}.z-50{z-index:50}
+.overflow-hidden{overflow:hidden}
+.absolute-tl-4{position:absolute;top:16px;left:16px}
+.absolute-tr-4{position:absolute;top:16px;right:16px}
+.glow-blob{position:absolute;top:-48px;right:-48px;width:160px;height:160px;border-radius:9999px;background:rgba(178,148,94,.05);filter:blur(32px);pointer-events:none}
+
+/* gap + space */
+.gap-1{gap:.25rem}.gap-2{gap:.5rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}
+.space-y-4>*+*{margin-top:1rem}.space-y-8>*+*{margin-top:2rem}.space-y-16>*+*{margin-top:4rem}
+
+/* sizing */
+.w-full{width:100%}.w-6{width:1.5rem}.w-8{width:2rem}.w-10{width:2.5rem}
+.w-15{width:6px}.w-16{width:4rem}.w-28{width:7rem}.w-60p{width:60%}.w-80p{width:80%}
+.h-4{height:1rem}.h-6{height:1.5rem}.h-8{height:2rem}.h-15{height:6px}
+.h-16{height:4rem}.h-28{height:7rem}.h-px{height:1px}
+.max-w-xs{max-width:20rem}.max-w-sm{max-width:24rem}.max-w-lg{max-width:32rem}.max-w-85{max-width:85%}
+.mx-auto{margin-left:auto;margin-right:auto}
+
+/* padding / margin */
+.p-1{padding:.25rem}.p-3{padding:.75rem}.p-4{padding:1rem}.p-5{padding:1.25rem}
+.p-6{padding:1.5rem}.p-8{padding:2rem}
+.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}
+.px-6{padding-left:1.5rem;padding-right:1.5rem}.px-8{padding-left:2rem;padding-right:2rem}
+.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}
+.py-4{padding-top:1rem;padding-bottom:1rem}
+.pt-2{padding-top:.5rem}.pt-5{padding-top:1.25rem}.pt-6{padding-top:1.5rem}
+.pt-8{padding-top:2rem}.pt-10{padding-top:2.5rem}.pt-12{padding-top:3rem}
+.pb-05{padding-bottom:2px}.pb-1{padding-bottom:.25rem}.pb-2{padding-bottom:.5rem}
+.pb-8{padding-bottom:2rem}.pb-12{padding-bottom:3rem}
+.mb-1{margin-bottom:.25rem}.mb-15{margin-bottom:6px}.mb-2{margin-bottom:.5rem}
+.mb-3{margin-bottom:.75rem}.mb-4{margin-bottom:1rem}.mb-5{margin-bottom:1.25rem}
+.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mb-10{margin-bottom:2.5rem}
+.mb-12{margin-bottom:3rem}
+.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}
+
+/* type */
+.text-9{font-size:9px}.text-10{font-size:10px}.text-11{font-size:11px}.text-15{font-size:15px}
+.text-xs{font-size:.75rem}.text-sm{font-size:.875rem}.text-lg{font-size:1.125rem}
+.text-xl{font-size:1.25rem}.text-2xl{font-size:1.5rem}.text-3xl{font-size:1.875rem}
+.text-4xl{font-size:2.25rem}.text-7xl{font-size:4.5rem}
+.font-light{font-weight:300}.font-medium{font-weight:500}.font-bold{font-weight:700}
+.italic{font-style:italic}.uppercase{text-transform:uppercase}.underline{text-decoration:underline}
+.text-center{text-align:center}.text-left{text-align:left}
+.leading-tight{line-height:1.25}.leading-relaxed{line-height:1.625}
+.tracking-tight{letter-spacing:-.025em}.tracking-widest{letter-spacing:.1em}
+.tracking-015{letter-spacing:.15em}.tracking-018{letter-spacing:.18em}
+.tracking-02{letter-spacing:.2em}.tracking-04{letter-spacing:.4em}
+.tabular-nums{font-variant-numeric:tabular-nums}
+
+/* color */
+.text-white{color:#fff}.text-gold{color:#b2945e}
+.text-stone-300{color:#d6d3d1}.text-stone-400{color:#a8a29e}.text-stone-500{color:#78716c}
+.text-stone-600{color:#57534e}.text-stone-800{color:#292524}.text-stone-900{color:#1c1917}
+.text-emerald-600{color:#059669}.text-red-500{color:#ef4444}
+.bg-white{background-color:#fff}.bg-charcoal{background-color:#1c1917}
+.bg-stone-50{background-color:#fafaf9}.bg-stone-200{background-color:#e7e5e4}
+.bg-stone-800{background-color:#292524}.bg-stone-900{background-color:#1c1917}
+.bg-stone-50-90{background-color:rgba(250,250,249,.9)}
+.bg-stone-200-50{background-color:rgba(231,229,228,.5)}
+.bg-emerald-500{background-color:#10b981}
+.bg-gold{background-color:#b2945e}
+.bg-gold-08{background-color:rgba(178,148,94,.08)}
+.bg-gold-15{background-color:rgba(178,148,94,.15)}
+.bg-none{background:none}
+
+/* border */
+.border{border:1px solid}.border-t{border-top:1px solid}.border-b{border-bottom:1px solid}
+.border-none{border:none}
+.border-stone-100{border-color:#f5f5f4}.border-stone-200{border-color:#e7e5e4}
+.border-stone-700d{border-color:#3a3632}.border-stone-800d{border-color:#2a2724}
+.border-gold-20{border-color:rgba(178,148,94,.2)}.border-gold-25{border-color:rgba(178,148,94,.25)}
+.border-gold-30{border-color:rgba(178,148,94,.3)}.border-gold-40{border-color:rgba(178,148,94,.4)}
+.border-gold-50{border-color:rgba(178,148,94,.5)}
+.rounded-full{border-radius:9999px}.rounded-xl{border-radius:.75rem}
+.rounded-2xl{border-radius:1rem}.rounded-24{border-radius:24px}.rounded-32{border-radius:32px}
+
+/* effects */
+.shadow-sm{box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.shadow-md{box-shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1)}
+.shadow-lg{box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1)}
+.shadow-2xl{box-shadow:0 25px 50px -12px rgba(0,0,0,.25)}
+.opacity-50{opacity:.5}.opacity-004{opacity:.04}
+.backdrop-blur-md{backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.cursor-pointer{cursor:pointer}
+.transition-all{transition:all .25s}
+.transition-colors{transition:color .25s,background-color .25s,border-color .25s}
+.transition-opacity{transition:opacity .25s}
+.animate-pulse{animation:pulse 2s cubic-bezier(.4,0,.6,1) infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* interaction — scoped to controls so decorative panels don't react */
+.hover-opacity-70:hover{opacity:.7}
+button.bg-gold:hover,a.bg-gold:hover{background-color:#d4b483}
+button.bg-stone-900:hover,a.bg-stone-900:hover{background-color:#292524}
+button.border-stone-200:hover{background-color:#fafaf9}
+button.border-stone-700d:hover{border-color:#57534e}
+a.text-stone-400:hover,button.text-stone-400:hover{color:#b2945e}
+#mode-quick:hover,#mode-deep:hover{color:#292524}
+button:disabled{opacity:.5;cursor:not-allowed}
+button{font-family:inherit}
+  </style>
   <style>
     :root {
       --gold: #b2945e;
@@ -28,6 +149,7 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      -webkit-text-size-adjust: 100%;
     }
 
     .font-serif { font-family: 'Cormorant Garamond', serif; }
@@ -36,9 +158,7 @@
       background-image: radial-gradient(circle at 1px 1px, #e7e5e4 1px, transparent 0);
       background-size: 30px 30px;
     }
-    .blueprint-dot.breathing {
-      animation: bgBreathe 8s ease-in-out infinite;
-    }
+    .blueprint-dot.breathing { animation: bgBreathe 8s ease-in-out infinite; }
     @keyframes bgBreathe {
       0%, 100% { background-size: 30px 30px; }
       50% { background-size: 34px 34px; }
@@ -50,251 +170,158 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .reveal {
+    /* FIX: reveal is now a progressive enhancement. Without JS (or if the
+       observer never fires) content is visible, not a blank page. */
+    .js .reveal {
       opacity: 0;
       transform: translateY(16px);
       transition: opacity 0.7s ease, transform 0.7s ease;
     }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .js .reveal.visible { opacity: 1; transform: translateY(0); }
 
     .streak-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 4px 12px;
-      border-radius: 100px;
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 12px; border-radius: 100px;
       background: rgba(178,148,94,0.1);
       border: 1px solid rgba(178,148,94,0.25);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--gold);
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--gold);
     }
-    .streak-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--gold);
-    }
+    .streak-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
 
-    .scene {
-      width: 100%; height: 400px;
-      perspective: 1000px;
-      margin: 1.5rem 0;
-    }
+    .scene { width: 100%; height: 400px; perspective: 1000px; margin: 1.5rem 0; }
     .card-container {
-      width: 100%; height: 100%;
-      position: relative;
+      width: 100%; height: 100%; position: relative;
       transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      transform-style: preserve-3d;
-      cursor: pointer;
+      transform-style: preserve-3d; cursor: pointer;
     }
     .card-container.is-flipped { transform: rotateY(180deg); }
     .card-face {
-      position: absolute;
-      width: 100%; height: 100%;
-      backface-visibility: hidden;
-      border-radius: 24px;
+      position: absolute; width: 100%; height: 100%;
+      backface-visibility: hidden; border-radius: 24px;
       box-shadow: 0 25px 50px -12px rgba(0,0,0,0.22);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 30px;
-      text-align: center;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      padding: 30px; text-align: center;
     }
     .card-face-front {
       background: linear-gradient(135deg, #1c1917 0%, #0f172a 100%);
-      color: var(--gold);
-      border: 1px solid #334155;
+      color: var(--gold); border: 1px solid #334155;
     }
     .card-face-front::after {
-      content: '';
-      position: absolute;
-      inset: 12px;
+      content: ''; position: absolute; inset: 12px;
       border: 1px solid rgba(178,148,94,0.25);
-      border-radius: 16px;
-      pointer-events: none;
+      border-radius: 16px; pointer-events: none;
     }
     .card-face-back {
-      background: #ffffff;
-      color: var(--charcoal);
-      transform: rotateY(180deg);
-      border: 1px solid #e2e8f0;
-      justify-content: space-between;
-      padding: 36px 28px;
+      background: #ffffff; color: var(--charcoal);
+      transform: rotateY(180deg); border: 1px solid #e2e8f0;
+      justify-content: space-between; padding: 36px 28px;
+      overflow-y: auto;
     }
 
     .audio-player {
-      display: flex;
-      align-items: center;
-      gap: 14px;
+      display: flex; align-items: center; gap: 14px;
       background: var(--stone);
       border: 1px solid rgba(178,148,94,0.2);
-      border-radius: 100px;
-      padding: 10px 18px;
-      margin-top: 16px;
+      border-radius: 100px; padding: 10px 18px; margin-top: 16px;
     }
     .audio-play-btn {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      background: var(--gold);
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: background 0.2s, transform 0.15s;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--gold); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background 0.2s, transform 0.15s;
     }
     .audio-play-btn:hover { background: var(--gold-lt); transform: scale(1.05); }
     .audio-play-btn svg { width: 14px; height: 14px; color: white; }
     .audio-track { flex: 1; display: flex; flex-direction: column; gap: 4px; }
     .audio-progress-bg {
-      width: 100%; height: 3px;
-      background: #e7e5e4;
-      border-radius: 100px;
-      cursor: pointer;
-      position: relative;
+      width: 100%; height: 3px; background: #e7e5e4;
+      border-radius: 100px; cursor: pointer; position: relative;
     }
     .audio-progress-fill {
-      height: 100%;
-      background: var(--gold);
-      border-radius: 100px;
-      width: 0%;
-      transition: width 0.5s linear;
-      pointer-events: none;
+      height: 100%; background: var(--gold); border-radius: 100px;
+      width: 0%; transition: width 0.5s linear; pointer-events: none;
     }
     .audio-time {
-      font-size: 9px;
-      font-weight: 600;
-      color: #a8a29e;
-      letter-spacing: 0.05em;
-      text-align: right;
+      font-size: 9px; font-weight: 600; color: #a8a29e;
+      letter-spacing: 0.05em; text-align: right;
     }
 
     .timer-svg {
-      position: absolute;
-      inset: -6px;
-      width: calc(100% + 12px);
-      height: calc(100% + 12px);
+      position: absolute; inset: -6px;
+      width: calc(100% + 12px); height: calc(100% + 12px);
       transform: rotate(-90deg);
     }
     .timer-ring-track { fill: none; stroke: #f0ede9; stroke-width: 3; }
     .timer-ring-progress {
-      fill: none;
-      stroke: var(--gold);
-      stroke-width: 3;
-      stroke-linecap: round;
+      fill: none; stroke: var(--gold); stroke-width: 3; stroke-linecap: round;
       transition: stroke-dashoffset 1s linear, stroke 0.5s;
     }
 
+    /* FIX: textarea, not input — wraps and grows instead of scrolling sideways */
     .seal-input {
-      width: 100%;
-      background: transparent;
-      border: none;
+      display: block; width: 100%;
+      background: transparent; border: none;
       border-bottom: 1px solid #3a3632;
-      padding: 10px 0;
-      color: white;
+      padding: 10px 0; color: white;
       font-family: 'DM Sans', sans-serif;
-      font-size: 1rem;
-      outline: none;
+      font-size: 1rem; line-height: 1.6;
+      outline: none; resize: none; overflow: hidden;
       transition: border-color 0.2s;
     }
     .seal-input:focus { border-bottom-color: var(--gold); }
     .seal-input::placeholder { color: #57534e; }
-    .seal-input:disabled { opacity: 0.5; cursor: not-allowed; }
+    .seal-input:disabled { opacity: 0.55; cursor: not-allowed; }
 
     #save-toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
+      position: fixed; bottom: 24px; left: 50%;
       transform: translateX(-50%);
-      background: var(--charcoal);
-      color: white;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 8px 18px;
-      border-radius: 100px;
-      opacity: 0;
-      transition: opacity 0.3s;
-      pointer-events: none;
-      z-index: 999;
-      white-space: nowrap;
+      background: var(--charcoal); color: white;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 8px 18px;
+      border-radius: 100px; opacity: 0; transition: opacity 0.3s;
+      pointer-events: none; z-index: 999; white-space: nowrap;
     }
     #save-toast.visible { opacity: 1; }
 
     .upsell-card {
-      display: block;
-      padding: 22px 24px;
-      border-radius: 20px;
-      border: 1px solid #e7e5e4;
-      background: white;
-      text-decoration: none;
-      transition: all 0.25s;
+      display: block; padding: 22px 24px; border-radius: 20px;
+      border: 1px solid #e7e5e4; background: white;
+      text-decoration: none; transition: all 0.25s;
     }
     .upsell-card:hover {
       border-color: var(--gold);
       box-shadow: 0 8px 24px rgba(178,148,94,0.12);
       transform: translateY(-2px);
     }
-    .upsell-card-dark {
-      background: #1c1917;
-      border-color: #3a3632;
-    }
+    .upsell-card-dark { background: #1c1917; border-color: #3a3632; }
     .upsell-card-dark:hover { border-color: var(--gold); }
 
     #decree-section { transition: opacity 0.4s; }
     #decree-text { transition: opacity 0.5s; }
 
-    .progress-dots {
-      display: flex;
-      gap: 6px;
-      justify-content: center;
-      margin-bottom: 2rem;
-    }
+    .progress-dots { display: flex; gap: 6px; justify-content: center; margin-bottom: 2rem; }
     .progress-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #e7e5e4;
-      transition: background 0.3s, transform 0.3s;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #e7e5e4; transition: background 0.3s, transform 0.3s;
     }
-    .progress-dot.active {
-      background: var(--gold);
-      transform: scale(1.3);
-    }
-    .progress-dot.done {
-      background: var(--gold);
-      opacity: 0.4;
-    }
+    .progress-dot.active { background: var(--gold); transform: scale(1.3); }
+    .progress-dot.done { background: var(--gold); opacity: 0.4; }
 
     .delta-display {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 16px;
-      background: #f5f4f2;
-      border-radius: 12px;
-      margin-top: 12px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px; background: #f5f4f2;
+      border-radius: 12px; margin-top: 12px;
     }
     .delta-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
     }
     .delta-value {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.6rem;
-      font-style: italic;
-      color: var(--gold);
-      line-height: 1;
+      font-size: 1.6rem; font-style: italic;
+      color: var(--gold); line-height: 1;
     }
 
     @media (hover: none) {
@@ -305,8 +332,7 @@
     .skeleton {
       background: linear-gradient(90deg, #f0ede9 25%, #e7e4e0 50%, #f0ede9 75%);
       background-size: 200% 100%;
-      animation: shimmer 1.4s infinite;
-      border-radius: 4px;
+      animation: shimmer 1.4s infinite; border-radius: 4px;
     }
     @keyframes shimmer {
       0% { background-position: 200% 0; }
@@ -314,32 +340,65 @@
     }
 
     .char-count {
-      font-size: 9px;
-      color: #a8a29e;
-      text-align: right;
-      margin-top: 4px;
-      transition: color 0.2s;
+      font-size: 9px; color: #a8a29e; text-align: right;
+      margin-top: 4px; transition: color 0.2s;
     }
     .char-count.warn { color: #ef4444; }
+
+    /* Previous-session card */
+    .prev-seal {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid #2a2724;
+      border-radius: 16px;
+      padding: 16px 18px;
+      margin-bottom: 26px;
+    }
+    .prev-seal-line {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 0.95rem;
+      color: #a8a29e; line-height: 1.5; margin-bottom: 4px;
+    }
+
+    /* Friction trend strip */
+    .trend-row { display: flex; align-items: flex-end; gap: 4px; height: 44px; }
+    .trend-bar { flex: 1; border-radius: 3px 3px 0 0; background: var(--gold); opacity: 0.75; min-height: 3px; }
+    .trend-bar.up { background: #ef4444; opacity: 0.55; }
+
+    input[type=range] { accent-color: var(--gold); width: 100%; }
+
+    a:focus-visible, button:focus-visible, textarea:focus-visible, input:focus-visible {
+      outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 4px;
+    }
+
+    .icon { display: inline-block; vertical-align: middle; flex-shrink: 0; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .js .reveal { opacity: 1; transform: none; }
+    }
   </style>
 </head>
 <body class="blueprint-dot fade-in">
 
   <!-- NAV -->
-  <nav class="p-5 flex justify-between items-center sticky top-0 z-50 bg-stone-50/90 backdrop-blur-md border-b border-stone-200">
-    <a href="https://liveadaptiv.com" class="flex items-center gap-3 hover:opacity-70 transition-opacity">
-      <div class="w-8 h-8 border border-[#b2945e]/40 rounded-full flex items-center justify-center">
-        <span class="font-serif italic text-lg text-[#b2945e] pb-0.5">A</span>
+  <nav class="p-5 flex justify-between items-center sticky top-0 z-50 bg-stone-50-90 backdrop-blur-md border-b border-stone-200">
+    <a href="https://liveadaptiv.com" class="flex items-center gap-3 hover-opacity-70 transition-opacity">
+      <div class="w-8 h-8 border border-gold-40 rounded-full flex items-center justify-center">
+        <span class="font-serif italic text-lg text-gold pb-05">A</span>
       </div>
-      <span class="text-[9px] font-bold uppercase tracking-[0.4em] text-stone-400">LiveAdaptiv</span>
+      <span class="text-9 font-bold uppercase tracking-04 text-stone-400">LiveAdaptiv</span>
     </a>
     <div class="flex items-center gap-3">
       <div id="streak-badge" class="streak-badge" style="display:none">
         <span class="streak-dot"></span>
-        <span id="streak-count">1</span> Day Streak
+        <span id="streak-count">1</span>&nbsp;Day Streak
       </div>
-      <div class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] flex items-center gap-2">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+      <div class="text-9 font-bold uppercase tracking-widest text-gold flex items-center gap-2">
+        <span class="w-15 h-15 rounded-full bg-emerald-500 animate-pulse"></span>
         Active
       </div>
     </div>
@@ -349,112 +408,106 @@
 
     <!-- MODE TOGGLE -->
     <div class="flex justify-center mb-4">
-      <div class="bg-stone-200/50 p-1 rounded-full inline-flex text-[10px] font-bold uppercase tracking-widest">
-        <button id="mode-deep" onclick="setMode('deep')" class="px-4 py-2 rounded-full bg-white text-stone-800 shadow-sm transition-all">Deep Protocol</button>
-        <button id="mode-quick" onclick="setMode('quick')" class="px-4 py-2 rounded-full text-stone-500 hover:text-stone-800 transition-all">Quick Reset</button>
+      <div class="bg-stone-200-50 p-1 rounded-full inline-flex text-10 font-bold uppercase tracking-widest" role="tablist" aria-label="Session mode">
+        <button id="mode-deep" onclick="setMode('deep')" role="tab" aria-selected="true" class="px-4 py-2 rounded-full bg-white text-stone-800 shadow-sm transition-all">Deep Protocol</button>
+        <button id="mode-quick" onclick="setMode('quick')" role="tab" aria-selected="false" class="px-4 py-2 rounded-full text-stone-500 transition-all">Quick Reset</button>
       </div>
     </div>
 
-    <!-- HERO (Clock + Teaser) -->
+    <!-- HERO -->
     <div class="text-center pt-8 reveal">
-      <p id="live-date" class="text-xs font-bold uppercase tracking-widest text-[#b2945e] mb-2">Loading...</p>
-      <h1 id="live-time" class="text-7xl font-sans font-light text-stone-900 tracking-tight tabular-nums">00:00</h1>
+      <p id="live-date" class="text-xs font-bold uppercase tracking-widest text-gold mb-2">&nbsp;</p>
+      <h1 id="live-time" class="text-7xl font-light text-stone-900 tracking-tight tabular-nums">00:00</h1>
       <p class="text-stone-400 text-sm mt-4 font-serif italic max-w-xs mx-auto leading-relaxed">"You are exactly here. Everything else is fiction."</p>
 
-      <!-- TEASER: Example Decree -->
+      <!-- TEASER -->
       <div class="mt-6 mb-12 max-w-sm mx-auto">
-        <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-stone-400 text-center mb-3">The Artifact You Earn</p>
-        <div class="bg-[#1c1917] p-6 rounded-2xl border border-[#3a3632] shadow-lg relative">
-          <i data-lucide="quote" class="absolute top-4 left-4 w-4 h-4 text-[#b2945e] opacity-50"></i>
-          <p id="teaser-text" class="font-serif italic text-stone-300 text-[15px] leading-relaxed mt-2 text-center">
-            <!-- filled by JS -->
-          </p>
-          <p class="text-[10px] text-stone-500 text-center mt-4 uppercase tracking-widest">— Example Decree</p>
+        <p class="text-9 font-bold uppercase tracking-02 text-stone-400 text-center mb-3">The Artifact You Earn</p>
+        <div class="bg-charcoal p-6 rounded-2xl border border-stone-700d shadow-lg relative">
+          <span class="absolute-tl-4 text-gold opacity-50" aria-hidden="true"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 6H5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h2v1a3 3 0 0 1-3 3"/><path d="M19 6h-4a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h2v1a3 3 0 0 1-3 3"/></svg></span>
+          <p id="teaser-text" class="font-serif italic text-stone-300 text-15 leading-relaxed mt-2 text-center"></p>
+          <p class="text-10 text-stone-500 text-center mt-4 uppercase tracking-widest">— Example Decree</p>
         </div>
       </div>
 
-      <!-- Progress Dots (hidden in quick mode) -->
       <div class="progress-dots mt-6" id="progress-dots">
         <div class="progress-dot active" title="The Flush"></div>
         <div class="progress-dot" title="The Protocol"></div>
         <div class="progress-dot" title="The Philosophy"></div>
         <div class="progress-dot" title="The Seal"></div>
       </div>
-      <p class="text-[9px] uppercase tracking-widest text-stone-400 font-bold" id="progress-label">Step 1 of 4 — The Flush</p>
+      <p class="text-9 uppercase tracking-widest text-stone-400 font-bold" id="progress-label" aria-live="polite">Step 1 of 4 — The Flush</p>
     </div>
 
-    <!-- THE FLUSH (always visible — Quick Reset is "Flush & Seal") -->
+    <!-- THE FLUSH -->
     <div class="border-t border-stone-200 pt-10 reveal" id="section-flush">
       <div class="text-center mb-8">
-        <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] block mb-2">Step 1</span>
+        <span class="text-9 font-bold uppercase tracking-widest text-gold block mb-2">Step 1</span>
         <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Flush</h2>
         <p class="text-stone-500 text-sm max-w-xs mx-auto">You cannot out-think chemistry. Clear the cortisol before you act.</p>
       </div>
 
-      <!-- FRICTION INTAKE -->
       <div class="mb-6 bg-white border border-stone-200 rounded-2xl p-5">
-        <p class="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-3">Before you begin — current friction level</p>
+        <label for="pre-slider" class="text-10 font-bold uppercase tracking-widest text-stone-400 mb-3 block">Before you begin — current friction level</label>
         <div class="flex justify-between items-center mb-2">
           <span class="text-xs text-stone-400">1 — Flow</span>
-          <span id="pre-val" class="font-serif italic text-2xl text-[#b2945e]">5</span>
+          <span id="pre-val" class="font-serif italic text-2xl text-gold">5</span>
           <span class="text-xs text-stone-400">10 — Overload</span>
         </div>
-        <input type="range" min="1" max="10" value="5" id="pre-slider"
-          oninput="document.getElementById('pre-val').textContent=this.value"
-          class="w-full accent-[#b2945e]">
+        <input type="range" min="1" max="10" value="5" id="pre-slider" aria-describedby="pre-val">
       </div>
 
-      <div class="bg-white border border-stone-200 rounded-[32px] p-8 text-center shadow-sm">
+      <div class="bg-white border border-stone-200 rounded-32 p-8 text-center shadow-sm">
         <div class="w-28 h-28 mx-auto mb-6 relative flex items-center justify-center">
-          <svg class="timer-svg" viewBox="0 0 108 108">
+          <svg class="timer-svg" viewBox="0 0 108 108" aria-hidden="true">
             <circle class="timer-ring-track" cx="54" cy="54" r="48"/>
             <circle id="timer-ring-progress" class="timer-ring-progress" cx="54" cy="54" r="48"
               stroke-dasharray="301.6" stroke-dashoffset="0"/>
           </svg>
           <span id="timer-display" class="font-serif text-4xl text-stone-900 italic relative z-10">90</span>
         </div>
-        <p id="flush-instruction" class="text-[11px] font-bold text-stone-400 uppercase tracking-[0.18em] mb-8 h-4 transition-colors duration-500">Visual 90-sec protocol</p>
+        <p id="flush-instruction" class="text-11 font-bold text-stone-400 uppercase tracking-018 mb-8 h-4 transition-colors" aria-live="polite">Visual 90-sec protocol</p>
         <button id="timer-btn" onclick="startTimer()"
-          class="w-full py-4 rounded-full bg-stone-900 text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-stone-800 transition-colors shadow-md">
+          class="w-full py-4 rounded-full bg-stone-900 text-white font-bold text-10 uppercase tracking-02 transition-colors shadow-md">
           Initiate Sequence
         </button>
       </div>
     </div>
 
-    <!-- DEEP SECTIONS WRAPPER (Protocol + Philosophy) -->
-    <div id="deep-sections" class="transition-all duration-500 overflow-hidden">
+    <!-- DEEP SECTIONS -->
+    <div id="deep-sections">
 
       <!-- THE PROTOCOL -->
       <div class="border-t border-stone-200 pt-10 text-center reveal" id="section-protocol">
-        <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] block mb-2">Step 2</span>
+        <span class="text-9 font-bold uppercase tracking-widest text-gold block mb-2">Step 2</span>
         <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Protocol</h2>
         <p class="text-stone-500 text-sm max-w-xs mx-auto">Tap the card to draw your active reframe.</p>
 
         <div class="scene">
-          <div class="card-container" id="protocol-card" onclick="flipCard()">
+          <div class="card-container" id="protocol-card" onclick="flipCard()" tabindex="0" role="button" aria-label="Draw a protocol card">
             <div class="card-face card-face-front">
-              <div class="w-16 h-16 border border-[#b2945e]/50 rounded-full flex items-center justify-center mb-6 transition-transform duration-500 hover:scale-110">
-                <span class="font-serif italic text-4xl pb-1 text-[#b2945e]">A</span>
+              <div class="w-16 h-16 border border-gold-50 rounded-full flex items-center justify-center mb-6">
+                <span class="font-serif italic text-4xl pb-1 text-gold">A</span>
               </div>
-              <h3 class="text-lg font-bold uppercase tracking-[0.4em] text-white mb-2">Draw</h3>
-              <p class="text-[10px] uppercase tracking-widest text-[#b2945e]">Tactical Override</p>
+              <h3 class="text-lg font-bold uppercase tracking-04 text-white mb-2">Draw</h3>
+              <p class="text-10 uppercase tracking-widest text-gold">Tactical Override</p>
             </div>
             <div class="card-face card-face-back">
               <div class="text-center w-full">
-                <span class="text-[#b2945e] font-bold text-[10px] uppercase tracking-widest mb-3 block">Active Protocol</span>
+                <span class="text-gold font-bold text-10 uppercase tracking-widest mb-3 block">Active Protocol</span>
                 <h2 id="card-title" class="font-serif italic text-3xl text-stone-900 mb-5 leading-tight">Linear Override</h2>
                 <div class="w-10 h-px bg-stone-200 mx-auto mb-5"></div>
                 <p id="card-desc" class="text-sm text-stone-600 leading-relaxed font-medium text-left"></p>
               </div>
               <div class="w-full text-center mt-6 p-4 bg-stone-50 rounded-xl border border-stone-100">
-                <span class="block text-[9px] uppercase tracking-widest text-stone-400 font-bold mb-1.5">The Sovereign Reframe</span>
+                <span class="block text-9 uppercase tracking-widest text-stone-400 font-bold mb-15">The Sovereign Reframe</span>
                 <p id="card-reframe" class="text-xs font-serif italic text-stone-800 font-bold leading-relaxed"></p>
               </div>
             </div>
           </div>
         </div>
         <button id="reset-card-btn" onclick="resetCard()"
-          class="hidden mx-auto px-6 py-2 rounded-full border border-stone-200 text-stone-500 font-sans text-[10px] uppercase tracking-widest hover:bg-stone-100 transition-colors">
+          class="hidden mx-auto px-6 py-2 rounded-full border border-stone-200 text-stone-500 text-10 uppercase tracking-widest transition-colors">
           Draw Another
         </button>
       </div>
@@ -462,24 +515,23 @@
       <!-- THE PHILOSOPHY -->
       <div class="border-t border-stone-200 pt-10 reveal" id="section-philosophy">
         <div class="text-center mb-8">
-          <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] block mb-2">Step 3</span>
+          <span class="text-9 font-bold uppercase tracking-widest text-gold block mb-2">Step 3</span>
           <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Philosophy</h2>
           <p class="text-stone-500 text-sm max-w-xs mx-auto">The operating system beneath the tactics.</p>
         </div>
 
-        <div class="bg-white border border-[#b2945e]/25 rounded-[24px] p-6 shadow-sm relative overflow-hidden mb-6">
-          <div class="absolute right-4 top-4 opacity-[0.04]">
-            <i data-lucide="headphones" class="w-20 h-20"></i>
-          </div>
+        <div class="bg-white border border-gold-25 rounded-24 p-6 shadow-sm relative overflow-hidden mb-6">
+          <div class="absolute-tr-4 opacity-004" aria-hidden="true"><svg class="icon" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></svg></div>
           <div class="relative z-10">
-            <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] block mb-1">Deep Integration</span>
+            <span class="text-9 font-bold uppercase tracking-widest text-gold block mb-1">Deep Integration</span>
             <h3 class="font-serif text-2xl text-stone-900 italic mb-1">The Decompression</h3>
-            <p class="text-xs text-stone-500 mb-4 max-w-[85%] leading-relaxed">A guided biological reset. Use when you have space to fully metabolize the day's friction.</p>
+            <p class="text-xs text-stone-500 mb-4 max-w-85 leading-relaxed">A guided biological reset. Use when you have space to fully metabolize the day's friction.</p>
 
             <div id="audio-ui">
               <div class="audio-player">
-                <button class="audio-play-btn" id="play-btn" onclick="toggleAudio()">
-                  <i data-lucide="play" id="play-icon" style="margin-left:2px"></i>
+                <button class="audio-play-btn" id="play-btn" onclick="toggleAudio()" aria-label="Play audio">
+                  <span id="icon-play"><svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="6 3 20 12 6 21 6 3" fill="currentColor" stroke="none"/></svg></span>
+                  <span id="icon-pause" style="display:none"><svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor" stroke="none"/><rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor" stroke="none"/></svg></span>
                 </button>
                 <div class="audio-track">
                   <div class="audio-progress-bg" id="progress-bg" onclick="seekAudio(event)">
@@ -489,7 +541,7 @@
                 </div>
               </div>
             </div>
-            <div id="audio-unavailable" style="display:none" class="text-[10px] text-stone-400 italic mt-3">
+            <div id="audio-unavailable" style="display:none" class="text-10 text-stone-400 italic mt-3">
               Audio unavailable — check back soon.
             </div>
 
@@ -502,10 +554,8 @@
 
         <div class="bg-stone-50 p-6 rounded-2xl border border-stone-200">
           <div class="flex items-center gap-3 mb-3">
-            <div class="w-6 h-6 rounded-full bg-[#b2945e]/15 flex items-center justify-center">
-              <i data-lucide="shield" class="w-3 h-3 text-[#b2945e]"></i>
-            </div>
-            <h4 class="font-sans text-[10px] font-bold uppercase tracking-widest text-stone-400">Core Architecture</h4>
+            <div class="w-6 h-6 rounded-full bg-gold-15 flex items-center justify-center text-gold" aria-hidden="true"><svg class="icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div>
+            <h4 class="text-10 font-bold uppercase tracking-widest text-stone-400">Core Architecture</h4>
           </div>
           <p class="font-serif text-xl text-stone-900 italic mb-2">"You are the Asset."</p>
           <p class="text-xs text-stone-600 leading-relaxed">You are not the worker. If the Asset breaks, the work stops. Protecting the Asset — through fierce boundaries and unapologetic rest — IS the work.</p>
@@ -513,74 +563,84 @@
 
         <div class="mt-4 bg-white border border-stone-200 rounded-2xl p-5">
           <div class="flex items-center gap-3 mb-3">
-            <div class="w-6 h-6 rounded-full bg-[#b2945e]/15 flex items-center justify-center">
-              <i data-lucide="zap" class="w-3 h-3 text-[#b2945e]"></i>
-            </div>
-            <h4 class="font-sans text-[10px] font-bold uppercase tracking-widest text-stone-400">Today's Signal</h4>
+            <div class="w-6 h-6 rounded-full bg-gold-15 flex items-center justify-center text-gold" aria-hidden="true"><svg class="icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></div>
+            <h4 class="text-10 font-bold uppercase tracking-widest text-stone-400">Today's Signal</h4>
           </div>
           <p id="daily-insight" class="font-serif text-lg text-stone-900 italic leading-relaxed"></p>
         </div>
       </div>
 
-    </div> <!-- end deep-sections -->
+    </div>
 
-    <!-- THE SEAL (always visible) -->
+    <!-- THE SEAL -->
     <div class="border-t border-stone-200 pt-10 pb-2 reveal" id="section-seal">
       <div class="text-center mb-8">
-        <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] block mb-2">Step 4</span>
+        <span class="text-9 font-bold uppercase tracking-widest text-gold block mb-2">Step 4</span>
         <h2 class="text-3xl font-serif italic text-stone-900 mb-2">The Seal</h2>
         <p class="text-stone-500 text-sm max-w-xs mx-auto">Lock in the shift. Three lines. No more.</p>
       </div>
 
-      <div class="bg-stone-900 p-8 rounded-[32px] shadow-2xl border border-stone-800 relative overflow-hidden">
-        <div class="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-[#b2945e]/5 blur-2xl pointer-events-none"></div>
-        <div class="space-y-8 relative z-10">
-          <div>
-            <label class="font-serif text-xl text-stone-300 block mb-2">The reality is...</label>
-            <input id="seal-1" type="text" class="seal-input" placeholder="e.g., the deadline was moved." maxlength="120" oninput="updateCharCount('seal-1','cc-1',120)">
-            <div class="char-count" id="cc-1">120</div>
+      <div class="bg-stone-900 p-8 rounded-32 shadow-2xl border border-stone-800d relative overflow-hidden">
+        <div class="glow-blob" aria-hidden="true"></div>
+        <div class="relative z-10">
+
+          <!-- Previous session, read-only. Injected by JS on a new day. -->
+          <div id="prev-seal" class="prev-seal" style="display:none">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-9 font-bold uppercase tracking-widest text-stone-500">Last session</span>
+              <span id="prev-seal-date" class="text-9 text-stone-600"></span>
+            </div>
+            <div id="prev-seal-body"></div>
           </div>
-          <div>
-            <label class="font-serif text-xl text-stone-300 block mb-2">I choose to be...</label>
-            <input id="seal-2" type="text" class="seal-input" placeholder="e.g., decisive and unbothered." maxlength="80" oninput="updateCharCount('seal-2','cc-2',80)">
-            <div class="char-count" id="cc-2">80</div>
-          </div>
-          <div>
-            <label class="font-serif text-xl text-stone-300 block mb-2">My next action is...</label>
-            <input id="seal-3" type="text" class="seal-input" placeholder="e.g., close the laptop." maxlength="80" oninput="updateCharCount('seal-3','cc-3',80)">
-            <div class="char-count" id="cc-3">80</div>
-          </div>
-          <div class="pt-2 flex gap-3">
-            <button onclick="sealJournal()" id="seal-btn"
-              class="flex-1 py-4 rounded-full bg-[#b2945e] text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-[#d4b483] transition-all disabled:opacity-50">
-              Lock System
-            </button>
-            <button onclick="unlockJournal()" id="unlock-btn" style="display:none"
-              class="px-5 py-4 rounded-full border border-stone-700 text-stone-400 font-bold text-[10px] uppercase tracking-[0.15em] hover:border-stone-500 transition-all">
-              Edit
-            </button>
+
+          <div class="space-y-8">
+            <div>
+              <label for="seal-1" class="font-serif text-xl text-stone-300 block mb-2">The reality is...</label>
+              <textarea id="seal-1" class="seal-input" rows="1" maxlength="240" placeholder="e.g., the deadline was moved."></textarea>
+              <div class="char-count" id="cc-1" aria-hidden="true">240</div>
+            </div>
+            <div>
+              <label for="seal-2" class="font-serif text-xl text-stone-300 block mb-2">I choose to be...</label>
+              <textarea id="seal-2" class="seal-input" rows="1" maxlength="160" placeholder="e.g., decisive and unbothered."></textarea>
+              <div class="char-count" id="cc-2" aria-hidden="true">160</div>
+            </div>
+            <div>
+              <label for="seal-3" class="font-serif text-xl text-stone-300 block mb-2">My next action is...</label>
+              <textarea id="seal-3" class="seal-input" rows="1" maxlength="160" placeholder="e.g., close the laptop."></textarea>
+              <div class="char-count" id="cc-3" aria-hidden="true">160</div>
+            </div>
+            <p class="text-9 text-stone-600 leading-relaxed">Enter moves to the next line. Shift + Enter breaks a line.</p>
+            <div class="pt-2 flex gap-3">
+              <button onclick="sealJournal()" id="seal-btn"
+                class="flex-1 py-4 rounded-full bg-gold text-white font-bold text-10 uppercase tracking-02 transition-all">
+                Lock System
+              </button>
+              <button onclick="unlockJournal()" id="unlock-btn" style="display:none"
+                class="px-5 py-4 rounded-full border border-stone-700d text-stone-400 font-bold text-10 uppercase tracking-015 transition-all">
+                Edit
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- FRICTION DELTA -->
       <div id="delta-capture" class="mt-6 bg-white border border-stone-200 rounded-2xl p-6" style="display:none">
-        <p class="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-1">Post-Session Friction Level</p>
+        <label for="delta-slider" class="text-10 font-bold uppercase tracking-widest text-stone-400 mb-1 block">Post-Session Friction Level</label>
         <p class="text-xs text-stone-500 mb-4">How does the load feel now compared to when you started?</p>
         <div class="flex justify-between items-center mb-2">
           <span class="text-xs text-stone-400">1 — Flow</span>
-          <span id="delta-val" class="font-serif italic text-2xl text-[#b2945e]">5</span>
+          <span id="delta-val" class="font-serif italic text-2xl text-gold">5</span>
           <span class="text-xs text-stone-400">10 — Overload</span>
         </div>
-        <input type="range" min="1" max="10" value="5" id="delta-slider"
-          oninput="updateDelta(this.value)" class="w-full accent-[#b2945e]">
+        <input type="range" min="1" max="10" value="5" id="delta-slider" oninput="updateDelta(this.value)">
 
         <div id="delta-comparison" class="delta-display mt-4" style="display:none">
           <div>
             <div class="delta-label">Before</div>
             <div class="delta-value" id="delta-before">—</div>
           </div>
-          <div class="text-stone-300 font-sans text-lg">→</div>
+          <div class="text-stone-300 text-lg">→</div>
           <div>
             <div class="delta-label">After</div>
             <div class="delta-value" id="delta-after">—</div>
@@ -592,36 +652,41 @@
         </div>
 
         <button onclick="saveDelta()"
-          class="mt-4 w-full py-3 rounded-full bg-stone-900 text-white text-[10px] font-bold uppercase tracking-widest hover:bg-stone-800 transition-colors">
+          class="mt-4 w-full py-3 rounded-full bg-stone-900 text-white text-10 font-bold uppercase tracking-widest transition-colors">
           Record &amp; Close
         </button>
       </div>
 
-      <!-- DECREE + LEAD CAPTURE -->
-      <div id="decree-section" style="display:none" class="mt-6 bg-white border border-[#b2945e]/30 rounded-2xl p-6 shadow-sm">
+      <!-- FRICTION TREND -->
+      <div id="trend-card" class="mt-6 bg-white border border-stone-200 rounded-2xl p-6" style="display:none">
+        <div class="flex justify-between items-center mb-1">
+          <span class="text-10 font-bold uppercase tracking-widest text-stone-400">Friction, recent sessions</span>
+          <span id="trend-avg" class="text-10 font-bold text-gold"></span>
+        </div>
+        <p class="text-xs text-stone-500 mb-4">Each bar is one session's shift. Down is a release.</p>
+        <div class="trend-row" id="trend-row"></div>
+      </div>
+
+      <!-- DECREE -->
+      <div id="decree-section" style="display:none" class="mt-6 bg-white border border-gold-30 rounded-2xl p-6 shadow-sm">
         <div class="flex items-center gap-2 mb-4">
-          <i data-lucide="crown" class="w-4 h-4 text-[#b2945e]"></i>
-          <span class="text-[10px] font-bold uppercase tracking-widest text-[#b2945e]">The Decree</span>
+          <span class="text-gold" aria-hidden="true"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11.56 3.27a.5.5 0 0 1 .88 0l2.95 5.6a1 1 0 0 0 1.51.3L21.18 5.5a.5.5 0 0 1 .8.52l-2.83 10.25a1 1 0 0 1-.96.73H5.81a1 1 0 0 1-.96-.73L2.02 6.02a.5.5 0 0 1 .8-.52L7.1 9.17a1 1 0 0 0 1.51-.3z"/><path d="M5 21h14"/></svg></span>
+          <span class="text-10 font-bold uppercase tracking-widest text-gold">The Decree</span>
         </div>
 
         <div id="decree-loading" class="mb-5">
           <div class="skeleton h-4 w-full mb-2"></div>
-          <div class="skeleton h-4 w-4/5 mb-2"></div>
-          <div class="skeleton h-4 w-3/5"></div>
+          <div class="skeleton h-4 w-80p mb-2"></div>
+          <div class="skeleton h-4 w-60p"></div>
         </div>
 
-        <p id="decree-text"
-          class="font-serif italic text-lg text-stone-900 leading-relaxed mb-5 opacity-0 transition-opacity duration-500"
-          style="display:none">
-        </p>
+        <p id="decree-text" class="font-serif italic text-lg text-stone-900 leading-relaxed mb-5" style="display:none" aria-live="polite"></p>
 
         <div id="decree-actions" class="flex gap-3" style="display:none">
-          <button onclick="shareDecree()"
-            class="flex-1 py-2 rounded-full border border-stone-200 text-stone-600 text-[10px] font-bold uppercase tracking-widest hover:bg-stone-50 transition-colors">
-            <i data-lucide="share-2" class="w-3 h-3 inline mr-1"></i> Share
+          <button onclick="shareDecree()" class="flex-1 py-2 rounded-full border border-stone-200 text-stone-600 text-10 font-bold uppercase tracking-widest transition-colors flex items-center justify-center gap-1">
+            <span aria-hidden="true"><svg class="icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></span> Share
           </button>
-          <button onclick="copyDecree()"
-            class="px-4 py-2 rounded-full border border-stone-200 text-stone-500 text-[10px] font-bold uppercase tracking-widest hover:bg-stone-50">
+          <button onclick="copyDecree()" class="px-4 py-2 rounded-full border border-stone-200 text-stone-500 text-10 font-bold uppercase tracking-widest transition-colors">
             Copy
           </button>
         </div>
@@ -630,15 +695,16 @@
           <p class="text-xs text-stone-500 mb-1 font-medium">Want this in your inbox?</p>
           <p class="text-xs text-stone-400 mb-3">Get your decree delivered + early access to the full Adaptiv protocol.</p>
           <div class="flex gap-2">
-            <input id="lead-email" type="email" placeholder="Your email"
-              class="flex-1 px-4 py-2 rounded-full border border-stone-200 text-sm text-stone-800 outline-none focus:border-[#b2945e] transition-colors">
+            <label for="lead-email" class="sr-only">Your email</label>
+            <input id="lead-email" type="email" autocomplete="email" placeholder="Your email"
+              class="flex-1 px-4 py-2 rounded-full border border-stone-200 text-sm text-stone-800 transition-colors">
             <button onclick="captureLead()" id="lead-btn"
-              class="px-5 py-2 rounded-full bg-[#b2945e] text-white font-bold text-[10px] uppercase tracking-widest hover:bg-[#d4b483] transition-colors">
+              class="px-5 py-2 rounded-full bg-gold text-white font-bold text-10 uppercase tracking-widest transition-colors">
               Send
             </button>
           </div>
-          <p id="lead-msg" class="text-[10px] mt-2 hidden"></p>
-          <p class="text-[9px] text-stone-400 mt-2 leading-relaxed">Your email and this reflection are sent to our email provider to deliver your decree. See our <a href="https://liveadaptiv.com/privacy.html" target="_blank" class="underline hover:text-stone-600">privacy policy</a>.</p>
+          <p id="lead-msg" class="text-10 mt-2 hidden" aria-live="polite"></p>
+          <p class="text-9 text-stone-400 mt-2 leading-relaxed">Your email and this reflection are sent to our email provider to deliver your decree. See our <a href="https://liveadaptiv.com/privacy.html" target="_blank" rel="noopener" class="underline">privacy policy</a>.</p>
         </div>
       </div>
     </div>
@@ -652,88 +718,86 @@
       <div class="space-y-4 mb-10">
         <a href="https://billing.liveadaptiv.com" target="_blank" rel="noopener" class="upsell-card">
           <div class="flex items-start gap-4">
-            <div class="p-3 bg-stone-50 rounded-xl flex-shrink-0">
-              <i data-lucide="layers" class="w-5 h-5 text-stone-500"></i>
-            </div>
+            <div class="p-3 bg-stone-50 rounded-xl flex-shrink-0 text-stone-500" aria-hidden="true"><svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12.18a1 1 0 0 0 .6.9l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 .58-.91"/><path d="M2 17.18a1 1 0 0 0 .6.9l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 .58-.91"/></svg></div>
             <div>
               <h3 class="font-serif text-xl text-stone-900 italic mb-1">The Alchemist Field Guide</h3>
               <p class="text-xs text-stone-500 mb-3 leading-relaxed">The complete protocol system for the pattern underneath the symptom. Built for the profile that keeps going past the point of sustainable.</p>
-              <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] flex items-center gap-1">
-                Secure Access <i data-lucide="arrow-right" class="w-3 h-3"></i>
+              <span class="text-9 font-bold uppercase tracking-widest text-gold flex items-center gap-1">
+                Secure Access <svg class="icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
               </span>
             </div>
           </div>
         </a>
         <a href="https://billing.liveadaptiv.com/eli" target="_blank" rel="noopener" class="upsell-card upsell-card-dark">
           <div class="flex items-start gap-4">
-            <div class="p-3 bg-stone-800 rounded-xl flex-shrink-0">
-              <i data-lucide="activity" class="w-5 h-5 text-stone-300"></i>
-            </div>
+            <div class="p-3 bg-stone-800 rounded-xl flex-shrink-0 text-stone-300" aria-hidden="true"><svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
             <div>
               <h3 class="font-serif text-xl text-white italic mb-1">Energy Leadership Index®</h3>
               <p class="text-xs text-stone-400 mb-3 leading-relaxed">A separate offering: iPEC's energy-leadership assessment, delivered one-to-one with me as a certified Master Practitioner. A structured reading of how you lead under pressure — distinct from the LiveAdaptiv frameworks, and not a clinical or medical instrument.</p>
-              <p class="text-[9px] text-stone-600 mb-3 italic">Energy Leadership Index® is a registered trademark of iPEC. Offered through my iPEC credential, not part of the LiveAdaptiv system.</p>
-              <span class="text-[9px] font-bold uppercase tracking-widest text-[#b2945e] flex items-center gap-1">
-                Book Assessment <i data-lucide="arrow-right" class="w-3 h-3"></i>
+              <p class="text-9 text-stone-600 mb-3 italic">Energy Leadership Index® is a registered trademark of iPEC. Offered through my iPEC credential, not part of the LiveAdaptiv system.</p>
+              <span class="text-9 font-bold uppercase tracking-widest text-gold flex items-center gap-1">
+                Book Assessment <svg class="icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
               </span>
             </div>
           </div>
         </a>
       </div>
 
-      <div class="bg-[#b2945e]/8 border border-[#b2945e]/20 rounded-2xl p-6 mb-8 text-center">
-        <i data-lucide="target" class="w-5 h-5 text-[#b2945e] mx-auto mb-3"></i>
+      <div class="bg-gold-08 border border-gold-20 rounded-2xl p-6 mb-8 text-center">
+        <div class="text-gold mx-auto mb-3 flex justify-center" aria-hidden="true"><svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
         <h3 class="font-serif text-xl text-stone-900 italic mb-2">Know Your Score</h3>
         <p class="text-xs text-stone-500 mb-4 leading-relaxed">The Kinetic Blueprint measures your current load — not performance, the internal state that precedes performance. Three minutes. Free.</p>
         <a href="https://blueprint.liveadaptiv.com?utm_source=scc&utm_medium=app&utm_campaign=sovereign_command" target="_blank" rel="noopener"
-          class="inline-block px-8 py-3 rounded-full bg-stone-900 text-white font-bold text-[10px] uppercase tracking-widest hover:bg-stone-800 transition-colors">
+          class="inline-block px-8 py-3 rounded-full bg-stone-900 text-white font-bold text-10 uppercase tracking-widest transition-colors">
           Take the Kinetic Blueprint →
         </a>
       </div>
 
       <div class="text-center pt-6 border-t border-stone-200">
-        <a href="https://liveadaptiv.com"
-          class="inline-flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-stone-400 hover:text-[#b2945e] transition-colors">
-          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Return to Main Hub
+        <a href="https://liveadaptiv.com" class="inline-flex items-center gap-2 text-10 uppercase tracking-widest font-bold text-stone-400 transition-colors">
+          <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg> Return to Main Hub
         </a>
-        <p class="text-[9px] text-stone-400 mt-6 leading-relaxed max-w-xs mx-auto">Self-guided reflection tool — not therapy or medical advice. In crisis, call or text 988.</p>
+        <p class="text-9 text-stone-400 mt-6 leading-relaxed max-w-xs mx-auto">Self-guided reflection tool — not therapy or medical advice. In crisis, call or text 988.</p>
+        <button onclick="clearMyData()" class="text-9 uppercase tracking-widest text-stone-400 mt-4 underline bg-none border-none cursor-pointer">
+          Clear my data from this device
+        </button>
       </div>
     </div>
 
   </main>
 
-  <div id="save-toast">Session saved</div>
+  <div id="save-toast" role="status"></div>
 
   <script>
-  // ── INIT ────────────────────────────────────────────────────
-  // Guarded so a blocked/failed lucide CDN load can't throw here and abort
-  // every top-level statement below it (clock, audio wiring, DOMContentLoaded).
-  function safeCreateIcons() {
-    try {
-      if (typeof lucide !== 'undefined') lucide.createIcons();
-    } catch (err) {
-      console.error('lucide failed to initialize:', err);
-    }
-  }
-  safeCreateIcons();
+  document.documentElement.classList.add('js');
+
+  // ── ICONS ───────────────────────────────────────────────────
+  // Inlined so the page has no icon-CDN dependency at all.
 
   // ── STREAK ──────────────────────────────────────────────────
   function initStreak() {
-    const today = new Date().toDateString();
-    const lastVisit = localStorage.getItem('la_scc_last_visit');
-    let streak = parseInt(localStorage.getItem('la_scc_streak') || '0');
-    if (lastVisit !== today) {
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      streak = lastVisit === yesterday.toDateString() ? streak + 1 : 1;
-      localStorage.setItem('la_scc_streak', streak);
-      localStorage.setItem('la_scc_last_visit', today);
-    }
-    if (streak >= 1) {
-      document.getElementById('streak-badge').style.display = 'inline-flex';
-      document.getElementById('streak-count').textContent = streak;
-    }
+    try {
+      const today = new Date().toDateString();
+      const lastVisit = localStorage.getItem('la_scc_last_visit');
+      let streak = parseInt(localStorage.getItem('la_scc_streak') || '0', 10) || 0;
+      if (lastVisit !== today) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        streak = lastVisit === yesterday.toDateString() ? streak + 1 : 1;
+        localStorage.setItem('la_scc_streak', String(streak));
+        localStorage.setItem('la_scc_last_visit', today);
+      }
+      if (streak >= 1) {
+        document.getElementById('streak-badge').style.display = 'inline-flex';
+        document.getElementById('streak-count').textContent = streak;
+      }
+    } catch (e) { /* private mode — skip silently */ }
   }
+
+  // ── STORAGE (safe wrappers; Safari private mode throws) ─────
+  function lsGet(k) { try { return localStorage.getItem(k); } catch { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch {} }
+  function lsDel(k) { try { localStorage.removeItem(k); } catch {} }
 
   // ── CLOCK ───────────────────────────────────────────────────
   function updateTime() {
@@ -741,44 +805,40 @@
     document.getElementById('live-time').textContent =
       `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
     document.getElementById('live-date').textContent =
-      now.toLocaleDateString('en-US', { weekday:'long', month:'short', day:'numeric' });
+      now.toLocaleDateString(undefined, { weekday:'long', month:'short', day:'numeric' });
   }
-  setInterval(updateTime, 1000);
-  updateTime();
 
   // ── SCROLL REVEALS ──────────────────────────────────────────
   function initReveal() {
     const els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(el => el.classList.add('visible'));
+      return;
+    }
     const obs = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
     }, { threshold: 0.1 });
     els.forEach(el => obs.observe(el));
+    // Safety net: nothing stays invisible for longer than 3s.
+    setTimeout(() => els.forEach(el => el.classList.add('visible')), 3000);
   }
 
   // ── PROGRESS DOTS ───────────────────────────────────────────
   const STEPS = ['The Flush','The Protocol','The Philosophy','The Seal'];
-  let currentStep = 0;
   function advanceProgress(step) {
     const dots = document.getElementById('progress-dots');
-    if (!dots || dots.style.display === 'none') return; // hidden in quick mode
-    const dotsAll = dots.querySelectorAll('.progress-dot');
-    dotsAll.forEach((d, i) => {
+    if (!dots || dots.style.display === 'none') return;
+    dots.querySelectorAll('.progress-dot').forEach((d, i) => {
       d.classList.remove('active','done');
       if (i < step) d.classList.add('done');
       else if (i === step) d.classList.add('active');
     });
-    if (step < STEPS.length) {
-      document.getElementById('progress-label').textContent =
-        `Step ${step+1} of ${STEPS.length} — ${STEPS[step]}`;
-    } else {
-      document.getElementById('progress-label').textContent = 'Session complete';
-    }
+    document.getElementById('progress-label').textContent =
+      step < STEPS.length ? `Step ${step+1} of ${STEPS.length} — ${STEPS[step]}` : 'Session complete';
   }
 
   // ── TIMER ───────────────────────────────────────────────────
-  let timerInterval = null;
-  let timeLeft = 90;
-  let isRunning = false;
+  let timerInterval = null, timeLeft = 90, isRunning = false;
   const CIRCUMFERENCE = 2 * Math.PI * 48;
 
   function startTimer() {
@@ -788,13 +848,12 @@
     const btn = document.getElementById('timer-btn');
     const instruction = document.getElementById('flush-instruction');
     const ring = document.getElementById('timer-ring-progress');
-    const body = document.body;
 
     timeLeft = 90;
     display.textContent = '90';
     btn.textContent = 'Flushing...';
     btn.disabled = true;
-    body.classList.add('breathing');
+    document.body.classList.add('breathing');
     clearInterval(timerInterval);
 
     timerInterval = setInterval(() => {
@@ -805,16 +864,13 @@
       const cycle = (90 - timeLeft) % 12;
       if (cycle < 4) {
         instruction.textContent = 'Deep inhale...';
-        instruction.style.color = '#b2945e';
-        ring.style.stroke = '#b2945e';
+        instruction.style.color = '#b2945e'; ring.style.stroke = '#b2945e';
       } else if (cycle < 10) {
         instruction.textContent = 'Long, slow exhale...';
-        instruction.style.color = '#1c1917';
-        ring.style.stroke = '#1c1917';
+        instruction.style.color = '#1c1917'; ring.style.stroke = '#1c1917';
       } else {
         instruction.textContent = 'Hold the emptiness...';
-        instruction.style.color = '#a8a29e';
-        ring.style.stroke = '#a8a29e';
+        instruction.style.color = '#a8a29e'; ring.style.stroke = '#a8a29e';
       }
 
       if (timeLeft <= 0) {
@@ -823,7 +879,7 @@
         instruction.textContent = 'System reset complete.';
         instruction.style.color = '#059669';
         ring.style.stroke = '#059669';
-        body.classList.remove('breathing');
+        document.body.classList.remove('breathing');
         advanceProgress(1);
         setTimeout(() => {
           display.textContent = '90';
@@ -833,7 +889,6 @@
           ring.style.stroke = '';
           btn.textContent = 'Run Again';
           btn.disabled = false;
-          btn.onclick = startTimer;
           isRunning = false;
         }, 3500);
       }
@@ -842,18 +897,17 @@
 
   // ── PROTOCOL CARDS ──────────────────────────────────────────
   const protocols = [
-    { t: 'Linear Override', d: 'Anxiety operates in loops. Logic operates in lines. Name 3 physical objects...', r: '"Panic is a circle. Logic is a line."' },
-    { t: 'The Faux-pology', d: 'Stop apologizing for your existence...', r: '"I occupy my space without apology."' },
-    { t: 'Drop the Rope', d: 'You are in a power struggle...', r: '"I do not need to be right to be effective."' },
-    { t: 'The 90-Second Rule', d: 'When triggered, your amygdala dumps cortisol...', r: '"This is not a crisis. This is chemistry."' },
-    { t: 'The Fiction Audit', d: 'Separate the objective event from the narrative...', r: '"I do not negotiate with my own fiction."' },
-    { t: 'The Seesaw', d: 'Judgment and curiosity cannot occupy the same space...', r: '"Curiosity kills the reaction."' },
-    { t: 'No as Architecture', d: 'Every yes to a distraction is a silent no...', r: '"My no is a sovereign decree, not an apology."' },
-    { t: 'The Knowing Gap', d: 'You know what needs to change...', r: '"Knowing is not doing. Doing is doing."' },
-    { t: 'Asset Protection', d: 'You are not the worker. You are the asset...', r: '"Protecting myself is protecting the work."' }
+    { t: 'Linear Override', d: 'Anxiety operates in loops. Logic operates in lines. Name 3 physical objects in the room, out loud if you can. You are handing the nervous system a task it can finish.', r: '"Panic is a circle. Logic is a line."' },
+    { t: 'The Faux-pology', d: 'Stop apologizing for your existence. Replace "sorry for the delay" with "thank you for waiting." Same courtesy, none of the self-erasure.', r: '"I occupy my space without apology."' },
+    { t: 'Drop the Rope', d: 'You are in a power struggle only because you are holding one end. Let go of the need to win the exchange and watch what is actually being asked.', r: '"I do not need to be right to be effective."' },
+    { t: 'The 90-Second Rule', d: 'When triggered, your body runs a chemical cascade that clears in about ninety seconds — if you do not feed it. Everything past that is the story you are telling.', r: '"This is not a crisis. This is chemistry."' },
+    { t: 'The Fiction Audit', d: 'Separate the objective event from the narrative wrapped around it. Write the fact in one sentence. Everything else you wrote is interpretation.', r: '"I do not negotiate with my own fiction."' },
+    { t: 'The Seesaw', d: 'Judgment and curiosity cannot occupy the same space. Ask one real question about the thing you are judging and the judgment loses its footing.', r: '"Curiosity kills the reaction."' },
+    { t: 'No as Architecture', d: 'Every yes to a distraction is a silent no to the work that matters. Your no is not rudeness. It is load-bearing.', r: '"My no is a sovereign decree, not an apology."' },
+    { t: 'The Knowing Gap', d: 'You know what needs to change. Knowing is cheap. Pick the smallest version of the action and do it before you feel ready.', r: '"Knowing is not doing. Doing is doing."' },
+    { t: 'Asset Protection', d: 'You are not the worker. You are the asset. Rest is not the reward for the work — it is the maintenance schedule that makes the work possible.', r: '"Protecting myself is protecting the work."' }
   ];
-  let isFlipped = false;
-  let lastCardIdx = -1;
+  let isFlipped = false, lastCardIdx = -1;
 
   function getNewCard() {
     let idx;
@@ -876,27 +930,21 @@
     document.getElementById('protocol-card').classList.add('is-flipped');
     isFlipped = true;
     advanceProgress(2);
-    setTimeout(() => {
-      const btn = document.getElementById('reset-card-btn');
-      btn.classList.remove('hidden');
-      btn.classList.add('block');
-    }, 800);
+    setTimeout(() => document.getElementById('reset-card-btn').classList.remove('hidden'), 800);
   }
 
   function resetCard() {
     loadCardContent();
     document.getElementById('protocol-card').classList.remove('is-flipped');
-    const btn = document.getElementById('reset-card-btn');
-    btn.classList.add('hidden');
-    btn.classList.remove('block');
+    document.getElementById('reset-card-btn').classList.add('hidden');
     isFlipped = false;
   }
 
   // ── DAILY INSIGHT ────────────────────────────────────────────
   const insights = [
-    "The pattern isn't the problem. It's the ego's last working answer...",
+    "The pattern isn't the problem. It's the ego's last working answer to a problem that has since changed.",
     "You cannot out-think chemistry. Run the protocol first.",
-    "The biological cost of sustained high performance doesn't wait...",
+    "The biological cost of sustained high performance doesn't wait for a convenient quarter.",
     "Knowing what's wrong and being able to stop are two different neurological events.",
     "The leader who transmits calm doesn't feel less. They metabolize faster.",
     "Rest is not the reward for completed work. It is the infrastructure.",
@@ -911,9 +959,12 @@
     "You are not discovering yourself. You are writing yourself. Every day is a draft."
   ];
 
+  // FIX: day-of-year, so the rotation actually advances one per day
+  function dayOfYear(d) {
+    return Math.floor((d - new Date(d.getFullYear(), 0, 0)) / 86400000);
+  }
   function setDailyInsight() {
-    const day = new Date().getDay() + new Date().getDate();
-    const insight = insights[day % insights.length];
+    const insight = insights[dayOfYear(new Date()) % insights.length];
     document.getElementById('daily-insight').textContent = `"${insight}"`;
   }
 
@@ -921,15 +972,14 @@
   const audioEl = document.getElementById('audio-el');
   let audioPlaying = false;
 
+  function audioUnavailable() {
+    document.getElementById('audio-ui').style.display = 'none';
+    document.getElementById('audio-unavailable').style.display = 'block';
+  }
+
   function checkAudioSupport() {
-    if (!audioEl.canPlayType('audio/mp4') && !audioEl.canPlayType('audio/mpeg')) {
-      document.getElementById('audio-ui').style.display = 'none';
-      document.getElementById('audio-unavailable').style.display = 'block';
-    }
-    audioEl.addEventListener('error', () => {
-      document.getElementById('audio-ui').style.display = 'none';
-      document.getElementById('audio-unavailable').style.display = 'block';
-    });
+    if (!audioEl.canPlayType('audio/mp4') && !audioEl.canPlayType('audio/mpeg')) audioUnavailable();
+    audioEl.addEventListener('error', audioUnavailable);
   }
 
   function toggleAudio() {
@@ -939,28 +989,21 @@
       updatePlayIcon(false);
     } else {
       audioEl.play()
-        .then(() => {
-          audioPlaying = true;
-          updatePlayIcon(true);
-        })
-        .catch(() => {
-          document.getElementById('audio-ui').style.display = 'none';
-          document.getElementById('audio-unavailable').style.display = 'block';
-        });
+        .then(() => { audioPlaying = true; updatePlayIcon(true); })
+        .catch(audioUnavailable);
     }
   }
 
   function updatePlayIcon(playing) {
-    const icon = document.getElementById('play-icon');
-    icon.setAttribute('data-lucide', playing ? 'pause' : 'play');
-    icon.style.marginLeft = playing ? '0' : '2px';
-    safeCreateIcons();
+    document.getElementById('icon-play').style.display  = playing ? 'none' : '';
+    document.getElementById('icon-pause').style.display = playing ? '' : 'none';
+    document.getElementById('play-btn').setAttribute('aria-label', playing ? 'Pause audio' : 'Play audio');
   }
 
   audioEl.addEventListener('timeupdate', () => {
     if (!audioEl.duration) return;
-    const pct = (audioEl.currentTime / audioEl.duration) * 100;
-    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-fill').style.width =
+      ((audioEl.currentTime / audioEl.duration) * 100) + '%';
     const m = Math.floor(audioEl.currentTime / 60);
     const s = String(Math.floor(audioEl.currentTime % 60)).padStart(2,'0');
     document.getElementById('audio-time').textContent = `${m}:${s}`;
@@ -981,41 +1024,123 @@
 
   // ── SEAL ─────────────────────────────────────────────────────
   const SEAL_KEYS = ['seal-1','seal-2','seal-3'];
+  const SEAL_STORE = 'la_scc_seal';
 
-  function loadSeal() {
-    SEAL_KEYS.forEach(id => {
-      const saved = localStorage.getItem('la_scc_' + id);
-      if (saved) {
-        document.getElementById(id).value = saved;
-        updateCharCount(id, 'cc-' + id.split('-')[1], id === 'seal-1' ? 120 : 80);
-      }
-    });
+  function autoGrow(el) {
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
   }
 
+  function ccId(id) { return 'cc-' + id.split('-')[1]; }
+
+  function updateCharCount(inputId) {
+    const el = document.getElementById(inputId);
+    const max = parseInt(el.getAttribute('maxlength'), 10);
+    const out = document.getElementById(ccId(inputId));
+    out.textContent = max - el.value.length;
+    out.classList.toggle('warn', el.value.length >= max - 20);
+  }
+
+  // FIX: silent. Toast only on an explicit Lock.
   function saveSeal() {
+    lsSet(SEAL_STORE, JSON.stringify({
+      date: new Date().toDateString(),
+      lines: SEAL_KEYS.map(id => document.getElementById(id).value)
+    }));
+  }
+
+  // One-time migration off the old per-field keys
+  function migrateLegacySeal() {
+    const legacy = SEAL_KEYS.map(id => lsGet('la_scc_' + id));
+    if (!legacy.some(Boolean)) return;
+    if (!lsGet(SEAL_STORE)) {
+      lsSet(SEAL_STORE, JSON.stringify({
+        date: lsGet('la_scc_last_visit') || new Date().toDateString(),
+        lines: legacy.map(v => v || '')
+      }));
+    }
+    SEAL_KEYS.forEach(id => lsDel('la_scc_' + id));
+  }
+
+  // FIX: same day restores your draft. A new day starts clean and shows the
+  // last seal as a read-only card instead of pre-filling the fields.
+  function loadSeal() {
+    migrateLegacySeal();
+    let saved = null;
+    try { saved = JSON.parse(lsGet(SEAL_STORE) || 'null'); } catch { saved = null; }
+
+    if (saved && saved.date === new Date().toDateString()) {
+      SEAL_KEYS.forEach((id, i) => {
+        document.getElementById(id).value = (saved.lines && saved.lines[i]) || '';
+      });
+    } else if (saved && saved.lines && saved.lines.some(l => l && l.trim())) {
+      showPreviousSeal(saved);
+    }
+
     SEAL_KEYS.forEach(id => {
-      localStorage.setItem('la_scc_' + id, document.getElementById(id).value);
+      autoGrow(document.getElementById(id));
+      updateCharCount(id);
     });
-    showToast('Session saved');
   }
 
-  function updateCharCount(inputId, countId, max) {
-    const len = document.getElementById(inputId).value.length;
-    const el = document.getElementById(countId);
-    el.textContent = max - len;
-    el.classList.toggle('warn', len >= max - 10);
+  function showPreviousSeal(saved) {
+    const prefixes = ['The reality was', 'I chose to be', 'My next action was'];
+    const body = document.getElementById('prev-seal-body');
+    body.textContent = '';
+    saved.lines.forEach((line, i) => {
+      if (!line || !line.trim()) return;
+      const p = document.createElement('p');
+      p.className = 'prev-seal-line';
+      p.textContent = `${prefixes[i]} ${line.trim().replace(/\.$/, '')}.`;
+      body.appendChild(p);
+    });
+    document.getElementById('prev-seal-date').textContent = saved.date || '';
+    document.getElementById('prev-seal').style.display = 'block';
   }
 
-  SEAL_KEYS.forEach(id => {
-    document.getElementById(id).addEventListener('input', () => {
-      clearTimeout(window._sealSaveTimer);
-      window._sealSaveTimer = setTimeout(saveSeal, 800);
+  function wireSealInputs() {
+    SEAL_KEYS.forEach((id, i) => {
+      const el = document.getElementById(id);
+      el.addEventListener('input', () => {
+        autoGrow(el);
+        updateCharCount(id);
+        clearTimeout(window._sealSaveTimer);
+        window._sealSaveTimer = setTimeout(saveSeal, 800);
+      });
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          const next = document.getElementById('seal-' + (i + 2));
+          if (next) next.focus(); else sealJournal();
+        }
+      });
     });
-  });
+  }
+
+  // ── CRISIS BACKSTOP (client-side, independent of the API) ────
+  const CRISIS_RE = /\b(kill myself|killing myself|suicide|suicidal|end my life|ending my life|take my own life|want to die|wanna die|better off dead|no reason to live|don'?t want to be here|self[- ]harm|hurt myself|harming myself)\b/i;
+
+  function showCrisisCard() {
+    const section = document.getElementById('decree-section');
+    const loading = document.getElementById('decree-loading');
+    const textEl = document.getElementById('decree-text');
+    section.style.display = 'block';
+    section.style.background = '#fff8f0';
+    section.style.borderColor = 'rgba(239,68,68,0.25)';
+    loading.style.display = 'none';
+    document.getElementById('decree-actions').style.display = 'none';
+    document.getElementById('lead-capture').style.display = 'none';
+    textEl.style.display = 'block';
+    textEl.style.fontStyle = 'normal';
+    textEl.style.fontSize = '0.95rem';
+    textEl.style.color = '#57534e';
+    textEl.textContent = 'What you wrote sounds heavy, and this tool is not the right support for it. Please talk to someone who can help — in the US you can call or text 988 any time, or text HOME to 741741. If you are elsewhere, findahelpline.com lists local services. If you are in immediate danger, call your local emergency number.';
+    section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 
   function sealJournal() {
     const vals = SEAL_KEYS.map(id => document.getElementById(id).value.trim());
-    if (!vals[0] && !vals[1] && !vals[2]) {
+    if (!vals.some(Boolean)) {
       showToast('Add at least one line to seal');
       return;
     }
@@ -1023,39 +1148,64 @@
     SEAL_KEYS.forEach(id => document.getElementById(id).disabled = true);
     document.getElementById('seal-btn').style.display = 'none';
     document.getElementById('unlock-btn').style.display = 'block';
-    document.getElementById('delta-capture').style.display = 'block';
 
+    if (CRISIS_RE.test(vals.join(' '))) {
+      showCrisisCard();
+      return;
+    }
+
+    document.getElementById('delta-capture').style.display = 'block';
     const preVal = document.getElementById('pre-slider').value;
     document.getElementById('delta-before').textContent = preVal;
+    document.getElementById('delta-after').textContent = document.getElementById('delta-slider').value;
+    updateDelta(document.getElementById('delta-slider').value);
     document.getElementById('delta-comparison').style.display = 'flex';
 
     showToast('System locked');
     advanceProgress(3);
 
-    const reality = vals[0] || 'the friction I carried';
-    const identity = vals[1] || 'sovereign';
-    const action = vals[2] || 'close this loop';
-    const isQuickMode = localStorage.getItem('la_scc_mode') === 'quick';
-    const cardTitle = isQuickMode ? 'Quick Reset (no protocol selected)' : (document.getElementById('card-title')?.textContent || '');
-    const frictionLevel = parseInt(document.getElementById('pre-slider').value) || 5;
-    generateDecree(reality, identity, action, cardTitle, frictionLevel);
+    const isQuickMode = lsGet('la_scc_mode') === 'quick';
+    generateDecree(
+      vals[0] || 'the friction I carried',
+      vals[1] || 'sovereign',
+      vals[2] || 'close this loop',
+      isQuickMode ? 'Quick Reset (no protocol selected)' : (document.getElementById('card-title').textContent || ''),
+      parseInt(preVal, 10) || 5
+    );
   }
 
+  // FIX: fully reset downstream state, including the stale decree
   function unlockJournal() {
-    SEAL_KEYS.forEach(id => document.getElementById(id).disabled = false);
+    SEAL_KEYS.forEach(id => {
+      const el = document.getElementById(id);
+      el.disabled = false;
+      autoGrow(el);
+    });
     document.getElementById('seal-btn').style.display = 'block';
     document.getElementById('unlock-btn').style.display = 'none';
     document.getElementById('delta-capture').style.display = 'none';
     document.getElementById('decree-section').style.display = 'none';
+    document.getElementById('lead-capture').style.display = 'none';
+    document.getElementById('decree-actions').style.display = 'none';
+
+    const msg = document.getElementById('lead-msg');
+    msg.classList.add('hidden');
+    msg.textContent = '';
+    const leadBtn = document.getElementById('lead-btn');
+    leadBtn.disabled = false;
+    leadBtn.textContent = 'Send';
+    document.querySelectorAll('.lead-confirm').forEach(n => n.remove());
+
+    currentDecree = '';
+    document.getElementById('seal-1').focus();
   }
 
   // ── DELTA ────────────────────────────────────────────────────
   function updateDelta(val) {
     document.getElementById('delta-val').textContent = val;
     document.getElementById('delta-after').textContent = val;
-    const before = parseInt(document.getElementById('pre-slider').value);
-    const after = parseInt(val);
-    const shift = before - after;
+    const before = parseInt(document.getElementById('pre-slider').value, 10);
+    const shift = before - parseInt(val, 10);
     const el = document.getElementById('delta-shift');
     if (shift > 0) { el.textContent = '−' + shift; el.style.color = '#059669'; }
     else if (shift < 0) { el.textContent = '+' + Math.abs(shift); el.style.color = '#ef4444'; }
@@ -1063,18 +1213,45 @@
   }
 
   function saveDelta() {
-    const val = document.getElementById('delta-slider').value;
-    const log = JSON.parse(localStorage.getItem('la_scc_friction_log') || '[]');
+    const val = parseInt(document.getElementById('delta-slider').value, 10);
+    let log = [];
+    try { log = JSON.parse(lsGet('la_scc_friction_log') || '[]'); } catch { log = []; }
     log.push({
       date: new Date().toDateString(),
-      pre: parseInt(document.getElementById('pre-slider').value),
-      post: parseInt(val)
+      pre: parseInt(document.getElementById('pre-slider').value, 10),
+      post: val
     });
-    if (log.length > 30) log.shift();
-    localStorage.setItem('la_scc_friction_log', JSON.stringify(log));
+    if (log.length > 30) log = log.slice(-30);
+    lsSet('la_scc_friction_log', JSON.stringify(log));
     document.getElementById('delta-capture').style.display = 'none';
-    showToast('Friction logged ✓');
+    showToast('Friction logged');
     advanceProgress(4);
+    renderTrend();
+  }
+
+  // FIX: the log was collected and never shown. Now it's visible.
+  function renderTrend() {
+    let log = [];
+    try { log = JSON.parse(lsGet('la_scc_friction_log') || '[]'); } catch { return; }
+    if (log.length < 2) return;
+    const recent = log.slice(-12);
+    const row = document.getElementById('trend-row');
+    row.textContent = '';
+    let total = 0;
+    recent.forEach(entry => {
+      const shift = entry.pre - entry.post;
+      total += shift;
+      const bar = document.createElement('div');
+      bar.className = 'trend-bar' + (shift < 0 ? ' up' : '');
+      bar.style.height = Math.max(3, Math.abs(shift) * 10) + 'px';
+      bar.title = `${entry.date}: ${entry.pre} → ${entry.post}`;
+      row.appendChild(bar);
+    });
+    const avg = total / recent.length;
+    const sign = avg > 0 ? '−' : (avg < 0 ? '+' : '');
+    document.getElementById('trend-avg').textContent =
+      `avg ${sign}${Math.abs(avg).toFixed(1)} per session`;
+    document.getElementById('trend-card').style.display = 'block';
   }
 
   // ── MODE TOGGLE ──────────────────────────────────────────────
@@ -1084,28 +1261,27 @@
     const deepSections = document.getElementById('deep-sections');
     const progressDots = document.getElementById('progress-dots');
     const progressLabel = document.getElementById('progress-label');
+    const quick = mode === 'quick';
 
-    if (mode === 'quick') {
-      quickBtn.classList.add('bg-white', 'text-stone-800', 'shadow-sm');
-      quickBtn.classList.remove('text-stone-500');
-      deepBtn.classList.remove('bg-white', 'text-stone-800', 'shadow-sm');
-      deepBtn.classList.add('text-stone-500');
+    quickBtn.classList.toggle('bg-white', quick);
+    quickBtn.classList.toggle('text-stone-800', quick);
+    quickBtn.classList.toggle('shadow-sm', quick);
+    quickBtn.classList.toggle('text-stone-500', !quick);
+    deepBtn.classList.toggle('bg-white', !quick);
+    deepBtn.classList.toggle('text-stone-800', !quick);
+    deepBtn.classList.toggle('shadow-sm', !quick);
+    deepBtn.classList.toggle('text-stone-500', quick);
+    quickBtn.setAttribute('aria-selected', String(quick));
+    deepBtn.setAttribute('aria-selected', String(!quick));
 
-      deepSections.style.display = 'none';
-      if (progressDots) progressDots.style.display = 'none';
-      if (progressLabel) progressLabel.textContent = 'Quick Reset — Flush & Seal';
-      localStorage.setItem('la_scc_mode', 'quick');
-    } else {
-      deepBtn.classList.add('bg-white', 'text-stone-800', 'shadow-sm');
-      deepBtn.classList.remove('text-stone-500');
-      quickBtn.classList.remove('bg-white', 'text-stone-800', 'shadow-sm');
-      quickBtn.classList.add('text-stone-500');
+    deepSections.style.display = quick ? 'none' : 'block';
+    progressDots.style.display = quick ? 'none' : 'flex';
+    progressLabel.textContent = quick ? 'Quick Reset — Flush & Seal' : 'Step 1 of 4 — The Flush';
 
-      deepSections.style.display = 'block';
-      if (progressDots) progressDots.style.display = 'flex';
-      if (progressLabel) progressLabel.textContent = 'Step 1 of 4 — The Flush';
-      localStorage.setItem('la_scc_mode', 'deep');
-    }
+    // FIX: don't leave a flipped card behind when switching modes
+    if (isFlipped) resetCard();
+
+    lsSet('la_scc_mode', mode);
   }
 
   // ── TEASER ───────────────────────────────────────────────────
@@ -1115,21 +1291,20 @@
     "I dragged the morning's tension into the afternoon. Now I name the pattern and let it go. My next move is clean, not forced."
   ];
   function setTeaser() {
-    const teaser = teaserExamples[Math.floor(Math.random() * teaserExamples.length)];
     const el = document.getElementById('teaser-text');
-    if (el) el.textContent = `"${teaser}"`;
+    if (el) el.textContent = `"${teaserExamples[Math.floor(Math.random() * teaserExamples.length)]}"`;
   }
 
   // ── DECREE ───────────────────────────────────────────────────
   let currentDecree = '';
 
-async function generateDecree(reality, identity, action, cardTitle, frictionLevel) {
+  async function generateDecree(reality, identity, action, cardTitle, frictionLevel) {
     const section = document.getElementById('decree-section');
     const loading = document.getElementById('decree-loading');
     const textEl = document.getElementById('decree-text');
     const actions = document.getElementById('decree-actions');
 
-    // Reset styles
+    currentDecree = '';
     section.style.background = '';
     section.style.borderColor = '';
     textEl.style.fontStyle = '';
@@ -1140,110 +1315,94 @@ async function generateDecree(reality, identity, action, cardTitle, frictionLeve
     loading.style.display = 'block';
     textEl.style.display = 'none';
     actions.style.display = 'none';
+    document.getElementById('lead-capture').style.display = 'none';
+
+    // Don't hang forever on a dead endpoint
+    const ctrl = new AbortController();
+    const timeout = setTimeout(() => ctrl.abort(), 20000);
 
     try {
       const response = await fetch('/api/generate-decree', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reality, identity, action, cardTitle, frictionLevel })
+        body: JSON.stringify({ reality, identity, action, cardTitle, frictionLevel }),
+        signal: ctrl.signal
       });
+      clearTimeout(timeout);
 
-      const data = await response.json();
-
+      const data = await response.json().catch(() => ({}));
       loading.style.display = 'none';
+      if (!response.ok) throw new Error(data.error || 'API failed');
 
-      if (!response.ok) {
-        throw new Error(data.error || 'API failed');
-      }
+      if (data.crisis) { showCrisisCard(); return; }
 
-      if (data.crisis) {
-        section.style.background = '#fff8f0';
-        section.style.borderColor = 'rgba(239,68,68,0.2)';
-        textEl.style.display = 'block';
-        textEl.style.fontStyle = 'normal';
-        textEl.style.fontSize = '0.9rem';
-        textEl.style.color = '#78716c';
-        textEl.textContent = data.message;
-        textEl.style.opacity = '1';
-        return;
-      }
-
-      currentDecree = data.decree;
+      currentDecree = (data.decree || '').trim();
+      if (!currentDecree) throw new Error('Empty response');
 
       textEl.style.display = 'block';
-      textEl.style.opacity = '1';
-      textEl.textContent = currentDecree || "[Empty Response Received from AI]";
-      
+      textEl.textContent = currentDecree;
       actions.style.display = 'flex';
       document.getElementById('lead-capture').style.display = 'block';
 
-    } catch(e) {
-      console.error("Decree generation failed:", e);
+    } catch (e) {
+      clearTimeout(timeout);
+      console.error('Decree generation failed:', e);
+      currentDecree = '';
       loading.style.display = 'none';
       textEl.style.display = 'block';
-      textEl.textContent = "Something interrupted the connection. Hit Edit below and lock the seal again to retry.";
-      textEl.style.opacity = '1';
-      // No decree text exists in this path — don't offer Share/Copy/Send for
-      // content that isn't there. "Edit" (already shown by sealJournal) is
-      // the retry path.
+      textEl.style.fontStyle = 'normal';
+      textEl.style.fontSize = '0.95rem';
+      textEl.style.color = '#78716c';
+      textEl.textContent = 'Something interrupted the connection. Your seal is saved — press Edit above, then Lock System to try again.';
+      // Share / Copy / Send stay hidden: there is no decree to act on.
     }
   }
 
-  // PREMIUM SHARE CARD (no UI elements)
   function shareDecree() {
     if (!currentDecree) return;
+    if (typeof html2canvas === 'undefined') { copyDecree(); return; }
 
-    const renderContainer = document.createElement('div');
-    renderContainer.style.position = 'absolute';
-    renderContainer.style.left = '-9999px';
-    renderContainer.style.top = '0';
-    renderContainer.style.width = '600px';
-    renderContainer.style.padding = '60px 40px';
-    renderContainer.style.backgroundColor = '#1c1917';
-    renderContainer.style.color = '#fafaf9';
-    renderContainer.style.fontFamily = "'DM Sans', sans-serif";
-    renderContainer.style.display = 'flex';
-    renderContainer.style.flexDirection = 'column';
-    renderContainer.style.justifyContent = 'center';
-    renderContainer.style.alignItems = 'center';
-
-    renderContainer.innerHTML = `
-      <div style="margin-bottom: 30px; text-align: center;">
-        <span style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 24px; color: #b2945e; border: 1px solid rgba(178,148,94,0.4); border-radius: 50%; width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px;">A</span>
-        <div style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3em; color: #a8a29e;">LiveAdaptiv</div>
-      </div>
-      <div class="decree-text" style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 26px; line-height: 1.5; text-align: center; color: #fafaf9; border-left: 3px solid #b2945e; padding-left: 20px; margin-bottom: 30px;">
-      </div>
-      <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: #57534e;">Sovereign Command</div>
-      <div style="font-size: 8px; color: #57534e; margin-top: 10px;">liveadaptiv.com</div>
-    `;
-
-    // Safely inject the decree text
-    const decreeEl = renderContainer.querySelector('.decree-text');
-    if (decreeEl) decreeEl.textContent = `"${currentDecree}"`;
-
-    document.body.appendChild(renderContainer);
-
-    html2canvas(renderContainer, {
-      backgroundColor: '#1c1917',
-      scale: 2,
-      logging: false
-    }).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'LiveAdaptiv-Sovereign-Decree.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-      document.body.removeChild(renderContainer);
-      showToast('Decree image saved');
-    }).catch(err => {
-      console.error("Screenshot failed:", err);
-      document.body.removeChild(renderContainer);
-      navigator.clipboard.writeText(currentDecree).then(() => showToast('Decree copied to clipboard'));
+    const box = document.createElement('div');
+    Object.assign(box.style, {
+      position: 'absolute', left: '-9999px', top: '0',
+      width: '600px', padding: '60px 40px',
+      backgroundColor: '#1c1917', color: '#fafaf9',
+      fontFamily: "'DM Sans', sans-serif",
+      display: 'flex', flexDirection: 'column',
+      justifyContent: 'center', alignItems: 'center'
     });
+
+    box.innerHTML = `
+      <div style="margin-bottom:30px;text-align:center;">
+        <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:24px;color:#b2945e;border:1px solid rgba(178,148,94,0.4);border-radius:50%;width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:10px;">A</span>
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.3em;color:#a8a29e;">LiveAdaptiv</div>
+      </div>
+      <div class="decree-text" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;line-height:1.5;text-align:center;color:#fafaf9;border-left:3px solid #b2945e;padding-left:20px;margin-bottom:30px;"></div>
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.2em;color:#57534e;">Sovereign Command</div>
+      <div style="font-size:8px;color:#57534e;margin-top:10px;">liveadaptiv.com</div>
+    `;
+    box.querySelector('.decree-text').textContent = `"${currentDecree}"`;
+    document.body.appendChild(box);
+
+    html2canvas(box, { backgroundColor: '#1c1917', scale: 2, logging: false })
+      .then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'LiveAdaptiv-Sovereign-Decree.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        box.remove();
+        showToast('Decree image saved');
+      })
+      .catch(err => {
+        console.error('Screenshot failed:', err);
+        box.remove();
+        copyDecree();
+      });
   }
 
   function copyDecree() {
     if (!currentDecree) return;
+    if (!navigator.clipboard) { showToast('Copy not supported'); return; }
     navigator.clipboard.writeText(currentDecree)
       .then(() => showToast('Copied'))
       .catch(() => showToast('Copy failed'));
@@ -1255,12 +1414,12 @@ async function generateDecree(reality, identity, action, cardTitle, frictionLeve
     const msgEl = document.getElementById('lead-msg');
     const btn = document.getElementById('lead-btn');
 
-    if (!email || !email.includes('@') || !email.includes('.')) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       msgEl.textContent = 'Please enter a valid email.';
-      msgEl.className = 'text-[10px] mt-2 text-red-500';
-      msgEl.classList.remove('hidden');
+      msgEl.className = 'text-10 mt-2 text-red-500';
       return;
     }
+    if (!currentDecree) { showToast('No decree to send yet'); return; }
 
     btn.disabled = true;
     btn.textContent = 'Sending...';
@@ -1276,36 +1435,44 @@ async function generateDecree(reality, identity, action, cardTitle, frictionLeve
           reality: document.getElementById('seal-1').value,
           identity: document.getElementById('seal-2').value,
           action: document.getElementById('seal-3').value,
-          cardTitle: localStorage.getItem('la_scc_mode') === 'quick'
+          cardTitle: lsGet('la_scc_mode') === 'quick'
             ? 'Quick Reset (no protocol selected)'
-            : (document.getElementById('card-title')?.textContent || ''),
-          frictionLevel: document.getElementById('delta-slider').value
+            : (document.getElementById('card-title').textContent || ''),
+          // FIX: was sending delta-slider here and pre-slider to the decree.
+          // Send both, explicitly named.
+          frictionPre: parseInt(document.getElementById('pre-slider').value, 10),
+          frictionPost: parseInt(document.getElementById('delta-slider').value, 10)
         })
       });
+      if (!response.ok) throw new Error('API error');
 
-      if (response.ok) {
-        msgEl.textContent = 'Decree sent. Check your inbox.';
-        msgEl.className = 'text-[10px] mt-2 text-emerald-600';
-        msgEl.classList.remove('hidden');
-        document.getElementById('lead-capture').style.display = 'none';
+      msgEl.textContent = 'Decree sent. Check your inbox.';
+      msgEl.className = 'text-10 mt-2 text-emerald-600';
+      document.getElementById('lead-capture').style.display = 'none';
 
-        // Remove any previous confirmation paragraph
-        const old = document.querySelector('.lead-confirm');
-        if (old) old.remove();
-        const confirm = document.createElement('p');
-        confirm.className = 'text-xs text-stone-400 mt-4 text-center font-serif italic lead-confirm';
-        confirm.textContent = 'Your decree is on its way.';
-        document.getElementById('decree-section').appendChild(confirm);
-      } else {
-        throw new Error('API error');
-      }
-    } catch(e) {
+      document.querySelectorAll('.lead-confirm').forEach(n => n.remove());
+      const confirm = document.createElement('p');
+      confirm.className = 'text-xs text-stone-400 mt-4 text-center font-serif italic lead-confirm';
+      confirm.textContent = 'Your decree is on its way.';
+      document.getElementById('decree-section').appendChild(confirm);
+
+    } catch (e) {
       msgEl.textContent = 'Something went wrong. Please try again.';
-      msgEl.className = 'text-[10px] mt-2 text-red-500';
-      msgEl.classList.remove('hidden');
+      msgEl.className = 'text-10 mt-2 text-red-500';
       btn.disabled = false;
       btn.textContent = 'Send';
     }
+  }
+
+  // ── CLEAR DATA ───────────────────────────────────────────────
+  function clearMyData() {
+    if (!window.confirm('Clear your seal, streak and friction history from this device? This cannot be undone.')) return;
+    try {
+      Object.keys(localStorage)
+        .filter(k => k.indexOf('la_scc_') === 0)
+        .forEach(k => localStorage.removeItem(k));
+    } catch {}
+    location.reload();
   }
 
   // ── TOAST ────────────────────────────────────────────────────
@@ -1319,22 +1486,24 @@ async function generateDecree(reality, identity, action, cardTitle, frictionLeve
 
   // ── STARTUP ──────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', () => {
+    updateTime();
+    setInterval(updateTime, 1000);
     initStreak();
+    wireSealInputs();
     loadSeal();
     setDailyInsight();
-    setTeaser();          // random example decree
+    setTeaser();
     checkAudioSupport();
     initReveal();
-    safeCreateIcons();
+    renderTrend();
+    setMode(lsGet('la_scc_mode') || 'deep');
 
-    // restore saved mode
-    const savedMode = localStorage.getItem('la_scc_mode') || 'deep';
-    setMode(savedMode);
-
-    // initial char counts
-    updateCharCount('seal-1','cc-1',120);
-    updateCharCount('seal-2','cc-2',80);
-    updateCharCount('seal-3','cc-3',80);
+    document.getElementById('pre-slider').addEventListener('input', function () {
+      document.getElementById('pre-val').textContent = this.value;
+    });
+    document.getElementById('protocol-card').addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); isFlipped ? resetCard() : flipCard(); }
+    });
   });
   </script>
 </body>
