@@ -30,6 +30,38 @@ function escHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
+async function syncToMailerLite(email) {
+  const API_KEY = process.env.MAILERLITE_API_KEY;
+  const GROUP_ID = '196088983780853464'; // Sovereign Command Center Users
+
+  if (!API_KEY) {
+    console.error('MAILERLITE_API_KEY missing — skipping MailerLite sync.');
+    return;
+  }
+
+  try {
+    const res = await fetch('https://connect.mailerlite.com/api/subscribers', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${API_KEY}`,
+      },
+      body: JSON.stringify({
+        email,
+        groups: [GROUP_ID],
+      }),
+    });
+
+    if (!res.ok) {
+      const body = await res.text().catch(() => '');
+      console.error('MailerLite sync failed:', res.status, body);
+    }
+  } catch (err) {
+    console.error('MailerLite sync request failed:', err);
+  }
+}
+
 module.exports = async (req, res) => {
   const origin = req.headers.origin || "";
 
@@ -64,8 +96,9 @@ module.exports = async (req, res) => {
   const senderEmail = "Adaptiv <decree@send.liveadaptiv.com>";
 
   try {
-    // ── 1. Notification to Alex ───────────────────────────────────
-    await resend.emails.send({
+    const [notifyResult, decreeResult] = await Promise.allSettled([
+      // ── 1. Notification to Alex ───────────────────────────────────
+      resend.emails.send({
       from: senderEmail,
       to: process.env.NOTIFY_EMAIL,
       subject: `New Sovereign Decree — ${email}`,
@@ -75,44 +108,26 @@ module.exports = async (req, res) => {
             LiveAdaptiv — New Lead
           </p>
           <h2 style="font-weight:400;font-size:1.4rem;margin-bottom:20px;">Sovereign Command Session</h2>
-          <table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:20px;">
+          <table style="width:100%;border-collapse:collapse;font-size:14px;">
             <tr style="border-bottom:1px solid #e7e5e4;">
               <td style="padding:8px 0;color:#78716c;width:120px;">Email</td>
               <td style="padding:8px 0;">${escHtml(email)}</td>
             </tr>
             <tr style="border-bottom:1px solid #e7e5e4;">
-              <td style="padding:8px 0;color:#78716c;">Reality</td>
-              <td style="padding:8px 0;">${escHtml(reality) || '—'}</td>
+              <td style="padding:8px 0;color:#78716c;">Time</td>
+              <td style="padding:8px 0;">${escHtml(new Date().toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'UTC' }))} UTC</td>
             </tr>
-            <tr style="border-bottom:1px solid #e7e5e4;">
-              <td style="padding:8px 0;color:#78716c;">Identity</td>
-              <td style="padding:8px 0;">${escHtml(identity) || '—'}</td>
-            </tr>
-            <tr style="border-bottom:1px solid #e7e5e4;">
-              <td style="padding:8px 0;color:#78716c;">Action</td>
-              <td style="padding:8px 0;">${escHtml(action) || '—'}</td>
-            </tr>
-            <tr style="border-bottom:1px solid #e7e5e4;">
+            <tr>
               <td style="padding:8px 0;color:#78716c;">Protocol</td>
               <td style="padding:8px 0;">${escHtml(cardTitle) || '—'}</td>
             </tr>
-            <tr>
-              <td style="padding:8px 0;color:#78716c;">Friction Level</td>
-              <td style="padding:8px 0;">${frictionLevel || '—'} / 10</td>
-            </tr>
           </table>
-          <div style="background:#f5f4f2;border-left:3px solid #b2945e;padding:16px 20px;border-radius:4px;">
-            <p style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#b2945e;margin:0 0 8px 0;">
-              Their Decree
-            </p>
-            <p style="font-style:italic;font-size:1.1rem;line-height:1.6;margin:0;">${escHtml(decree)}</p>
-          </div>
         </div>
       `
-    });
+      }),
 
-    // ── 2. Decree delivery to user ────────────────────────────────
-    await resend.emails.send({
+      // ── 2. Decree delivery to user ────────────────────────────────
+      resend.emails.send({
       from: senderEmail,
       to: email,
       subject: "Your Sovereign Decree",
@@ -176,7 +191,20 @@ module.exports = async (req, res) => {
 
         </div>
       `
-    });
+      }),
+
+      // ── 3. Sync to MailerLite (non-blocking; never rejects) ────────
+      syncToMailerLite(email),
+    ]);
+
+    if (notifyResult.status === "rejected") {
+      console.error("Admin notification email failed:", notifyResult.reason);
+    }
+
+    if (decreeResult.status === "rejected") {
+      console.error("Decree email failed:", decreeResult.reason);
+      return res.status(500).json({ error: "Failed to send email. Please try again." });
+    }
 
     return res.status(200).json({ success: true });
 
