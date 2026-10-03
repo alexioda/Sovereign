@@ -1,15 +1,40 @@
 const { Resend } = require("resend");
+const { verifyDecree } = require("../lib/decree-token");
 
 const ALLOWED_ORIGINS = [
   "https://liveadaptiv.com",
   "https://sovereign.liveadaptiv.com",
+  "https://sovereign-blond.vercel.app",
   "http://localhost:3000"
 ];
 
+// Preview deploys get a generated *.vercel.app hostname; allow those only
+// outside production. Any *.vercel.app used to pass, in production too.
+const ALLOW_VERCEL_PREVIEWS = process.env.VERCEL_ENV !== "production";
+const VERCEL_PREVIEW_RE = /^https:\/\/[a-z0-9-]+\.vercel\.app$/i;
+
 function isOriginAllowed(origin) {
   if (ALLOWED_ORIGINS.includes(origin)) return true;
-  if (origin.endsWith(".vercel.app")) return true;
-  return false;
+  return ALLOW_VERCEL_PREVIEWS && VERCEL_PREVIEW_RE.test(origin);
+}
+
+// Weak per-instance limiter (same pattern as Adaptiv's shared.ts):
+// blunts casual abuse rather than stopping a determined attacker.
+const hits = new Map();
+const LIMIT = 5;
+const WINDOW_MS = 10 * 60_000;
+
+function rateLimited(req) {
+  const ip = String(req.headers["x-forwarded-for"] || "").split(",")[0].trim() || "unknown";
+  const now = Date.now();
+  const rec = hits.get(ip);
+  if (!rec || now > rec.reset) {
+    hits.set(ip, { n: 1, reset: now + WINDOW_MS });
+    if (hits.size > 5000) hits.clear();
+    return false;
+  }
+  rec.n += 1;
+  return rec.n > LIMIT;
 }
 
 function isValidEmail(email) {
@@ -46,14 +71,26 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { email, decree, reality, identity, action, cardTitle, frictionLevel } = req.body;
+  if (rateLimited(req)) {
+    return res.status(429).json({ error: "Too many requests." });
+  }
 
-  if (!email || !isValidEmail(email)) {
+  const { email, decree, reality, identity, action, cardTitle, token } = req.body || {};
+  const fl = parseInt(req.body?.frictionLevel, 10);
+  const frictionLevel = Number.isInteger(fl) && fl >= 1 && fl <= 10 ? fl : null;
+
+  if (typeof email !== "string" || email.length > 254 || !isValidEmail(email)) {
     return res.status(400).json({ error: "Valid email required." });
   }
 
   if (!decree) {
     return res.status(400).json({ error: "Missing decree." });
+  }
+
+  // Only text that api/generate-decree produced and signed gets emailed.
+  // Without this, any caller could send any text to any address.
+  if (!verifyDecree(token, { decree, reality, identity, action, cardTitle })) {
+    return res.status(400).json({ error: "This decree can't be emailed. Generate it again, then send." });
   }
 
   if (!process.env.RESEND_API_KEY || !process.env.NOTIFY_EMAIL) {

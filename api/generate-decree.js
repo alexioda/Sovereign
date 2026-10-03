@@ -1,5 +1,6 @@
 const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require("@google/generative-ai");
 const { buildFreeDecreePrompt, buildPreprocessingPrompt, containsCrisisLanguage } = require("../lib/adaptiv-mind");
+const { signDecree } = require("../lib/decree-token");
 
 const ALLOWED_ORIGINS = [
   "https://liveadaptiv.com",
@@ -161,7 +162,10 @@ module.exports = async (req, res) => {
     // Post-process: word cap + consecutive I-fix
     cleanText = postProcess(cleanText);
 
-    return res.status(200).json({ decree: cleanText });
+    return res.status(200).json({
+      decree: cleanText,
+      token: signDecree({ decree: cleanText, reality, identity, action, cardTitle }),
+    });
 
   } catch (error) {
     console.error("Decree generation error:", error?.message || error);
@@ -191,6 +195,9 @@ module.exports = async (req, res) => {
     const fallback = options[Math.floor(Math.random() * options.length)];
 
     console.warn("Using fallback decree for range:", range);
-    return res.status(200).json({ decree: fallback, fallback: true });
+    return res.status(200).json({
+      decree: fallback, fallback: true,
+      token: signDecree({ decree: fallback, reality, identity, action, cardTitle }),
+    });
   }
 };

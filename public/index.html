@@ -1113,6 +1113,10 @@
 
   // ── DECREE ───────────────────────────────────────────────────
   let currentDecree = '';
+  // The token signs the decree and the exact inputs it was built from;
+  // capture-lead only emails text the token covers, so both are kept here.
+  let currentDecreeToken = '';
+  let currentDecreeInputs = null;
 
 async function generateDecree(reality, identity, action, cardTitle, frictionLevel) {
     const section = document.getElementById('decree-section');
@@ -1160,6 +1164,8 @@ async function generateDecree(reality, identity, action, cardTitle, frictionLeve
       }
 
       currentDecree = data.decree;
+      currentDecreeToken = data.token || '';
+      currentDecreeInputs = { reality, identity, action, cardTitle };
 
       textEl.style.display = 'block';
       textEl.style.opacity = '1';
@@ -1263,10 +1269,8 @@ async function generateDecree(reality, identity, action, cardTitle, frictionLeve
         body: JSON.stringify({
           email,
           decree: currentDecree,
-          reality: document.getElementById('seal-1').value,
-          identity: document.getElementById('seal-2').value,
-          action: document.getElementById('seal-3').value,
-          cardTitle: document.getElementById('card-title')?.textContent || '',
+          token: currentDecreeToken,
+          ...(currentDecreeInputs || {}),
           frictionLevel: document.getElementById('delta-slider').value
         })
       });
