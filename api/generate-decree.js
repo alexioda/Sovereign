@@ -1,18 +1,11 @@
 const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require("@google/generative-ai");
 const { buildFreeDecreePrompt, buildPreprocessingPrompt, containsCrisisLanguage } = require("../lib/adaptiv-mind");
 const { signDecree } = require("../lib/decree-token");
+const { isOriginAllowed, rateLimiter } = require("../lib/guard");
 
-const ALLOWED_ORIGINS = [
-  "https://liveadaptiv.com",
-  "https://sovereign.liveadaptiv.com",
-  "http://localhost:3000"
-];
-
-function isOriginAllowed(origin) {
-  if (ALLOWED_ORIGINS.includes(origin)) return true;
-  if (origin && origin.endsWith(".vercel.app")) return true;
-  return false;
-}
+// Each decree is two Gemini calls on this project's key; nothing limited
+// how often anyone could ask.
+const rateLimited = rateLimiter(20, 60_000);
 
 function validateInputs(reality, identity, action) {
   const errors = [];
@@ -65,20 +58,25 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { reality, identity, action, cardTitle, frictionLevel } = req.body;
-
-  if (!process.env.GEMINI_API_KEY) {
-    return res.status(500).json({ error: "Server configuration error" });
+  if (rateLimited(req)) {
+    return res.status(429).json({ error: "Too many requests." });
   }
 
-  // Crisis check before anything touches the AI
-  const combinedInput = `${reality || ''} ${identity || ''} ${action || ''}`;
+  const { reality, identity, action, cardTitle, frictionLevel } = req.body || {};
+
+  // Crisis check before anything touches the AI, and before the key check,
+  // so a missing key can't skip it.
+  const combinedInput = `${reality || ''} . ${identity || ''} . ${action || ''}`;
   if (containsCrisisLanguage(combinedInput)) {
     console.warn("Crisis language detected — safe exit triggered");
     return res.status(200).json({
       crisis: true,
       message: "The system is quiet right now. Your word is enough. If you are carrying a weight heavier than stress, please reach out to someone you trust — or dial 988."
     });
+  }
+
+  if (!process.env.GEMINI_API_KEY) {
+    return res.status(500).json({ error: "Server configuration error" });
   }
 
   const inputErrors = validateInputs(reality, identity, action);
@@ -93,7 +91,10 @@ module.exports = async (req, res) => {
       { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
       { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
       { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
-      { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+      // BLOCK_ONLY_HIGH, never BLOCK_NONE (the rule in Adaptiv's CLAUDE.md).
+      // The default trips on ordinary distress language; NONE turns the
+      // model's own last line of defence off entirely.
+      { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH },
     ];
 
     // ── PASS 1: Clinical Intake — sharpen the inputs ──────────────

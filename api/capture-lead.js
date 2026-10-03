@@ -1,41 +1,9 @@
 const { Resend } = require("resend");
 const { verifyDecree } = require("../lib/decree-token");
+const { isOriginAllowed, rateLimiter } = require("../lib/guard");
 
-const ALLOWED_ORIGINS = [
-  "https://liveadaptiv.com",
-  "https://sovereign.liveadaptiv.com",
-  "https://sovereign-blond.vercel.app",
-  "http://localhost:3000"
-];
-
-// Preview deploys get a generated *.vercel.app hostname; allow those only
-// outside production. Any *.vercel.app used to pass, in production too.
-const ALLOW_VERCEL_PREVIEWS = process.env.VERCEL_ENV !== "production";
-const VERCEL_PREVIEW_RE = /^https:\/\/[a-z0-9-]+\.vercel\.app$/i;
-
-function isOriginAllowed(origin) {
-  if (ALLOWED_ORIGINS.includes(origin)) return true;
-  return ALLOW_VERCEL_PREVIEWS && VERCEL_PREVIEW_RE.test(origin);
-}
-
-// Weak per-instance limiter (same pattern as Adaptiv's shared.ts):
-// blunts casual abuse rather than stopping a determined attacker.
-const hits = new Map();
-const LIMIT = 5;
-const WINDOW_MS = 10 * 60_000;
-
-function rateLimited(req) {
-  const ip = String(req.headers["x-forwarded-for"] || "").split(",")[0].trim() || "unknown";
-  const now = Date.now();
-  const rec = hits.get(ip);
-  if (!rec || now > rec.reset) {
-    hits.set(ip, { n: 1, reset: now + WINDOW_MS });
-    if (hits.size > 5000) hits.clear();
-    return false;
-  }
-  rec.n += 1;
-  return rec.n > LIMIT;
-}
+// One person sends one decree, so the limit is low.
+const rateLimited = rateLimiter(5, 10 * 60_000);
 
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
